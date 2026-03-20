@@ -187,7 +187,7 @@ canvas { display: block; }
     <div class="faction-label">🕎 גיבורי ישראל</div>
     <div class="char-card" data-char="moshe"><div class="avatar">🧔</div><div class="name">משה</div><div class="role">המשחרר</div></div>
     <div class="char-card" data-char="miriam"><div class="avatar">👩</div><div class="name">מרים</div><div class="role">הנביאה</div></div>
-    <div class="char-card" data-char="bezalel"><div class="avatar">👷</div><div class="name">בצלאל</div><div class="role">האומן</div></div>
+    <div class="char-card" data-char="yocheved"><div class="avatar">🤱</div><div class="name">יוכבד</div><div class="role">אם משה</div></div>
     <div class="faction-label">🏛️ אלופי מצרים</div>
     <div class="char-card" data-char="pharaoh"><div class="avatar">👑</div><div class="name">רעמסס</div><div class="role">מלך השמש</div></div>
     <div class="char-card" data-char="nefertari"><div class="avatar">👸</div><div class="name">נפרטיטי</div><div class="role">הסופרת</div></div>
@@ -465,7 +465,7 @@ const WORLDS = [
 const CHARACTERS = {
   moshe: { name:'משה', emoji:'🧔', faction:'israelite', color:'#4a90d9', hp:120, speed:3.2, atkDmg:18, atkRange:200, atkSpeed:500, projColor:'#88ccff', projSize:5 },
   miriam: { name:'מרים', emoji:'👩', faction:'israelite', color:'#9b59b6', hp:95, speed:3.6, atkDmg:13, atkRange:180, atkSpeed:400, projColor:'#d9a0ff', projSize:4 },
-  bezalel: { name:'בצלאל', emoji:'👷', faction:'israelite', color:'#e67e22', hp:145, speed:2.7, atkDmg:24, atkRange:120, atkSpeed:650, projColor:'#ffaa44', projSize:7 },
+  yocheved: { name:'יוכבד', emoji:'🤱', faction:'israelite', color:'#e67e22', hp:140, speed:2.8, atkDmg:22, atkRange:140, atkSpeed:600, projColor:'#ffaa44', projSize:6 },
   pharaoh: { name:'רעמסס', emoji:'👑', faction:'egyptian', color:'#f1c40f', hp:135, speed:2.9, atkDmg:20, atkRange:220, atkSpeed:550, projColor:'#ffe44d', projSize:6 },
   nefertari: { name:'נפרטיטי', emoji:'👸', faction:'egyptian', color:'#1abc9c', hp:90, speed:3.9, atkDmg:14, atkRange:250, atkSpeed:380, projColor:'#55eebb', projSize:4 },
   imhotep: { name:'אימחותפ', emoji:'🧙', faction:'egyptian', color:'#c0392b', hp:115, speed:3.1, atkDmg:17, atkRange:190, atkSpeed:480, projColor:'#ff7766', projSize:5 }
@@ -504,6 +504,21 @@ const TRIVIA = [
   { cat:'מסורת יהודית', q:'מהו בית כנסת?', a:['סוג אוכל','מקום תפילה יהודי','כלי נגינה','חג'], correct:1, fact:'בית כנסת נקרא גם "בית תפילה". המילה synagogue ביוונית פירושה "התכנסות".' },
   { cat:'שתי התרבויות', q:'מה למדו סופרים מצריים במשך שנים?', a:['קרב חרבות','קריאה וכתיבת היירוגליפים','רכיבה על סוסים','שחייה'], correct:1, fact:'לקח לסופרים 12 שנה ללמוד את כל ההיירוגליפים! באופן דומה, ילדים יהודים לומדים תורה ועברית מגיל צעיר.' },
   { cat:'שתי התרבויות', q:'לפי מה קבעו שתי התרבויות את תחילת החודשים?', a:['השמש','הירח','הכוכבים','העונות'], correct:1, fact:'שני הלוחות השתמשו בירח! הלוח היהודי עדיין מבוסס על הירח, לכן החגים נופלים בתאריכים שונים כל שנה.' },
+  // הגדה של פסח
+  { cat:'הגדה של פסח', q:'מה שואלים הילדים בליל הסדר?', a:['מתי אוכלים?','מה נשתנה הלילה הזה?','מי בא לאכול?','למה יש נרות?'], correct:1, fact:'ארבע הקושיות הן חלק מרכזי בהגדה — "מה נשתנה הלילה הזה מכל הלילות?"' },
+  { cat:'הגדה של פסח', q:'כמה בנים מוזכרים בהגדה של פסח?', a:['2','3','4','5'], correct:2, fact:'ארבעת הבנים הם: חכם, רשע, תם, ושאינו יודע לשאול. כל אחד מייצג דרך שונה ללמוד.' },
+  { cat:'הגדה של פסח', q:'מה מסמל החרוסת בצלחת הסדר?', a:['את הדמעות','את הטיט והלבנים','את הים','את המדבר'], correct:1, fact:'החרוסת מסמלת את הטיט שממנו בנו בני ישראל לבנים בעבדות במצרים.' },
+  { cat:'הגדה של פסח', q:'מה מסמל המרור בליל הסדר?', a:['את החירות','את מרירות העבדות','את הניצחון','את האביב'], correct:1, fact:'המרור מזכיר את מרירות חיי העבדות של בני ישראל במצרים.' },
+  { cat:'הגדה של פסח', q:'למה אוכלים מצות בפסח?', a:['כי זה טעים','הבצק לא הספיק לתפוח','כי אין קמח','בגלל המדבר'], correct:1, fact:'בני ישראל יצאו ממצרים בחיפזון כזה שהבצק לא הספיק להחמיץ, ולכן אוכלים מצות.' },
+  { cat:'הגדה של פסח', q:'כמה כוסות יין שותים בליל הסדר?', a:['2','3','4','5'], correct:2, fact:'שותים 4 כוסות יין שמייצגות את ארבע לשונות הגאולה: "והוצאתי, והצלתי, וגאלתי, ולקחתי".' },
+  { cat:'הגדה של פסח', q:'למי שופכים כוס יין נוספת בסדר?', a:['למשה','לאליהו הנביא','לפרעה','לאהרן'], correct:1, fact:'כוס אליהו נשארת מלאה על השולחן ופותחים את הדלת — מקווים שאליהו הנביא יבוא לבשר על הגאולה.' },
+  { cat:'הגדה של פסח', q:'מה שם הקטע שבו מספרים "דיינו"?', a:['הלל','מגיד','דיינו','נרצה'], correct:2, fact:'"דיינו" הוא שיר שבו מודים על כל שלב בגאולה — "אילו הוציאנו ממצרים ולא נתן לנו את התורה, דיינו!"' },
+  { cat:'הגדה של פסח', q:'מה שם החלק האחרון בסדר?', a:['מוציא מצה','נרצה','הלל','מגיד'], correct:1, fact:'נרצה הוא החלק האחרון, ובו אומרים "לשנה הבאה בירושלים!" ושרים שירי פסח.' },
+  { cat:'הגדה של פסח', q:'מה מחביאים בסדר כדי שהילדים ימצאו?', a:['ביצה','כרפס','אפיקומן','חרוסת'], correct:2, fact:'האפיקומן הוא חצי מצה שמחביאים. הילדים מחפשים אותו ומקבלים פרס — בלי האפיקומן אי אפשר לסיים את הסדר!' },
+  { cat:'הגדה של פסח', q:'מה טובלים במי מלח בתחילת הסדר?', a:['מצה','מרור','כרפס','ביצה'], correct:2, fact:'טובלים כרפס (ירק כמו פטרוזיליה) במי מלח — הירק מסמל את האביב ומי המלח את הדמעות.' },
+  { cat:'הגדה של פסח', q:'כמה פריטים יש בקערת הסדר?', a:['4','5','6','7'], correct:2, fact:'בקערת הסדר יש 6 פריטים: מרור, חרוסת, כרפס, זרוע, ביצה וחזרת.' },
+  { cat:'הגדה של פסח', q:'מה אומרים בסוף הסדר?', a:['שבת שלום','חג שמח','לשנה הבאה בירושלים','מזל טוב'], correct:2, fact:'בסוף ליל הסדר כולם אומרים "לשנה הבאה בירושלים!" — תקווה לגאולה שלמה.' },
+  { cat:'הגדה של פסח', q:'איזה שיר ילדים שרים בסוף הסדר?', a:['הנה מה טוב','חד גדיא','מעוז צור','הבה נגילה'], correct:1, fact:'"חד גדיא" הוא שיר שרשרת מפורסם שמסיים את ההגדה — על גדי אחד שאבא קנה בשני זוזים.' },
 ];
 
 // ═══════════════════════════════════════
@@ -1053,6 +1068,11 @@ function answerTrivia(idx,btn) {
     document.getElementById('trivia-result').textContent='✓ '+currentTrivia.fact;
     document.getElementById('trivia-result').style.color='#8f8';
     score+=50;factsLearned++;player.hp=Math.min(player.maxHp,player.hp+20);specialCharge=Math.min(100,specialCharge+25);
+    // Spawn a candy near the player as reward
+    const cAngle=Math.random()*Math.PI*2, cDist=60+Math.random()*40;
+    let cx=player.x+Math.cos(cAngle)*cDist, cy=player.y+Math.sin(cAngle)*cDist;
+    if(!isWalkable(cx,cy)){cx=player.x+50;cy=player.y+50;}
+    candies.push({x:cx,y:cy,r:10,bob:Math.random()*Math.PI*2,collected:false});
     playSFX(523,0.1);setTimeout(()=>playSFX(659,0.1),100);
   } else {
     btn.classList.add('wrong');
