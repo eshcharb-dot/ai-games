@@ -734,7 +734,7 @@ function prepareRound() {
   if (players.length > 4) {
     document.getElementById('readyDescriberNote').textContent = `${describerOrder.length} שחקנים מתארים, השאר מנחשים`;
   } else {
-    document.getElementById('readyDescriberNote').textContent = 'כולם מתארים לפי תור';
+    document.getElementById('readyDescriberNote').textContent = 'כולם מתארים לפי התור';
   }
 }
 
@@ -752,7 +752,7 @@ function showTurnTransition() {
   screen.innerHTML = `
     <div class="turn-transition" style="position:relative;inset:auto;flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:0;padding:20px">
       <div class="pass-label">📱 תעבירו את הטלפון!</div>
-      <div class="label">עכשיו תור של</div>
+      <div class="label">עכשיו התור של</div>
       <div class="emoji">${p.avatar}</div>
       <div class="player-name">${p.name}</div>
       <div class="arrow">👇</div>
@@ -809,7 +809,7 @@ function showStartCountdown() {
   const overlay = document.createElement('div');
   overlay.className = 'start-countdown-overlay';
   overlay.innerHTML = `
-    <div class="sco-label">תור של</div>
+    <div class="sco-label">התור של</div>
     <div class="sco-avatar">${p.avatar}</div>
     <div class="sco-name">${p.name}</div>
     <div class="sco-number" id="scoNumber"></div>
@@ -817,7 +817,7 @@ function showStartCountdown() {
   document.body.appendChild(overlay);
 
   const numEl = overlay.querySelector('#scoNumber');
-  const sequence = ['3', '2', '1', '!גו'];
+  const sequence = ['3', '2', '1', 'GO!'];
   let step = 0;
 
   function showNext() {
@@ -836,7 +836,7 @@ function showStartCountdown() {
     numEl.style.animation = '';
     numEl.className = 'sco-number sco-pop';
 
-    if (val === '!גו') {
+    if (val === 'GO!') {
       playGoSound();
       numEl.style.color = 'var(--primary)';
       step++;
