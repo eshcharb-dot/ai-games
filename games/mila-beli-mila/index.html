@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>מילה בלי מילה</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800;900&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
@@ -11,14 +11,17 @@
 :root{
 --bg:#0a0a2e;--bg2:#141452;--primary:#ffcc00;--accent:#ff4081;--green:#00e676;--blue:#448aff;
 --orange:#ff9100;--red:#ff1744;--purple:#d500f9;--white:#fff;--dark:#1a1a3e;
---radius:20px;--shadow:0 8px 32px rgba(0,0,0,.4);
+--radius:16px;--shadow:0 8px 32px rgba(0,0,0,.4);
 }
-html,body{height:100%;overflow:hidden;font-family:'Rubik','Fredoka',sans-serif;background:var(--bg);color:var(--white)}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;box-sizing:border-box;font-size:18px;
+font-family:'Rubik','Fredoka',sans-serif;background:var(--bg);color:var(--white)}
 body{display:flex;flex-direction:column;align-items:center;justify-content:center;
 background:linear-gradient(135deg,#0a0a2e 0%,#1a1052 40%,#2a1060 70%,#0a0a2e 100%)}
 
-.screen{display:none;flex-direction:column;align-items:center;justify-content:center;
-width:100%;max-width:500px;height:100%;padding:16px;position:relative;text-align:center;overflow:hidden}
+/* Screens */
+.screen{display:none;flex-direction:column;align-items:center;justify-content:space-between;
+min-height:100vh;width:100%;max-width:480px;margin:0 auto;padding:16px;box-sizing:border-box;
+position:relative;text-align:center;overflow-y:auto;overflow-x:hidden}
 .screen.active{display:flex}
 
 /* Noise overlay */
@@ -36,42 +39,50 @@ opacity:.4}
 
 .container{position:relative;z-index:1;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
 
-/* Buttons */
-.btn{border:none;border-radius:var(--radius);font-family:inherit;font-weight:700;cursor:pointer;
-transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+/* All buttons base */
+.btn{min-height:64px;border-radius:var(--radius);font-size:1.2rem;width:100%;cursor:pointer;border:none;font-family:inherit;
+font-weight:700;transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden;
+touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .btn:active{transform:scale(.95)!important}
 .btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.2) 0%,transparent 50%);pointer-events:none;border-radius:inherit}
 
-.btn-primary{background:linear-gradient(135deg,var(--primary),#ffa000);color:#1a1a00;font-size:1.4rem;padding:18px 40px;
+.btn-primary{background:linear-gradient(135deg,var(--primary),#ffa000);color:#1a1a00;font-size:1.4rem;padding:18px 24px;
 box-shadow:0 6px 20px rgba(255,204,0,.3)}
 .btn-primary:hover{transform:scale(1.03);box-shadow:0 8px 28px rgba(255,204,0,.5)}
 
-.btn-action{font-size:1.2rem;padding:14px 32px;box-shadow:var(--shadow)}
+.btn-action{font-size:1.2rem;padding:14px 24px;box-shadow:var(--shadow)}
 .btn-green{background:linear-gradient(135deg,var(--green),#00c853);color:#003300}
 .btn-red{background:linear-gradient(135deg,var(--red),#d50000);color:#fff}
 .btn-blue{background:linear-gradient(135deg,var(--blue),#2962ff);color:#fff}
 .btn-accent{background:linear-gradient(135deg,var(--accent),#c51162);color:#fff}
 .btn-purple{background:linear-gradient(135deg,var(--purple),#aa00ff);color:#fff}
 .btn-orange{background:linear-gradient(135deg,var(--orange),#ff6d00);color:#fff}
-.btn-small{font-size:.9rem;padding:10px 20px;border-radius:14px;min-height:44px}
+.btn-small{font-size:1rem;padding:12px 20px;border-radius:14px;min-height:48px}
 
-.btn-icon{width:80px;height:80px;border-radius:50%;font-size:2.2rem;display:flex;align-items:center;justify-content:center;padding:0}
+.btn-icon{width:80px;height:80px;border-radius:50%;font-size:2.2rem;display:flex;align-items:center;justify-content:center;padding:0;min-height:auto}
 
 /* Sound toggle */
-#soundToggle{position:fixed;top:10px;left:10px;z-index:100;width:40px;height:40px;border-radius:50%;
+#soundToggle{position:fixed;top:10px;left:10px;z-index:100;width:44px;height:44px;border-radius:50%;
 background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);
 font-size:1.1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;
-transition:background .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+transition:background .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:auto;width:44px}
 #soundToggle:hover{background:rgba(255,255,255,.2)}
 
 /* Title */
-.game-title{font-size:2.8rem;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--accent));
--webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;margin-bottom:8px;line-height:1.2}
-.game-subtitle{font-size:1.1rem;color:rgba(255,255,255,.6);margin-bottom:30px;font-weight:400}
+.game-title{font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--accent));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;margin-bottom:8px;line-height:1.2;text-align:center}
+.game-subtitle{font-size:1.1rem;color:rgba(255,255,255,.7);margin-bottom:30px;font-weight:400;text-align:center}
 
 /* Cards */
 .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);
 padding:20px;width:100%;backdrop-filter:blur(8px)}
+
+/* All inputs */
+input[type="text"],input[type="number"],input[type="email"],input[type="search"]{
+height:56px;font-size:1.2rem;width:100%;border-radius:12px;padding:0 16px;box-sizing:border-box;
+background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.15);color:#fff;font-family:inherit;outline:none;transition:border-color .2s}
+input:focus{border-color:var(--primary)}
+input::placeholder{color:rgba(255,255,255,.4)}
 
 /* Player setup */
 .player-list{width:100%;flex:1;min-height:0;max-height:40vh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin:16px 0;
@@ -83,11 +94,8 @@ border:1px solid rgba(255,255,255,.08)}
 .player-item .remove{background:none;border:none;color:var(--red);font-size:1.3rem;cursor:pointer;padding:8px 12px;
 -webkit-tap-highlight-color:transparent;touch-action:manipulation;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
 .player-input-row{display:flex;gap:10px;width:100%;margin-top:10px}
-.player-input-row input{flex:1;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.15);border-radius:14px;
-padding:16px 16px;color:#fff;font-family:inherit;font-size:1.1rem;outline:none;transition:border-color .2s;min-height:52px}
-.player-input-row input:focus{border-color:var(--primary)}
-.player-input-row input::placeholder{color:rgba(255,255,255,.3)}
-.player-input-row .btn{min-height:52px;font-size:1rem;padding:14px 20px}
+.player-input-row input{flex:1}
+.player-input-row .btn{min-height:56px;font-size:1rem;padding:14px 20px;width:auto;min-width:100px}
 
 /* Level select */
 .level-grid{display:flex;flex-direction:column;gap:14px;width:100%;margin:20px 0}
@@ -97,7 +105,7 @@ background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:
 .level-btn .icon{font-size:2.4rem}
 .level-btn .info{text-align:right}
 .level-btn .info h3{font-size:1.25rem;font-weight:700;margin-bottom:2px}
-.level-btn .info p{font-size:.9rem;color:rgba(255,255,255,.5);font-weight:400}
+.level-btn .info p{font-size:.9rem;color:rgba(255,255,255,.6);font-weight:400}
 
 /* Timer */
 .timer-ring{position:relative;width:80px;height:80px;margin:0 auto;flex-shrink:0}
@@ -106,21 +114,22 @@ background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:
 .timer-ring .progress{fill:none;stroke:var(--primary);stroke-width:8;stroke-linecap:round;
 transition:stroke-dashoffset .3s linear,stroke .3s}
 .timer-ring .time-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-font-size:2rem;font-weight:900}
+font-size:3rem;font-weight:900;text-align:center}
 .timer-ring.urgent .progress{stroke:var(--red)}
 .timer-ring.urgent .time-text{color:var(--red);animation:pulse .5s ease-in-out infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
 
 /* Word display */
-.word-display{font-size:clamp(2.8rem, 10vw, 4.5rem);font-weight:900;margin:12px 0;flex:1;display:flex;align-items:center;justify-content:center;
+.word-display{font-size:3.5rem;font-weight:bold;text-align:center;
+margin:12px 0;flex:1;display:flex;align-items:center;justify-content:center;
 text-shadow:0 0 30px rgba(255,204,0,.3);width:100%;padding:0 8px;word-break:break-word;line-height:1.2}
 
-/* Action buttons for gameplay */
-.action-row{display:flex;gap:12px;width:100%;padding:0 8px;flex-shrink:0;margin-top:auto}
-.action-row .btn-game-action{flex:1;height:100px;border-radius:20px;font-size:2rem;font-weight:800;
-display:flex;align-items:center;justify-content:center;gap:10px;min-width:0}
-.action-row .btn-game-action .action-label{font-size:1.1rem}
-.skip-counter{font-size:.85rem;color:rgba(255,255,255,.5);margin-top:6px;margin-bottom:8px;flex-shrink:0}
+/* Action buttons for gameplay — correct + skip */
+.action-row{display:flex;gap:12px;width:100%;padding:0;flex-shrink:0;margin-top:auto;padding-bottom:8px}
+.action-row .btn-game-action{flex:1;width:48%;height:120px;border-radius:20px;font-size:2.5rem;font-weight:800;
+display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:auto}
+.action-row .btn-game-action .action-label{font-size:1.2rem}
+.skip-counter{font-size:.9rem;color:rgba(255,255,255,.6);margin-top:6px;margin-bottom:8px;flex-shrink:0}
 
 /* Score popup */
 .score-popup{position:fixed;pointer-events:none;z-index:200;font-size:2.5rem;font-weight:900;
@@ -131,13 +140,13 @@ color:var(--green);animation:scoreUp 1s ease-out forwards}
 .turn-transition{position:fixed;inset:0;z-index:150;display:flex;flex-direction:column;align-items:center;
 justify-content:center;background:linear-gradient(135deg,#ff4081,#d500f9);animation:fadeIn .3s}
 .turn-transition .pass-label{font-size:clamp(1.6rem,5vw,2.2rem);font-weight:900;color:#fff;margin-bottom:12px;
-text-shadow:0 2px 20px rgba(0,0,0,.3);letter-spacing:1px}
+text-shadow:0 2px 20px rgba(0,0,0,.3);letter-spacing:1px;text-align:center}
 .turn-transition .emoji{font-size:5rem;margin-bottom:12px;animation:bounce 1s ease infinite}
-.turn-transition .label{font-size:1.1rem;color:rgba(255,255,255,.7);margin-bottom:8px}
+.turn-transition .label{font-size:1.1rem;color:rgba(255,255,255,.8);margin-bottom:8px;text-align:center}
 .turn-transition .player-name{font-size:clamp(2rem,7vw,3rem);font-weight:900;color:#fff;margin-bottom:16px;
-text-shadow:0 2px 20px rgba(0,0,0,.3)}
+text-shadow:0 2px 20px rgba(0,0,0,.3);text-align:center}
 .turn-transition .arrow{font-size:3rem;animation:bounce 1s ease infinite}
-.turn-transition .countdown{font-size:4rem;font-weight:900;color:#fff;margin-top:16px;text-shadow:0 2px 20px rgba(0,0,0,.3)}
+.turn-transition .countdown{font-size:7rem;font-weight:bold;color:#fff;margin-top:16px;text-shadow:0 2px 20px rgba(0,0,0,.3);text-align:center}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
@@ -170,14 +179,14 @@ background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
 /* Tabs */
 .tabs{display:flex;gap:8px;margin-bottom:16px;width:100%}
 .tab{flex:1;padding:12px;border-radius:12px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);
-cursor:pointer;font-family:inherit;font-weight:600;font-size:1rem;color:rgba(255,255,255,.6);
+cursor:pointer;font-family:inherit;font-weight:600;font-size:1rem;color:rgba(255,255,255,.7);
 transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:48px}
 .tab.active{background:rgba(255,204,0,.1);border-color:var(--primary);color:var(--primary)}
 
 /* Misc */
 .spacer{flex:1}
 .mt-12{margin-top:12px}.mt-20{margin-top:20px}.mb-12{margin-bottom:12px}.mb-20{margin-bottom:20px}
-.text-muted{color:rgba(255,255,255,.4);font-size:.85rem}
+.text-muted{color:rgba(255,255,255,.6);font-size:.9rem}
 .text-center{text-align:center}
 .w-full{width:100%}
 .gap-10{gap:10px}.gap-12{gap:12px}
@@ -194,18 +203,18 @@ transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transpa
 .pg-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 16px;
 border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);min-width:80px}
 .pg-item .pg-emoji{font-size:2rem}
-.pg-item .pg-name{font-size:.8rem;font-weight:600;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg-item .pg-name{font-size:.85rem;font-weight:600;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* Current player header in game */
 .current-player-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .current-player-header .cph-emoji{font-size:2rem}
 .current-player-header .cph-name{font-size:1.4rem;font-weight:800;color:var(--primary)}
-.current-player-header .cph-score{font-size:1rem;color:rgba(255,255,255,.5);font-weight:600}
+.current-player-header .cph-score{font-size:1rem;color:rgba(255,255,255,.6);font-weight:600}
 
 /* Score bar */
 .score-bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0;width:100%}
 .sb-item{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:10px;
-background:rgba(255,255,255,.06);font-size:.8rem;position:relative}
+background:rgba(255,255,255,.06);font-size:.85rem;position:relative}
 .sb-item.active{background:rgba(255,204,0,.15);border:1px solid rgba(255,204,0,.3)}
 .sb-item .sb-emoji{font-size:1.1rem}
 .sb-item .sb-score{font-weight:700;color:var(--primary)}
@@ -214,28 +223,51 @@ background:rgba(255,255,255,.06);font-size:.8rem;position:relative}
 /* Start countdown overlay */
 .start-countdown-overlay{position:fixed;inset:0;z-index:160;display:flex;flex-direction:column;align-items:center;
 justify-content:center;background:linear-gradient(135deg,#1a1052,#2a1060,#0a0a2e);gap:12px}
-.start-countdown-overlay .sco-label{font-size:clamp(1.4rem,4vw,1.8rem);font-weight:700;color:rgba(255,255,255,.7)}
+.start-countdown-overlay .sco-label{font-size:clamp(1.4rem,4vw,1.8rem);font-weight:700;color:rgba(255,255,255,.8);text-align:center}
 .start-countdown-overlay .sco-avatar{font-size:4rem;margin-bottom:4px}
-.start-countdown-overlay .sco-name{font-size:clamp(1.6rem,5vw,2.2rem);font-weight:900;color:var(--primary);margin-bottom:20px}
-.start-countdown-overlay .sco-number{font-size:clamp(8rem,25vw,14rem);font-weight:900;color:#fff;
-text-shadow:0 0 60px rgba(255,204,0,.4),0 0 120px rgba(255,64,129,.2);line-height:1}
+.start-countdown-overlay .sco-name{font-size:clamp(1.6rem,5vw,2.2rem);font-weight:900;color:var(--primary);margin-bottom:20px;text-align:center}
+.start-countdown-overlay .sco-number{font-size:7rem;font-weight:bold;color:#fff;
+text-shadow:0 0 60px rgba(255,204,0,.4),0 0 120px rgba(255,64,129,.2);line-height:1;text-align:center}
 .sco-pop{animation:scoPop .7s cubic-bezier(.17,.67,.21,1.2)}
 @keyframes scoPop{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
 
+/* Rounds select */
+.rounds-grid{display:flex;flex-direction:column;gap:14px;width:100%;margin:20px 0}
+.round-btn{height:80px;width:100%;border-radius:var(--radius);border:2px solid rgba(255,255,255,.1);
+background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;
+-webkit-tap-highlight-color:transparent;font-family:inherit;color:#fff;display:flex;flex-direction:column;
+align-items:center;justify-content:center;gap:2px}
+.round-btn:hover,.round-btn:active{border-color:var(--primary);background:rgba(255,204,0,.08);transform:scale(1.02)}
+.round-btn.selected{border-color:var(--primary);background:rgba(255,204,0,.15);box-shadow:0 0 20px rgba(255,204,0,.2)}
+.round-btn .rb-title{font-size:1.25rem;font-weight:700}
+.round-btn .rb-time{font-size:.85rem;color:rgba(255,255,255,.5);font-weight:400}
+
+/* Round indicator */
+.round-indicator{font-size:.85rem;color:rgba(255,255,255,.5);font-weight:600;text-align:center;margin-bottom:4px;flex-shrink:0}
+
+/* Grand final */
+.grand-title{font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--accent));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px;text-align:center}
+
+/* Headings */
+h1,h2,h3{text-align:center}
+h2{font-size:2rem}
+
 @media(max-width:380px){
-.game-title{font-size:2.2rem}
-.btn-primary{font-size:1.2rem;padding:16px 32px}
-.action-row .btn-game-action{height:88px;font-size:1.8rem}
+.game-title{font-size:1.8rem}
+.btn-primary{font-size:1.2rem;padding:16px 20px}
+.action-row .btn-game-action{height:100px;font-size:2.2rem}
 .action-row .btn-game-action .action-label{font-size:1rem}
 .timer-ring{width:64px;height:64px}
-.timer-ring .time-text{font-size:1.6rem}
+.timer-ring .time-text{font-size:2.4rem}
 .current-player-header .cph-name{font-size:1.1rem}
+.word-display{font-size:2.8rem}
 }
 @media(max-height:600px){
-.action-row .btn-game-action{height:80px}
-.word-display{font-size:clamp(2.2rem,8vw,3.5rem)}
+.action-row .btn-game-action{height:90px;font-size:2.2rem}
+.word-display{font-size:2.8rem}
 .timer-ring{width:60px;height:60px}
-.timer-ring .time-text{font-size:1.4rem}
+.timer-ring .time-text{font-size:2rem}
 }
 </style>
 </head>
@@ -268,8 +300,29 @@ text-shadow:0 0 60px rgba(255,204,0,.4),0 0 120px rgba(255,64,129,.2);line-heigh
   </div>
   <p class="text-muted mt-12" id="playerCount">0/8 שחקנים</p>
   <p id="playerStatus" style="font-size:.85rem;margin-top:8px;min-height:1.4em;transition:opacity .3s;color:rgba(255,255,255,.4)">צריך לפחות 2 שחקנים כדי להתחיל</p>
-  <button class="btn btn-primary mt-20" id="btnToLevel" onclick="showScreen('screenLevel')" disabled style="width:100%;min-height:52px;opacity:.4;cursor:not-allowed;filter:grayscale(.5);transition:all .3s">המשיכו ▸</button>
+  <button class="btn btn-primary mt-20" id="btnToLevel" onclick="showScreen('screenRounds')" disabled style="width:100%;min-height:52px;opacity:.4;cursor:not-allowed;filter:grayscale(.5);transition:all .3s">המשיכו ▸</button>
   <button class="btn btn-small btn-action mt-12" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="showScreen('screenWelcome')">חזרה</button>
+</div>
+
+<!-- ROUNDS SELECT -->
+<div class="screen" id="screenRounds">
+  <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:4px">כמה סיבובים? 🔄</h2>
+  <p class="text-muted mb-12">כל סיבוב ~ 8 דקות</p>
+  <div class="rounds-grid">
+    <button class="round-btn selected" onclick="selectRounds(1,this)">
+      <span class="rb-title">סיבוב אחד</span><span class="rb-time">(~8 דק')</span>
+    </button>
+    <button class="round-btn" onclick="selectRounds(2,this)">
+      <span class="rb-title">שני סיבובים</span><span class="rb-time">(~16 דק')</span>
+    </button>
+    <button class="round-btn" onclick="selectRounds(3,this)">
+      <span class="rb-title">שלושה סיבובים</span><span class="rb-time">(~24 דק')</span>
+    </button>
+    <button class="round-btn" onclick="selectRounds(4,this)">
+      <span class="rb-title">ארבעה סיבובים</span><span class="rb-time">(~32 דק')</span>
+    </button>
+  </div>
+  <button class="btn btn-small btn-action mt-12" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="showScreen('screenSetup')">חזרה</button>
 </div>
 
 <!-- LEVEL SELECT -->
@@ -290,7 +343,7 @@ text-shadow:0 0 60px rgba(255,204,0,.4),0 0 120px rgba(255,64,129,.2);line-heigh
       <div class="info"><h3>פרו</h3><p>מושגים מופשטים, מקצועות, אתגר אמיתי</p></div>
     </div>
   </div>
-  <button class="btn btn-small btn-action mt-12" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="showScreen('screenSetup')">חזרה</button>
+  <button class="btn btn-small btn-action mt-12" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="showScreen('screenRounds')">חזרה</button>
 </div>
 
 <!-- READY -->
@@ -305,6 +358,7 @@ text-shadow:0 0 60px rgba(255,204,0,.4),0 0 120px rgba(255,64,129,.2);line-heigh
 
 <!-- GAME PLAY -->
 <div class="screen" id="screenGame" style="justify-content:flex-start;padding-top:12px;padding-bottom:12px">
+  <div class="round-indicator" id="roundIndicator"></div>
   <div class="score-bar" id="scoreBar"></div>
   <div style="display:flex;align-items:center;gap:10px;width:100%;justify-content:center;flex-shrink:0">
     <div id="currentPlayerHeader" class="current-player-header" style="margin-bottom:0"></div>
@@ -335,8 +389,18 @@ text-shadow:0 0 60px rgba(255,204,0,.4),0 0 120px rgba(255,64,129,.2);line-heigh
 <!-- ROUND END -->
 <div class="screen" id="screenRoundEnd">
   <div style="font-size:3rem;margin-bottom:8px">🏆</div>
-  <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:16px">סיום סיבוב!</h2>
+  <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:4px" id="roundEndTitle">סיום סיבוב!</h2>
+  <p class="text-muted mb-12" id="roundEndSubtitle"></p>
   <div class="round-scores" id="roundScores"></div>
+  <div id="roundEndButtons" style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;justify-content:center"></div>
+</div>
+
+<!-- GRAND FINAL -->
+<div class="screen" id="screenGrandFinal">
+  <div style="font-size:4rem;margin-bottom:8px">🏆🎉🏆</div>
+  <h2 class="grand-title">גמר גדול!</h2>
+  <p class="text-muted mb-12" id="grandFinalSubtitle"></p>
+  <div class="round-scores" id="grandFinalScores"></div>
   <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;justify-content:center">
     <button class="btn btn-action btn-primary" onclick="playAgain()">שחקו שוב 🔄</button>
     <button class="btn btn-action btn-purple btn-small" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
@@ -445,6 +509,9 @@ let timerInterval = null;
 let roundScoresMap = {};
 let soundEnabled = true;
 let lbTab = 'alltime';
+let selectedRounds = 1;
+let currentRound = 1;
+let totalScores = {}; // accumulate scores across rounds
 
 // ============ AUDIO ============
 let audioCtx = null;
@@ -609,9 +676,20 @@ function renderPlayerList() {
   }
 }
 
+// ============ ROUNDS SELECT ============
+function selectRounds(n, btn) {
+  selectedRounds = n;
+  document.querySelectorAll('.round-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  setTimeout(() => showScreen('screenLevel'), 500);
+}
+
 // ============ LEVEL SELECT ============
 function selectLevel(lv) {
   level = lv;
+  currentRound = 1;
+  totalScores = {};
+  players.forEach(p => { totalScores[p.name] = 0; });
   prepareRound();
   showScreen('screenReady');
 }
@@ -636,9 +714,11 @@ function prepareRound() {
   currentDescriberIdx = 0;
   usedWords.clear();
 
-  // Level label
+  // Level & round label
   const labels = { kids: '👶 ילדים', family: '👨‍👩‍👧 משפחה', pro: '🔥 פרו' };
-  document.getElementById('readyLevelLabel').textContent = `רמה: ${labels[level]}`;
+  let readyLabel = `רמה: ${labels[level]}`;
+  if (selectedRounds > 1) readyLabel += ` • סיבוב ${currentRound} מתוך ${selectedRounds}`;
+  document.getElementById('readyLevelLabel').textContent = readyLabel;
 
   // Render player grid
   const grid = document.getElementById('readyPlayers');
@@ -705,6 +785,14 @@ function beginTurnAfterCountdown() {
   skipsLeft = 3;
   timeLeft = 60;
   showScreen('screenGame');
+  // Show round indicator
+  const ri = document.getElementById('roundIndicator');
+  if (selectedRounds > 1) {
+    ri.textContent = `סיבוב ${currentRound} מתוך ${selectedRounds}`;
+    ri.style.display = '';
+  } else {
+    ri.style.display = 'none';
+  }
   renderScoreBar();
   renderCurrentPlayer();
   nextWord();
@@ -885,9 +973,13 @@ function endTurn() {
 function endRound() {
   playFanfare();
   launchConfetti();
-  saveToLeaderboard();
 
-  // Sort players by score
+  // Accumulate total scores
+  players.forEach(p => {
+    totalScores[p.name] = (totalScores[p.name] || 0) + p.score;
+  });
+
+  // Sort players by this round's score
   const sorted = [...players].sort((a, b) => b.score - a.score);
   const maxScore = sorted[0]?.score || 0;
 
@@ -902,11 +994,77 @@ function endRound() {
     </div>`;
   }).join('');
 
+  const title = document.getElementById('roundEndTitle');
+  const subtitle = document.getElementById('roundEndSubtitle');
+  const btns = document.getElementById('roundEndButtons');
+
+  if (currentRound < selectedRounds) {
+    // More rounds to go
+    title.textContent = `סיום סיבוב ${currentRound}!`;
+    subtitle.textContent = `נותרו עוד ${selectedRounds - currentRound} סיבובים`;
+    btns.innerHTML = `
+      <button class="btn btn-action btn-primary" onclick="startNextRound()">סיבוב הבא ▸</button>
+      <button class="btn btn-action btn-small" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="backToWelcome()">עזיבה</button>
+    `;
+  } else {
+    // Last or only round
+    if (selectedRounds > 1) {
+      // Multi-round game — save and show grand final
+      saveToLeaderboard();
+      showScreen('screenRoundEnd');
+      setTimeout(() => showGrandFinal(), 2500);
+      return;
+    }
+    // Single round — normal end
+    title.textContent = 'סיום סיבוב!';
+    subtitle.textContent = '';
+    btns.innerHTML = `
+      <button class="btn btn-action btn-primary" onclick="playAgain()">שחקו שוב 🔄</button>
+      <button class="btn btn-action btn-purple btn-small" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
+      <button class="btn btn-action btn-small" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="backToWelcome()">תפריט ראשי</button>
+    `;
+    saveToLeaderboard();
+  }
+
   showScreen('screenRoundEnd');
+}
+
+function startNextRound() {
+  currentRound++;
+  prepareRound();
+  showScreen('screenReady');
+}
+
+function showGrandFinal() {
+  playFanfare();
+  launchConfetti();
+
+  // Build sorted total scores
+  const sortedPlayers = [...players].sort((a, b) => (totalScores[b.name] || 0) - (totalScores[a.name] || 0));
+  const maxTotal = totalScores[sortedPlayers[0]?.name] || 0;
+
+  document.getElementById('grandFinalSubtitle').textContent = `${selectedRounds} סיבובים הושלמו!`;
+
+  const container = document.getElementById('grandFinalScores');
+  container.innerHTML = sortedPlayers.map((p, i) => {
+    const t = totalScores[p.name] || 0;
+    const medal = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+    const crown = t === maxTotal && t > 0 ? '👑' : '';
+    return `<div class="round-score-item ${medal}">
+      <span class="rs-avatar">${p.avatar}</span>
+      <span class="rs-name">${p.name} ${crown}</span>
+      <span class="rs-score">${t}</span>
+    </div>`;
+  }).join('');
+
+  showScreen('screenGrandFinal');
 }
 
 function playAgain() {
   prepareRound();
+  currentRound = 1;
+  totalScores = {};
+  players.forEach(p => { totalScores[p.name] = 0; });
   showScreen('screenReady');
 }
 
@@ -924,10 +1082,14 @@ function saveToLeaderboard() {
   if (!data.alltime) data.alltime = [];
   if (!data.tournament) data.tournament = {};
 
+  // Use total scores for multi-round, current score for single round
+  const useTotal = selectedRounds > 1;
+
   // All-time: save each player's score as an entry
   players.forEach(p => {
-    if (p.score > 0) {
-      data.alltime.push({ name: p.name, avatar: p.avatar, score: p.score, date: Date.now() });
+    const score = useTotal ? (totalScores[p.name] || 0) : p.score;
+    if (score > 0) {
+      data.alltime.push({ name: p.name, avatar: p.avatar, score, date: Date.now() });
     }
   });
   // Keep top 50 all-time
@@ -936,9 +1098,10 @@ function saveToLeaderboard() {
 
   // Tournament: accumulate by player name
   players.forEach(p => {
+    const score = useTotal ? (totalScores[p.name] || 0) : p.score;
     const key = `${p.avatar}_${p.name}`;
     if (!data.tournament[key]) data.tournament[key] = { name: p.name, avatar: p.avatar, total: 0, games: 0 };
-    data.tournament[key].total += p.score;
+    data.tournament[key].total += score;
     data.tournament[key].games++;
   });
 
