@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>מילה בלי מילה</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800;900&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0a0a2e;--bg2:#141452;--primary:#ffcc00;--accent:#ff4081;--green:#00e676;--blue:#448aff;
+--orange:#ff9100;--red:#ff1744;--purple:#d500f9;--white:#fff;--dark:#1a1a3e;
+--toddler-1:#ff6b9d;--toddler-2:#c44ddb;--toddler-3:#ffd93d;--toddler-4:#6bcb77;
+--radius:16px;--shadow:0 8px 32px rgba(0,0,0,.4);
+}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;box-sizing:border-box;font-size:18px;
+font-family:'Rubik',system-ui,sans-serif;background:#0d0d2b;color:#fff}
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;
+background:linear-gradient(135deg,#0d0d2b 0%,#1a0a3e 50%,#0a1a3e 100%)}
+
+/* Screens */
+.screen{display:none;flex-direction:column;align-items:center;justify-content:space-evenly;
+min-height:100vh;width:100%;max-width:480px;margin:0 auto;padding:20px;box-sizing:border-box;
+position:relative;text-align:center;overflow-y:auto;overflow-x:hidden}
+.screen.active{display:flex}
+
+/* Noise overlay */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+opacity:.4}
+
+/* Animated background spots */
+.bg-spots{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.bg-spots .spot{position:absolute;border-radius:50%;filter:blur(80px);opacity:.18;animation:float 8s ease-in-out infinite}
+.bg-spots .spot:nth-child(1){width:320px;height:320px;background:var(--accent);top:-60px;right:-60px;animation-delay:0s}
+.bg-spots .spot:nth-child(2){width:280px;height:280px;background:var(--blue);bottom:-40px;left:-40px;animation-delay:2s}
+.bg-spots .spot:nth-child(3){width:220px;height:220px;background:var(--purple);top:40%;left:50%;animation-delay:4s}
+.bg-spots .spot:nth-child(4){width:180px;height:180px;background:var(--toddler-1);top:60%;right:10%;animation-delay:6s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-20px) scale(1.1)}}
+
+.container{position:relative;z-index:1;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+
+/* All buttons base */
+.btn{min-height:64px;border-radius:16px;font-size:1.2rem;width:100%;cursor:pointer;border:none;font-family:inherit;
+font-weight:700;transition:transform .1s,box-shadow .2s;position:relative;overflow:hidden;
+touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.95)!important}
+.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.2) 0%,transparent 50%);pointer-events:none;border-radius:inherit}
+
+.btn-primary{background:linear-gradient(135deg,#ffdc00,#ff9500);color:#1a1a00;font-size:1.4rem;padding:18px 24px;
+box-shadow:0 6px 24px rgba(255,200,0,.4),0 0 0 0 rgba(255,200,0,.3);
+animation:breathePrimary 3s ease-in-out infinite}
+.btn-primary:hover{transform:scale(1.03);box-shadow:0 10px 36px rgba(255,200,0,.6)}
+@keyframes breathePrimary{0%,100%{box-shadow:0 6px 24px rgba(255,200,0,.4),0 0 0 0 rgba(255,200,0,.3)}50%{box-shadow:0 6px 24px rgba(255,200,0,.4),0 0 0 8px rgba(255,200,0,.1)}}
+
+.btn-action{font-size:1.2rem;padding:14px 24px;box-shadow:var(--shadow)}
+.btn-green{background:linear-gradient(135deg,#00e676,#00c853);color:#003300;box-shadow:0 4px 20px rgba(0,230,118,.3)}
+.btn-red{background:linear-gradient(135deg,#ff1744,#d50000);color:#fff}
+.btn-blue{background:linear-gradient(135deg,#448aff,#2962ff);color:#fff}
+.btn-accent{background:linear-gradient(135deg,#ff4081,#c51162);color:#fff}
+.btn-purple{background:linear-gradient(135deg,#d500f9,#aa00ff);color:#fff}
+.btn-orange{background:linear-gradient(135deg,#ff9100,#ff6d00);color:#fff}
+.btn-small{font-size:1rem;padding:12px 20px;border-radius:14px;min-height:48px}
+
+.btn-toddler{
+  background:linear-gradient(135deg,#ff6b9d,#c44ddb,#ffd93d);
+  background-size:200% 200%;
+  animation:toddlerGradient 3s ease infinite;
+  color:#fff;font-size:1.5rem;
+  box-shadow:0 8px 32px rgba(255,107,157,.5);
+  border:3px solid rgba(255,255,255,.4);
+}
+@keyframes toddlerGradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.btn-toddler:hover{transform:scale(1.05)!important;box-shadow:0 12px 40px rgba(255,107,157,.7)}
+
+.btn-icon{width:80px;height:80px;border-radius:50%;font-size:2.2rem;display:flex;align-items:center;justify-content:center;padding:0;min-height:auto}
+
+/* Sound toggle */
+#soundToggle{position:fixed;top:10px;left:10px;z-index:100;width:44px;height:44px;border-radius:50%;
+background:rgba(255,255,255,.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);
+font-size:1.1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;
+transition:background .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:auto;width:44px}
+#soundToggle:hover{background:rgba(255,255,255,.2)}
+
+/* Title */
+.game-title{font-size:2rem;font-weight:900;background:linear-gradient(135deg,#ffdc00,#ff6b9d,#7b61ff);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+text-shadow:none;margin-bottom:8px;line-height:1.2;text-align:center;
+animation:titleShimmer 4s linear infinite;background-size:200%}
+@keyframes titleShimmer{0%{background-position:0%}100%{background-position:200%}}
+.game-subtitle{font-size:1.1rem;color:rgba(255,255,255,.7);margin-bottom:30px;font-weight:400;text-align:center}
+
+/* Welcome screen overrides */
+#screenWelcome{justify-content:space-evenly;min-height:100vh;padding:24px 16px}
+#screenWelcome .welcome-hero{font-size:7rem;line-height:1;margin:0;
+filter:drop-shadow(0 0 30px rgba(255,204,0,.5));animation:heroFloat 3s ease-in-out infinite}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-10px) rotate(5deg)}}
+#screenWelcome .game-title{font-size:3.5rem;margin-bottom:4px}
+#screenWelcome .game-subtitle{font-size:1.3rem;color:rgba(255,255,255,.85);margin-bottom:0;font-weight:600}
+#screenWelcome .welcome-actions{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
+#screenWelcome .btn-start{height:80px;font-size:1.5rem;width:85%;max-width:360px;border-radius:20px}
+#screenWelcome .btn-leaderboard{height:60px;font-size:1.1rem;width:85%;max-width:360px;border-radius:16px;
+background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.2);color:var(--white);font-family:inherit;font-weight:700;
+cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#screenWelcome .btn-leaderboard:active{transform:scale(.95);background:rgba(255,255,255,.15)}
+#screenWelcome .welcome-version{font-size:0.8rem;color:rgba(255,255,255,.35);text-align:center;padding:4px}
+
+/* Welcome tagline badge */
+.welcome-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,rgba(255,107,157,.2),rgba(196,77,219,.2));
+  border:1px solid rgba(255,107,157,.4);
+  border-radius:50px;padding:6px 16px;font-size:.95rem;font-weight:600;
+  color:rgba(255,255,255,.9);margin-bottom:8px;
+}
+
+/* Cards */
+.card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius);
+padding:20px;width:100%;backdrop-filter:blur(10px)}
+
+/* All inputs */
+input[type="text"],input[type="number"],input[type="email"],input[type="search"]{
+height:56px;font-size:1.2rem;width:100%;border-radius:12px;padding:0 16px;box-sizing:border-box;
+background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.15);color:#fff;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s}
+input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(255,204,0,.15)}
+input::placeholder{color:rgba(255,255,255,.4)}
+
+/* Player setup */
+.player-list{width:100%;flex:1;min-height:0;max-height:35vh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin:12px 0;
+scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
+.player-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.06);border-radius:14px;padding:12px 16px;
+border:1px solid rgba(255,255,255,.08);min-height:70px}
+.player-item .avatar{font-size:2.2rem;min-width:44px;text-align:center}
+.player-item .name{flex:1;font-size:1.3rem;font-weight:600}
+.player-item .remove{background:none;border:none;color:var(--red);font-size:1.3rem;cursor:pointer;padding:8px 12px;
+-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
+.player-input-row{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:10px}
+.player-input-row input{width:100%;height:60px;font-size:1.2rem}
+.player-input-row .btn{min-height:65px;font-size:1.2rem;padding:14px 20px;width:100%}
+
+/* Level select */
+.level-grid{display:flex;flex-direction:column;gap:14px;width:100%;margin:20px 0}
+.level-btn{display:flex;align-items:center;gap:16px;padding:22px 20px;border-radius:var(--radius);border:2px solid rgba(255,255,255,.1);
+background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:100px}
+.level-btn:hover,.level-btn:active{border-color:var(--primary);background:rgba(255,204,0,.08);transform:scale(1.02)}
+.level-btn .icon{font-size:3rem}
+.level-btn .info{text-align:right}
+.level-btn .info h3{font-size:1.4rem;font-weight:700;margin-bottom:2px}
+.level-btn .info p{font-size:1rem;color:rgba(255,255,255,.6);font-weight:400}
+
+/* Toddler level button — special */
+.level-btn-toddler{
+  display:flex;align-items:center;gap:16px;padding:22px 20px;border-radius:var(--radius);min-height:110px;
+  background:linear-gradient(135deg,rgba(255,107,157,.15),rgba(196,77,219,.15),rgba(255,217,61,.1));
+  border:2px solid rgba(255,107,157,.5);
+  cursor:pointer;transition:all .3s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+  position:relative;overflow:hidden;
+}
+.level-btn-toddler::before{
+  content:'✨';position:absolute;top:8px;left:12px;font-size:1.2rem;
+  animation:sparkle 2s ease-in-out infinite;
+}
+.level-btn-toddler::after{
+  content:'🌟';position:absolute;bottom:8px;right:12px;font-size:1rem;
+  animation:sparkle 2s ease-in-out infinite;animation-delay:1s;
+}
+@keyframes sparkle{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+.level-btn-toddler:hover,.level-btn-toddler:active{
+  border-color:rgba(255,107,157,.9);
+  background:linear-gradient(135deg,rgba(255,107,157,.25),rgba(196,77,219,.25),rgba(255,217,61,.2));
+  transform:scale(1.03);
+  box-shadow:0 8px 32px rgba(255,107,157,.3);
+}
+.level-btn-toddler .icon{font-size:3.2rem;animation:toddlerBounce 1.5s ease-in-out infinite}
+@keyframes toddlerBounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.1)}}
+.level-btn-toddler .info{text-align:right}
+.level-btn-toddler .info h3{
+  font-size:1.5rem;font-weight:900;margin-bottom:2px;
+  background:linear-gradient(135deg,#ff6b9d,#ffd93d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.level-btn-toddler .info p{font-size:.95rem;color:rgba(255,255,255,.7);font-weight:400}
+
+/* Timer */
+.timer-ring{position:relative;width:90px;height:90px;margin:0 auto;flex-shrink:0}
+.timer-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.timer-ring .track{fill:none;stroke:rgba(255,255,255,.08);stroke-width:8}
+.timer-ring .progress{fill:none;stroke:var(--primary);stroke-width:8;stroke-linecap:round;
+transition:stroke-dashoffset .3s linear,stroke .3s}
+.timer-ring .time-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+font-size:3.5rem;font-weight:900;text-align:center}
+.timer-ring.urgent .progress{stroke:var(--red)}
+.timer-ring.urgent .time-text{color:var(--red);animation:pulse .5s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+
+/* Word display — normal */
+.word-display{font-size:4rem;font-weight:900;text-align:center;padding:20px;
+margin:12px 0;flex:1;display:flex;align-items:center;justify-content:center;
+text-shadow:0 0 30px rgba(255,204,0,.3);width:100%;word-break:break-word;line-height:1.2}
+
+/* Toddler emoji display — HUGE */
+.word-display.toddler-mode{
+  font-size:9rem;line-height:1;
+  filter:drop-shadow(0 0 40px rgba(255,107,157,.5));
+  animation:toddlerEmoji 2s ease-in-out infinite;
+  flex:1;
+}
+@keyframes toddlerEmoji{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.08) rotate(3deg)}}
+
+/* Toddler rainbow bg */
+.toddler-game-bg{
+  background:linear-gradient(135deg,rgba(255,107,157,.1),rgba(196,77,219,.08),rgba(255,217,61,.08),rgba(107,203,119,.08))!important;
+}
+
+/* Action buttons for gameplay */
+.action-row{display:flex;gap:12px;width:100%;padding:0;flex-shrink:0;margin-top:auto;padding-bottom:8px}
+.action-row .btn-game-action{flex:1;width:48%;height:130px;border-radius:20px;font-weight:800;
+display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:auto}
+.action-row .btn-game-action.btn-green{font-size:2.5rem;background:linear-gradient(135deg,#22c55e,#16a34a);
+box-shadow:0 8px 30px rgba(34,197,94,.4)}
+.action-row .btn-game-action.btn-green .action-label{font-size:1.4rem}
+.action-row .btn-game-action.btn-orange{font-size:2.5rem;background:linear-gradient(135deg,#f97316,#ea580c);
+box-shadow:0 8px 30px rgba(249,115,22,.3)}
+.action-row .btn-game-action.btn-orange .action-label{font-size:1.1rem}
+.skip-counter{font-size:1rem;color:rgba(255,255,255,.6);margin-top:6px;margin-bottom:8px;flex-shrink:0}
+
+/* Score popup */
+.score-popup{position:fixed;pointer-events:none;z-index:200;font-weight:900;
+animation:scoreUp 1.2s ease-out forwards}
+@keyframes scoreUp{0%{opacity:1;transform:translateY(0) scale(1)}60%{opacity:1;transform:translateY(-80px) scale(1.6)}100%{opacity:0;transform:translateY(-150px) scale(1.2)}}
+
+/* Funny message overlay */
+.funny-message-overlay{
+  position:fixed;inset:0;z-index:190;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.funny-message-bubble{
+  background:linear-gradient(135deg,rgba(0,230,118,.9),rgba(0,200,83,.9));
+  border-radius:24px;padding:20px 30px;max-width:280px;text-align:center;
+  animation:bubbleIn 2.5s ease forwards;
+  box-shadow:0 8px 40px rgba(0,230,118,.4);
+  border:2px solid rgba(255,255,255,.3);
+}
+.funny-message-bubble.timeout{
+  background:linear-gradient(135deg,rgba(255,100,0,.9),rgba(255,23,68,.9));
+  box-shadow:0 8px 40px rgba(255,100,0,.4);
+}
+.funny-message-bubble .msg-emoji{font-size:3rem;margin-bottom:8px}
+.funny-message-bubble .msg-text{font-size:1.3rem;font-weight:800;color:#fff;line-height:1.3}
+@keyframes bubbleIn{0%{opacity:0;transform:scale(.5) translateY(30px)}15%{opacity:1;transform:scale(1.1) translateY(-5px)}25%{transform:scale(1) translateY(0)}75%{opacity:1;transform:scale(1) translateY(0)}100%{opacity:0;transform:scale(.8) translateY(-20px)}}
+
+/* Player turn transition */
+.turn-transition{position:fixed;inset:0;z-index:150;display:flex;flex-direction:column;align-items:center;
+justify-content:center;background:linear-gradient(135deg,#cc0066,#7000cc,#0044cc);animation:fadeIn .3s;
+overflow:hidden}
+.turn-transition::before{content:'';position:absolute;inset:0;
+background:radial-gradient(circle at 30% 40%,rgba(255,255,255,.08) 0%,transparent 60%);pointer-events:none}
+.turn-transition .pass-label{font-size:2.5rem;font-weight:900;color:#fff;margin-bottom:12px;
+text-shadow:0 2px 20px rgba(0,0,0,.3);letter-spacing:1px;text-align:center}
+.turn-transition .emoji{font-size:5rem;margin-bottom:12px;animation:bounce 1s ease infinite}
+.turn-transition .label{font-size:1.2rem;color:rgba(255,255,255,.8);margin-bottom:8px;text-align:center}
+.turn-transition .player-name{font-size:2rem;font-weight:900;color:#fff;margin-bottom:16px;
+text-shadow:0 2px 20px rgba(0,0,0,.3);text-align:center}
+.turn-transition .arrow{font-size:4rem;animation:bounce 1s ease infinite}
+.turn-transition .countdown{font-size:2rem;font-weight:bold;color:#fff;margin-top:16px;text-shadow:0 2px 20px rgba(0,0,0,.3);text-align:center}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Leaderboard */
+.leaderboard{width:100%;flex:1;overflow-y:auto;min-height:0}
+.lb-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;margin-bottom:8px;
+background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);min-height:65px;transition:transform .2s}
+.lb-item.gold{background:linear-gradient(135deg,rgba(255,204,0,.2),rgba(255,204,0,.06));border-color:rgba(255,204,0,.4);
+box-shadow:0 4px 16px rgba(255,204,0,.1)}
+.lb-item.silver{background:linear-gradient(135deg,rgba(192,192,192,.15),rgba(192,192,192,.05));border-color:rgba(192,192,192,.3)}
+.lb-item.bronze{background:linear-gradient(135deg,rgba(205,127,50,.15),rgba(205,127,50,.05));border-color:rgba(205,127,50,.3)}
+.lb-item .rank{font-size:1.5rem;min-width:36px;text-align:center;font-weight:800}
+.lb-item .lb-avatar{font-size:1.8rem;min-width:36px;text-align:center}
+.lb-item .lb-name{flex:1;font-weight:600;font-size:1.2rem}
+.lb-item .lb-score{font-size:1.3rem;font-weight:800;color:var(--primary)}
+.lb-item .crown{position:absolute;top:-8px;right:-4px;font-size:1.2rem}
+
+/* Confetti canvas */
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:180}
+
+/* Scoreboard at round end */
+.round-scores{width:100%;display:flex;flex-direction:column;gap:8px;margin:16px 0;overflow-y:auto;max-height:40vh;
+scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
+.round-score-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:14px;
+background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);min-height:70px}
+.round-score-item.gold{background:linear-gradient(135deg,rgba(255,220,0,.15),rgba(255,150,0,.05));border-color:rgba(255,220,0,.4)}
+.round-score-item.silver{background:linear-gradient(135deg,rgba(200,200,200,.12),rgba(150,150,150,.05));border-color:rgba(200,200,200,.3)}
+.round-score-item.bronze{background:linear-gradient(135deg,rgba(205,127,50,.12),rgba(150,80,30,.05));border-color:rgba(205,127,50,.3)}
+.round-score-item .rs-avatar{font-size:1.8rem}
+.round-score-item .rs-name{flex:1;font-weight:600;font-size:1.3rem}
+.round-score-item .rs-score{font-size:1.5rem;font-weight:800;color:var(--primary)}
+.round-score-item .rs-crown{font-size:1.2rem}
+
+/* Tabs */
+.tabs{display:flex;gap:8px;margin-bottom:16px;width:100%}
+.tab{flex:1;padding:12px;border-radius:12px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);
+cursor:pointer;font-family:inherit;font-weight:600;font-size:1rem;color:rgba(255,255,255,.7);
+transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:48px}
+.tab.active{background:rgba(255,204,0,.12);border-color:var(--primary);color:var(--primary)}
+
+/* Misc */
+.spacer{flex:1}
+.mt-12{margin-top:12px}.mt-20{margin-top:20px}.mb-12{margin-bottom:12px}.mb-20{margin-bottom:20px}
+.text-muted{color:rgba(255,255,255,.6);font-size:.9rem}
+.text-center{text-align:center}
+.w-full{width:100%}
+.gap-10{gap:10px}.gap-12{gap:12px}
+.flex-row{display:flex;flex-direction:row;align-items:center}
+.flex-col{display:flex;flex-direction:column;align-items:center}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
+
+/* Ready screen player grid */
+.players-grid{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:20px 0;width:100%}
+.pg-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 16px;
+border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);min-width:80px;transition:all .2s}
+.pg-item:hover{background:rgba(255,255,255,.1)}
+.pg-item .pg-emoji{font-size:2rem}
+.pg-item .pg-name{font-size:.85rem;font-weight:600;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Current player header in game */
+.current-player-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.current-player-header .cph-emoji{font-size:2rem}
+.current-player-header .cph-name{font-size:1.3rem;font-weight:800;color:var(--primary)}
+.current-player-header .cph-score{font-size:1rem;color:rgba(255,255,255,.6);font-weight:600}
+
+/* Score bar */
+.score-bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0;width:100%}
+.sb-item{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:10px;
+background:rgba(255,255,255,.06);font-size:.85rem;position:relative;transition:all .2s}
+.sb-item.active{background:rgba(255,204,0,.15);border:1px solid rgba(255,204,0,.3)}
+.sb-item .sb-emoji{font-size:1.1rem}
+.sb-item .sb-score{font-weight:700;color:var(--primary)}
+.sb-item .sb-crown{font-size:.7rem;position:absolute;top:-6px;right:-2px}
+
+/* Start countdown overlay */
+.start-countdown-overlay{position:fixed;inset:0;z-index:160;display:flex;flex-direction:column;align-items:center;
+justify-content:center;background:linear-gradient(135deg,#1a1052,#2a1060,#0a0a2e);gap:12px}
+.start-countdown-overlay.toddler-countdown{
+  background:linear-gradient(135deg,#2d0040,#400060,#180030);
+}
+.start-countdown-overlay .sco-label{font-size:1.5rem;font-weight:700;color:rgba(255,255,255,.8);text-align:center}
+.start-countdown-overlay .sco-avatar{font-size:4rem;margin-bottom:4px}
+.start-countdown-overlay .sco-name{font-size:2rem;font-weight:900;color:var(--primary);margin-bottom:20px;text-align:center}
+.start-countdown-overlay .sco-number{font-size:8rem;font-weight:900;color:#fff;
+text-shadow:0 0 60px rgba(255,204,0,.4),0 0 120px rgba(255,64,129,.2);line-height:1;text-align:center}
+.start-countdown-overlay .sco-number.sco-go{font-size:5.5rem;
+  background:linear-gradient(135deg,#ff6b9d,#ffd93d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sco-pop{animation:scoPop .7s cubic-bezier(.17,.67,.21,1.2)}
+@keyframes scoPop{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
+
+/* Rounds select */
+.rounds-grid{display:flex;flex-direction:column;gap:14px;width:100%;margin:20px 0}
+.round-btn{height:85px;width:100%;border-radius:var(--radius);border:2px solid rgba(255,255,255,.1);
+background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;
+-webkit-tap-highlight-color:transparent;font-family:inherit;color:#fff;display:flex;flex-direction:column;
+align-items:center;justify-content:center;gap:2px}
+.round-btn:hover,.round-btn:active{border-color:var(--primary);background:rgba(255,204,0,.08);transform:scale(1.02)}
+.round-btn.selected{border-color:var(--primary);background:rgba(255,204,0,.15);box-shadow:0 0 20px rgba(255,204,0,.2)}
+.round-btn .rb-title{font-size:1.3rem;font-weight:700}
+.round-btn .rb-time{font-size:.95rem;color:rgba(255,255,255,.5);font-weight:400}
+
+/* Round indicator */
+.round-indicator{font-size:1rem;color:rgba(255,255,255,.5);font-weight:600;text-align:center;margin-bottom:4px;flex-shrink:0}
+
+/* Grand final */
+.grand-title{font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--accent));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px;text-align:center}
+
+/* Headings */
+h1,h2,h3{text-align:center}
+h1,h2{font-size:2.5rem;margin:0}
+p,small{font-size:1.1rem;text-align:center}
+
+/* Winner celebration */
+.winner-celebration{
+  animation:winnerPulse 1s ease-in-out infinite;
+}
+@keyframes winnerPulse{0%,100%{filter:drop-shadow(0 0 10px rgba(255,204,0,.5))}50%{filter:drop-shadow(0 0 25px rgba(255,204,0,.9))}}
+
+/* Player-specific celebrations */
+.celebration-banner{
+  position:fixed;top:0;left:0;right:0;z-index:201;
+  padding:16px 20px;text-align:center;
+  background:linear-gradient(135deg,var(--green),#00c853);
+  font-size:1.3rem;font-weight:800;color:#003300;
+  animation:bannerSlide .5s ease forwards, bannerFade 1s ease 2s forwards;
+  box-shadow:0 4px 30px rgba(0,230,118,.5);
+}
+@keyframes bannerSlide{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+@keyframes bannerFade{from{opacity:1}to{opacity:0;pointer-events:none}}
+
+@media(max-width:380px){
+.game-title{font-size:1.8rem}
+#screenWelcome .game-title{font-size:2.8rem}
+#screenWelcome .welcome-hero{font-size:5rem}
+#screenWelcome .game-subtitle{font-size:1.15rem}
+.btn-primary{font-size:1.2rem;padding:16px 20px}
+.action-row .btn-game-action{height:110px}
+.action-row .btn-game-action.btn-green{font-size:2rem}
+.action-row .btn-game-action.btn-orange{font-size:1.8rem}
+.timer-ring{width:72px;height:72px}
+.timer-ring .time-text{font-size:2.8rem}
+.current-player-header .cph-name{font-size:1.1rem}
+.word-display{font-size:3rem}
+.word-display.toddler-mode{font-size:7rem}
+.level-btn{min-height:85px}
+.level-btn .icon{font-size:2.4rem}
+.level-btn .info h3{font-size:1.2rem}
+.round-btn{height:75px}
+.round-score-item{min-height:60px}
+.lb-item{min-height:55px}
+}
+@media(max-height:600px){
+.action-row .btn-game-action{height:100px}
+.action-row .btn-game-action.btn-green{font-size:2rem}
+.action-row .btn-game-action.btn-orange{font-size:1.8rem}
+.word-display{font-size:3rem}
+.word-display.toddler-mode{font-size:6rem}
+.timer-ring{width:70px;height:70px}
+.timer-ring .time-text{font-size:2.5rem}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-spots"><div class="spot"></div><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>
+<canvas id="confetti"></canvas>
+<button id="soundToggle" onclick="toggleSound()">🔊</button>
+
+<div class="container">
+
+<!-- WELCOME -->
+<div class="screen active" id="screenWelcome">
+  <div class="welcome-hero">🎭</div>
+  <div>
+    <div class="welcome-badge">🎉 גרסה 8 — עם מצב פעוטות!</div>
+    <h1 class="game-title">מילה בלי מילה</h1>
+    <p class="game-subtitle">תתארו, תנחשו, תצחקו — בלי לגיד את המילה!</p>
+  </div>
+  <div class="welcome-actions">
+    <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">התחילו משחק 🎮</button>
+    <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
+  </div>
+  <div class="welcome-version">v8.0</div>
+</div>
+
+<!-- PLAYER SETUP -->
+<div class="screen" id="screenSetup">
+  <h2 style="font-size:2.5rem;font-weight:800;margin-bottom:4px">מי משחק? 🎭</h2>
+  <p style="font-size:1rem;color:rgba(255,255,255,.7);margin-bottom:12px;line-height:1.6">הוסיפו לפחות 2 שחקנים • שם הוא אופציונלי — דלגו וקבלו כינוי מצחיק!</p>
+  <div class="player-list" id="playerList"></div>
+  <div class="player-input-row">
+    <input type="text" id="playerNameInput" placeholder="שם (או השאירו ריק)" maxlength="20"
+      onkeydown="if(event.key==='Enter')addPlayer()">
+    <button class="btn btn-action btn-green" onclick="addPlayer()" style="min-height:65px;font-size:1.2rem">+ הוסיפו</button>
+  </div>
+  <p style="font-size:1rem;color:rgba(255,255,255,.6);margin-top:12px" id="playerCount">0/8 שחקנים</p>
+  <p id="playerStatus" style="font-size:1rem;margin-top:8px;min-height:1.4em;transition:opacity .3s;color:rgba(255,255,255,.4)">צריך לפחות 2 שחקנים כדי להתחיל</p>
+  <button class="btn btn-primary" id="btnToLevel" onclick="showScreen('screenRounds')" disabled style="width:100%;min-height:80px;font-size:1.4rem;opacity:.4;cursor:not-allowed;filter:grayscale(.5);transition:all .3s;margin-top:auto">המשיכו ▸</button>
+  <button class="btn btn-small btn-action mt-12" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);min-height:60px;font-size:1.1rem" onclick="showScreen('screenWelcome')">חזרה</button>
+</div>
+
+<!-- ROUNDS SELECT -->
+<div class="screen" id="screenRounds">
+  <h2 style="font-size:2.5rem;font-weight:900;margin-bottom:4px">כמה סיבובים? 🔄</h2>
+  <p style="font-size:1.2rem;color:rgba(255,255,255,.6);margin-bottom:12px">כל סיבוב ~ 8 דקות</p>
+  <div class="rounds-grid">
+    <button class="round-btn selected" onclick="selectRounds(1,this)">
+      <span class="rb-title">סיבוב אחד</span><span class="rb-time">(~8 דק')</span>
+    </button>
+    <button class="round-btn" onclick="selectRounds(2,this)">
+      <span class="rb-title">שני סיבובים</span><span class="rb-time">(~16 דק')</span>
+    </button>
+    <button class="round-btn" onclick="selectRounds(3,this)">
+      <span class="rb-title">שלושה סיבובים</span><span class="rb-time">(~24 דק')</span>
+    </button>
+    <button class="round-btn" onclick="selectRounds(4,this)">
+      <span class="rb-title">ארבעה סיבובים</span><span class="rb-time">(~32 דק')</span>
+    </button>
+  </div>
+  <button class="btn btn-small btn-action mt-12" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);min-height:60px;font-size:1.1rem;margin-top:auto" onclick="showScreen('screenSetup')">חזרה</button>
+</div>
+
+<!-- LEVEL SELECT -->
+<div class="screen" id="screenLevel">
+  <h2 style="font-size:2.5rem;font-weight:800;margin-bottom:4px">בחרו רמה 🎯</h2>
+  <p style="font-size:1.2rem;color:rgba(255,255,255,.6);margin-bottom:12px">כמה קשה רוצים?</p>
+  <div class="level-grid">
+    <div class="level-btn-toddler" onclick="selectLevel('toddlers')">
+      <div class="icon">🍼</div>
+      <div class="info"><h3>🍼 פעוטות</h3><p>אמוג'י ענק — לילדים שעוד לא קוראים</p></div>
+    </div>
+    <div class="level-btn" onclick="selectLevel('kids')">
+      <div class="icon">👶</div>
+      <div class="info"><h3>ילדים</h3><p>חיות, אוכל, צבעים, דברים פשוטים</p></div>
+    </div>
+    <div class="level-btn" onclick="selectLevel('family')">
+      <div class="icon">👨‍👩‍👧</div>
+      <div class="info"><h3>משפחה</h3><p>חיים ישראליים, תרבות, מקומות, אוכל</p></div>
+    </div>
+    <div class="level-btn" onclick="selectLevel('pro')">
+      <div class="icon">🔥</div>
+      <div class="info"><h3>פרו</h3><p>מושגים מופשטים, מקצועות, אתגר אמיתי</p></div>
+    </div>
+  </div>
+  <button class="btn btn-small btn-action mt-12" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);min-height:60px;font-size:1.1rem;margin-top:auto" onclick="showScreen('screenRounds')">חזרה</button>
+</div>
+
+<!-- READY -->
+<div class="screen" id="screenReady">
+  <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:8px">מוכנים? 🏁</h2>
+  <p class="text-muted" id="readyLevelLabel"></p>
+  <div id="toddlerModeHint" style="display:none;margin:12px 0;padding:14px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,157,.15),rgba(196,77,219,.1));border:1px solid rgba(255,107,157,.3);font-size:1rem;color:rgba(255,255,255,.85);line-height:1.5">🍼 <strong>מצב פעוטות:</strong> המתאר רואה אמוג'י ענק ומסביר לילדים מה זה — בלי מילה!</div>
+  <div class="players-grid" id="readyPlayers"></div>
+  <p class="text-muted" id="readyDescriberNote"></p>
+  <button class="btn btn-primary mt-20" onclick="startRound()" style="font-size:1.6rem;padding:20px 50px;width:100%;min-height:60px">!התחילו 🚀</button>
+  <button class="btn btn-small btn-action mt-12" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="showScreen('screenLevel')">חזרה</button>
+</div>
+
+<!-- GAME PLAY -->
+<div class="screen" id="screenGame" style="justify-content:flex-start;padding-top:12px;padding-bottom:12px">
+  <div class="round-indicator" id="roundIndicator"></div>
+  <div class="score-bar" id="scoreBar"></div>
+  <div style="display:flex;align-items:center;gap:10px;width:100%;justify-content:center;flex-shrink:0">
+    <div id="currentPlayerHeader" class="current-player-header" style="margin-bottom:0"></div>
+    <div class="timer-ring" id="timerRing">
+      <svg viewBox="0 0 120 120">
+        <circle class="track" cx="60" cy="60" r="52"/>
+        <circle class="progress" id="timerProgress" cx="60" cy="60" r="52"
+          stroke-dasharray="326.73" stroke-dashoffset="0"/>
+      </svg>
+      <div class="time-text" id="timerText">60</div>
+    </div>
+  </div>
+  <div class="word-display" id="wordDisplay"></div>
+  <p class="skip-counter" id="skipCounter"></p>
+  <div class="action-row">
+    <button class="btn btn-game-action btn-green" onclick="wordCorrect()">
+      ✅<br><span class="action-label">נכון!</span>
+    </button>
+    <button class="btn btn-game-action btn-orange" onclick="wordSkip()" id="btnSkip">
+      ⏭️<br><span class="action-label">דלג</span>
+    </button>
+  </div>
+</div>
+
+<!-- PASS PHONE -->
+<div class="screen" id="screenPass"></div>
+
+<!-- ROUND END -->
+<div class="screen" id="screenRoundEnd">
+  <div style="font-size:3rem;margin-bottom:8px" id="roundEndEmoji">🏆</div>
+  <h2 style="font-size:2.5rem;font-weight:900;margin-bottom:4px" id="roundEndTitle">סיום סיבוב!</h2>
+  <p style="font-size:1.2rem;color:rgba(255,255,255,.6);margin-bottom:12px" id="roundEndSubtitle"></p>
+  <div class="round-scores" id="roundScores"></div>
+  <div id="roundEndButtons" style="display:flex;flex-direction:column;gap:10px;margin-top:20px;width:100%"></div>
+</div>
+
+<!-- GRAND FINAL -->
+<div class="screen" id="screenGrandFinal">
+  <div style="font-size:4rem;margin-bottom:8px">🏆🎉🏆</div>
+  <h2 class="grand-title" style="font-size:2.5rem">גמר גדול!</h2>
+  <p style="font-size:1.2rem;color:rgba(255,255,255,.6);margin-bottom:12px" id="grandFinalSubtitle"></p>
+  <div class="round-scores" id="grandFinalScores"></div>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;width:100%">
+    <button class="btn btn-action btn-primary" style="min-height:75px;font-size:1.2rem" onclick="playAgain()">שחקו שוב 🔄</button>
+    <button class="btn btn-action btn-purple" style="min-height:75px;font-size:1.2rem" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
+    <button class="btn btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);min-height:60px;font-size:1.1rem" onclick="backToWelcome()">תפריט ראשי</button>
+  </div>
+</div>
+
+<!-- LEADERBOARD -->
+<div class="screen" id="screenLeaderboard" style="justify-content:flex-start;padding-top:20px;padding-bottom:16px">
+  <h2 style="font-size:2.5rem;font-weight:900;margin-bottom:4px;flex-shrink:0">🏆 טבלת אלופים</h2>
+  <div class="tabs mt-12" id="lbTabs" style="flex-shrink:0">
+    <button class="tab active" onclick="showLbTab('alltime')">כל הזמנים</button>
+    <button class="tab" onclick="showLbTab('tournament')">טורניר</button>
+  </div>
+  <div class="leaderboard" id="leaderboardList"></div>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.6);margin-top:12px" id="lbEmpty" style="display:none">אין תוצאות עדיין — שחקו משחק!</p>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:auto;padding-top:12px;width:100%;flex-shrink:0">
+    <button class="btn btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);min-height:70px;font-size:1.2rem;width:100%" onclick="backToWelcome()">חזרה</button>
+    <button class="btn btn-action btn-red" style="min-height:60px;font-size:1.1rem;width:100%" onclick="confirmResetLb()">🗑️ איפוס</button>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ============ WORD BANK ============
+const WORDS = {
+toddlers: [
+  // Animals
+  {e:'🐶',h:'כלב'},{e:'🐱',h:'חתול'},{e:'🐭',h:'עכבר'},{e:'🐹',h:'אוגר'},{e:'🐰',h:'ארנב'},
+  {e:'🦊',h:'שועל'},{e:'🐻',h:'דוב'},{e:'🐼',h:'פנדה'},{e:'🐨',h:'קואלה'},{e:'🐯',h:'נמר'},
+  {e:'🦁',h:'אריה'},{e:'🐮',h:'פרה'},{e:'🐷',h:'חזיר'},{e:'🐸',h:'צפרדע'},{e:'🐵',h:'קוף'},
+  {e:'🐔',h:'תרנגולת'},{e:'🐧',h:'פינגווין'},{e:'🐦',h:'ציפור'},{e:'🦆',h:'ברווז'},{e:'🦉',h:'ינשוף'},
+  {e:'🦋',h:'פרפר'},{e:'🐛',h:'תולעת'},{e:'🐌',h:'חילזון'},{e:'🐝',h:'דבורה'},{e:'🐢',h:'צב'},
+  {e:'🐍',h:'נחש'},{e:'🐬',h:'דולפין'},{e:'🐳',h:'לוויתן'},{e:'🦈',h:'כריש'},{e:'🐠',h:'דג'},
+  {e:'🐘',h:'פיל'},{e:'🦒',h:'ג\'ירפה'},{e:'🦓',h:'זברה'},{e:'🦏',h:'קרנף'},{e:'🦛',h:'היפופוטם'},
+  // Food
+  {e:'🍎',h:'תפוח'},{e:'🍌',h:'בננה'},{e:'🍕',h:'פיצה'},{e:'🍦',h:'גלידה'},{e:'🎂',h:'עוגה'},
+  {e:'🍕',h:'פיצה'},{e:'🍰',h:'עוגת גבינה'},{e:'🍩',h:'דונאט'},{e:'🍫',h:'שוקולד'},{e:'🍓',h:'תות'},
+  {e:'🥕',h:'גזר'},{e:'🌽',h:'תירס'},{e:'🍉',h:'אבטיח'},{e:'🍇',h:'ענבים'},{e:'🍋',h:'לימון'},
+  // Vehicles
+  {e:'🚗',h:'מכונית'},{e:'🚕',h:'מונית'},{e:'🚌',h:'אוטובוס'},{e:'🚂',h:'רכבת'},{e:'✈️',h:'מטוס'},
+  {e:'🚀',h:'רקטה'},{e:'🚁',h:'מסוק'},{e:'⛵',h:'סירה'},{e:'🚲',h:'אופניים'},{e:'🏎️',h:'מכונית מרוץ'},
+  // Nature
+  {e:'🌞',h:'שמש'},{e:'🌈',h:'קשת'},{e:'⭐',h:'כוכב'},{e:'🌙',h:'ירח'},{e:'☁️',h:'ענן'},
+  {e:'❄️',h:'שלג'},{e:'🌸',h:'פרח'},{e:'🌳',h:'עץ'},{e:'🍀',h:'תלתן'},{e:'🌊',h:'גל'},
+  // Objects / Home
+  {e:'🏠',h:'בית'},{e:'🎈',h:'בלון'},{e:'⚽',h:'כדור'},{e:'🎁',h:'מתנה'},{e:'📱',h:'טלפון'},
+  {e:'🎠',h:'קרוסלה'},{e:'🪀',h:'יויו'},{e:'🧸',h:'דובי'},{e:'🎪',h:'קרקס'},{e:'🛝',h:'מגלשה'},
+  // Body / People
+  {e:'👋',h:'יד'},{e:'👁️',h:'עין'},{e:'👂',h:'אוזן'},{e:'👃',h:'אף'},{e:'👅',h:'לשון'}
+],
+kids: [
+'כלב','חתול','ארנב','פיל','אריה','נמר','ג\'ירפה','קוף','דג','ציפור',
+'פרפר','צב','נחש','עכביש','דבורה','סוס','פרה','תרנגולת','ברווז','דולפין',
+'תפוח','בננה','תות','אבטיח','ענבים','גלידה','שוקולד','עוגה','פיצה','המבורגר',
+'אדום','כחול','ירוק','צהוב','כתום','סגול','ורוד','לבן','שחור','חום',
+'שמש','ירח','כוכב','ענן','גשם','שלג','קשת','רוח','ברק','ים',
+'כדור','בובה','מכונית','רכבת','מטוס','אופניים','מגלשה','נדנדה','בלון','עפיפון',
+'עץ','פרח','דשא','הר','נהר','יער','מדבר','חוף','אי','מערה',
+'בית','חלון','דלת','מיטה','כיסא','שולחן','מנורה','טלוויזיה','מקרר','תנור',
+'ספר','עיפרון','מספריים','דבק','צבעים','מחברת','תיק','מחק','סרגל','גיר',
+'רופא','שוטר','כבאי','מורה','טבח','נהג','ליצן','קוסם','אסטרונאוט','צייר',
+'כובע','נעליים','חולצה','מכנסיים','שמלה','משקפיים','שעון','צעיף','כפפות','מטריה',
+'תוף','גיטרה','חליל','פסנתר','כינור','חצוצרה','מצילתיים','תופים','אורגן','שופר',
+'כדורגל','כדורסל','שחייה','ריצה','קפיצה','גלישה','טיפוס','רכיבה','מחבואים','תופסת',
+'יום הולדת','חנוכה','פורים','פסח','סוכות','שבת','חתונה','גן חיות','קרקס','לונה פארק',
+'שיניים','אף','אוזניים','עיניים','ידיים','רגליים','בטן','ראש','אצבעות','ברכיים'
+],
+family: [
+'פלאפל','חומוס','שווארמה','שקשוקה','בורקס','סביח','ג\'חנון','מלבי','קנאפה','בבא גנוש',
+'תל אביב','ירושלים','חיפה','אילת','ים המלח','כנרת','מצדה','שוק הכרמל','נמל יפו','רמת הגולן',
+'חייל','מילואים','שירות לאומי','קיבוץ','מושב','אוטובוס','מונית שירות','רמזור','כיכר','מעבר חציה',
+'ביסלי','במבה','קרמבו','פסק זמן','שוקו','ארטיק','גרעינים','חמניות','קוטג\'','לבן',
+'ארז','דודו','יוסי בנאי','שלום חנוך','עידן רייכל','נועה קירל','אייל גולן','סטטיק','שירי מימון','עומר אדם',
+'כדורגל','מכבי','הפועל','בית"ר','ליגת העל','אופניים','כושר','יוגה','פילאטיס','ספורט',
+'סופרמרקט','קניון','דואר','בנק','קופת חולים','מספרה','בית מרקחת','חנות','שוק','מכולת',
+'מזגן','מאוורר','דוד שמש','תריס','מרפסת','גינה','חצר','מדרגות','מעלית','חניה',
+'וואטסאפ','טיקטוק','אינסטגרם','נטפליקס','וויז','גוגל','יוטיוב','זום','סלפי','סטורי',
+'פיתה','טחינה','זעתר','סחוג','חריף','מתוק','חמוץ','מלוח','מר','חמוצים',
+'הגדה','סדר','מצה','חרוסת','סופגניה','לביבה','משלוח מנות','תחפושת','מגילה','אפיקומן',
+'גלגל','נר','מטבע','דגל','מפתח','מעטפה','בול','חותמת','מכתב','חבילה',
+'רופא שיניים','עורך דין','מהנדס','אדריכל','רואה חשבון','שף','עיתונאי','צלם','מעצב','יזם',
+'חופשה','טיול','מלון','אוהל','מנגל','פיקניק','ג\'יפ','שמורת טבע','ספארי','צימר',
+'שכן','חבר','משפחה','סבא','סבתא','דוד','דודה','בן דוד','חתן','כלה',
+'ברכה','מחמאה','בדיחה','חידה','שיר','ריקוד','הופעה','סרט','הצגה','תחרות',
+'ראש השנה','יום כיפור','ט\'ו בשבט','יום העצמאות','יום הזיכרון','שבועות','סימחת תורה','ל"ג בעומר','מימונה','יום ירושלים',
+'חוצפה','יאללה','סבבה','אחלה','בלאגן','פרחה','מגניב','חפיף','דווקא','תכלס'
+],
+pro: [
+'דמוקרטיה','קפיטליזם','סוציאליזם','אידיאולוגיה','בירוקרטיה','דיפלומטיה','פוליטיקה','אנרכיה','קואליציה','אופוזיציה',
+'פילוסופיה','פסיכולוגיה','סוציולוגיה','אנתרופולוגיה','כלכלה','משפטים','רפואה','הנדסה','ארכיטקטורה','אסטרונומיה',
+'נוסטלגיה','אמביוולנטיות','אמפתיה','אינטואיציה','סרקזם','אירוניה','פרדוקס','מטאפורה','אנלוגיה','דילמה',
+'אלגוריתם','בינה מלאכותית','מציאות מדומה','בלוקצ\'יין','סטארטאפ','אפליקציה','סייבר','האקר','ענן','מטא-נתונים',
+'גלובליזציה','אורבניזציה','דיגיטליזציה','מודרניזציה','פריוטיזציה','רגולציה','אינפלציה','רצסיה','סטגנציה','גנטריפיקציה',
+'קונספירציה','פרופגנדה','צנזורה','מניפולציה','דמגוגיה','פופוליזם','ניהיליזם','אקזיסטנציאליזם','הומניזם','פמיניזם',
+'אבולוציה','פוטוסינתזה','גרביטציה','אלקטרומגנטיות','תרמודינמיקה','קוונטים','יחסות','גנטיקה','אקולוגיה','ביולוגיה',
+'אימפרוביזציה','קומפוזיציה','כוריאוגרפיה','קינמטוגרפיה','טיפוגרפיה','קליגרפיה','ציור','פיסול','קרמיקה','ארכיטקטורה',
+'אינטרוורט','אקסטרוורט','נרקיסיזם','פרפקציוניזם','אופטימיות','פסימיות','פרנויה','קלאוסטרופוביה','אדרנלין','מדיטציה',
+'פרוטוקול','לוגיסטיקה','סינרגיה','אסטרטגיה','טקטיקה','היררכיה','מריטוקרטיה','אוטונומיה','סובלנות','אותנטיות',
+'רטרוספקטיבה','פרספקטיבה','אינטרוספקציה','רפלקציה','מדיטציה','ויזואליזציה','קונצפטואליזציה','אבסטרקציה','רדוקציה','דדוקציה',
+'מונופול','אוליגרכיה','תאוקרטיה','קלפטוקרטיה','אוטוקרטיה','פלוטוקרטיה','טכנוקרטיה','דמוגרפיה','ביוגרפיה','ביבליוגרפיה',
+'אנטיתזה','סינתזה','קטליזטור','מטמורפוזה','סימביוזה','אוסמוזה','הומאוסטזיס','מטבוליזם','אנבוליזם','קטבוליזם',
+'רנסנס','בארוק','רומנטיקה','ריאליזם','אימפרסיוניזם','סוריאליזם','קוביזם','מינימליזם','פוסט-מודרניזם','אקספרסיוניזם',
+'קריזמה','אמביציה','אינטגריטי','רזיליינס','אסרטיביות','דיסקרטיות','אלגנטיות','אקסטרווגנטיות','מלנכוליה','אופוריה',
+'סינכרוניזציה','אופטימיזציה','סטנדרטיזציה','דמוקרטיזציה','לגיטימציה','לגליזציה','נטרליזציה','הרמוניזציה','אימוניזציה','הומוגניזציה',
+'פרגמטיות','אידיאליזם','רלטיביזם','דטרמיניזם','הדוניזם','אלטרואיזם','אגואיזם','ציניקנות','סטואיציזם','אפיקוראיות',
+'רטוריקה','דיאלקטיקה','סילוגיזם','הרמנויטיקה','סמנטיקה','פרגמטיקה','לינגוויסטיקה','פונטיקה','מורפולוגיה','סינטקס'
+]
+};
+
+// Funny messages on correct guess
+const CORRECT_MESSAGES = [
+  {e:'🔥',t:'מגניב אש!'},
+  {e:'💥',t:'בום! !!נכון'},
+  {e:'🎯',t:'אחד לאחד!'},
+  {e:'🚀',t:'!!שוגר'},
+  {e:'🏆',t:'תשובה מושלמת!'},
+  {e:'⚡',t:'!!ברק'},
+  {e:'🎉',t:'יאללה יאללה!'},
+  {e:'👑',t:'כמו מלך/ה!'},
+  {e:'💎',t:'מדויק לחלוטין!'},
+  {e:'🎪',t:'!תשואות לאולם'},
+  {e:'🦁',t:'!גאור כמו אריה'},
+  {e:'🌟',t:'כוכב אמיתי!'},
+  {e:'🍕',t:'!חם כמו פיצה'},
+  {e:'😱',t:'!לא יאמן'},
+  {e:'🤯',t:'!פוצץ לי את המוח'},
+];
+
+// Timeout messages
+const TIMEOUT_MESSAGES = [
+  {e:'⏰',t:'נגמר הזמן! בפעם הבאה...'},
+  {e:'🐢',t:'קצת יותר מהר בפעם הבאה!'},
+  {e:'😅',t:'קרה! בהצלחה בסיבוב הבא'},
+  {e:'💪',t:'לא נורא — אפשר לנסות שוב!'},
+  {e:'🤷',t:'מה אפשר לעשות... הזמן עף!'},
+  {e:'🎭',t:'הייתה זו הצגה מרגשת!'},
+  {e:'🌙',t:'בפעם הבאה תהיו יותר מהירים!'},
+  {e:'🐌',t:'אנחנו אוהבים אתכם בכל מקרה'},
+  {e:'😂',t:'!הזמן ברח מהר'},
+  {e:'🫶',t:'נסיון טוב! להמשיך ללמוד'},
+];
+
+// ============ AVATARS & NICKNAMES ============
+const AVATARS = ['🦊','🐼','🦁','🐸','🐙','🦄','🐯','🐨','🦋','🐺','🦈','🐻','🦉','🐹','🐲','🦖','🐳','🦜','🐧','🐬'];
+const NICKNAMES = [
+'הפנדה המסתורי','הכריש הנינג\'ה','הקוף הגאון','השועל הערמומי','הדוב הרוקד',
+'הארנב המהיר','הינשוף החכם','הדולפין הצוחק','החתול הסודי','הנמר המעופף',
+'הקסם הסגול','הכוכב הנופל','הענן המתגלגל','הרעם השקט','הברק הוורוד',
+'הפינגווין המגניב','הדרקון הקטן','האריה הביישן','הזברה המשוגעת','הפלמינגו הלוהט'
+];
+
+// ============ STATE ============
+let players = [];
+let level = 'family';
+let describerOrder = [];
+let currentDescriberIdx = 0;
+let currentWord = '';
+let usedWords = new Set();
+let skipsLeft = 3;
+let timeLeft = 60;
+let timerInterval = null;
+let roundScoresMap = {};
+let soundEnabled = true;
+let lbTab = 'alltime';
+let selectedRounds = 1;
+let currentRound = 1;
+let totalScores = {};
+
+// ============ AUDIO ============
+let audioCtx = null;
+function getAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playNote(freq, type, gain, duration, delay=0) {
+  if (!soundEnabled) return;
+  const ctx = getAudio();
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.frequency.value = freq; o.type = type;
+  const t = ctx.currentTime + delay;
+  g.gain.setValueAtTime(gain, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + duration);
+  o.start(t); o.stop(t + duration);
+}
+
+function playTick() {
+  playNote(800,'sine',0.08,0.05);
+}
+function playUrgentBeep() {
+  playNote(1200,'square',0.15,0.12);
+}
+function playCorrect() {
+  // Ascending chord + sparkle
+  [523,659,784,1047].forEach((f,i) => playNote(f,'triangle',0.14,0.25,i*0.08));
+  setTimeout(() => { playNote(2093,'sine',0.08,0.1); }, 300);
+}
+function playBuzzer() {
+  // Descending wail
+  if (!soundEnabled) return;
+  const ctx = getAudio();
+  const o = ctx.createOscillator(); const g = ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.frequency.setValueAtTime(400, ctx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.8);
+  o.type = 'sawtooth';
+  g.gain.setValueAtTime(0.25, ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+  o.start(); o.stop(ctx.currentTime + 0.8);
+}
+function playCountdownTick() {
+  playNote(600,'sine',0.2,0.15);
+}
+function playGoSound() {
+  [440,554,659,880,1108].forEach((f,i) => playNote(f,'triangle',0.22,0.35,i*0.07));
+}
+function playFanfare() {
+  if (!soundEnabled) return;
+  const melody = [523,659,784,659,784,1047];
+  melody.forEach((f,i) => playNote(f,'triangle',0.18,0.3,i*0.18));
+  // Harmony
+  const harmony = [330,415,494,415,494,659];
+  harmony.forEach((f,i) => playNote(f,'triangle',0.1,0.3,i*0.18));
+}
+function playToddlerWin() {
+  // Cute ascending playful sound
+  [523,698,880,1047,1319].forEach((f,i) => playNote(f,'sine',0.2,0.2,i*0.1));
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  document.getElementById('soundToggle').textContent = soundEnabled ? '🔊' : '🔇';
+}
+
+// ============ SCREEN NAV ============
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function backToWelcome() { showScreen('screenWelcome'); }
+
+// ============ PLAYER SETUP ============
+let usedAvatarIdx = 0;
+let usedNicknameIdx = 0;
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+let shuffledAvatars = shuffleArray(AVATARS);
+let shuffledNicknames = shuffleArray(NICKNAMES);
+
+function addPlayer() {
+  if (players.length >= 8) return;
+  const input = document.getElementById('playerNameInput');
+  let name = input.value.trim();
+  const avatar = shuffledAvatars[usedAvatarIdx % shuffledAvatars.length];
+  usedAvatarIdx++;
+  if (!name) {
+    name = shuffledNicknames[usedNicknameIdx % shuffledNicknames.length];
+    usedNicknameIdx++;
+  }
+  players.push({ name, avatar, score: 0 });
+  input.value = '';
+  input.focus();
+  renderPlayerList();
+}
+
+function removePlayer(i) {
+  players.splice(i, 1);
+  renderPlayerList();
+}
+
+function renderPlayerList() {
+  const list = document.getElementById('playerList');
+  list.innerHTML = players.map((p, i) => `
+    <div class="player-item">
+      <div class="avatar">${p.avatar}</div>
+      <div class="name">${p.name}</div>
+      <button class="remove" onclick="removePlayer(${i})">✕</button>
+    </div>
+  `).join('');
+  document.getElementById('playerCount').textContent = `${players.length}/8 שחקנים`;
+  const btn = document.getElementById('btnToLevel');
+  const status = document.getElementById('playerStatus');
+  const enough = players.length >= 2;
+  btn.disabled = !enough;
+  btn.style.opacity = enough ? '1' : '.4';
+  btn.style.cursor = enough ? 'pointer' : 'not-allowed';
+  btn.style.filter = enough ? 'none' : 'grayscale(.5)';
+  if (players.length === 0) {
+    status.textContent = 'צריך לפחות 2 שחקנים כדי להתחיל';
+    status.style.color = 'rgba(255,255,255,.4)';
+  } else if (players.length === 1) {
+    status.textContent = 'עוד אחד ואפשר להתחיל! 🤞';
+    status.style.color = 'rgba(255,255,255,.5)';
+  } else if (players.length === 2) {
+    status.textContent = 'מוכנים! אפשר להוסיף עוד או להתחיל 🎉';
+    status.style.color = 'var(--green)';
+  } else if (players.length < 8) {
+    status.textContent = `${players.length} שחקנים — יאללה! 🔥`;
+    status.style.color = 'var(--primary)';
+  } else {
+    status.textContent = 'מקסימום שחקנים! אפשר להתחיל 💪';
+    status.style.color = 'var(--primary)';
+  }
+}
+
+// ============ ROUNDS SELECT ============
+function selectRounds(n, btn) {
+  selectedRounds = n;
+  document.querySelectorAll('.round-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  setTimeout(() => showScreen('screenLevel'), 500);
+}
+
+// ============ LEVEL SELECT ============
+function selectLevel(lv) {
+  level = lv;
+  currentRound = 1;
+  totalScores = {};
+  players.forEach(p => { totalScores[p.name] = 0; });
+  prepareRound();
+  showScreen('screenReady');
+}
+
+// ============ PREPARE ROUND ============
+function prepareRound() {
+  players.forEach(p => p.score = 0);
+  roundScoresMap = {};
+
+  if (players.length <= 4) {
+    describerOrder = players.map((_, i) => i);
+  } else {
+    const indices = players.map((_, i) => i);
+    const shuffled = shuffleArray(indices);
+    describerOrder = shuffled.slice(0, 4);
+  }
+  describerOrder = shuffleArray(describerOrder);
+  currentDescriberIdx = 0;
+  usedWords.clear();
+
+  const labels = { toddlers:'🍼 פעוטות', kids: '👶 ילדים', family: '👨‍👩‍👧 משפחה', pro: '🔥 פרו' };
+  let readyLabel = `רמה: ${labels[level]}`;
+  if (selectedRounds > 1) readyLabel += ` • סיבוב ${currentRound} מתוך ${selectedRounds}`;
+  document.getElementById('readyLevelLabel').textContent = readyLabel;
+
+  // Show/hide toddler hint
+  const hint = document.getElementById('toddlerModeHint');
+  hint.style.display = level === 'toddlers' ? '' : 'none';
+
+  const grid = document.getElementById('readyPlayers');
+  grid.innerHTML = players.map((p, i) => {
+    const isDescriber = describerOrder.includes(i);
+    return `<div class="pg-item" style="${isDescriber ? 'border-color:var(--primary)' : ''}">
+      <div class="pg-emoji">${p.avatar}</div>
+      <div class="pg-name">${p.name}</div>
+      ${isDescriber ? '<div style="font-size:.65rem;color:var(--primary)">מתאר</div>' : '<div style="font-size:.65rem;color:rgba(255,255,255,.4)">מנחש</div>'}
+    </div>`;
+  }).join('');
+
+  if (players.length > 4) {
+    document.getElementById('readyDescriberNote').textContent = `${describerOrder.length} שחקנים מתארים, השאר מנחשים`;
+  } else {
+    document.getElementById('readyDescriberNote').textContent = 'כולם מתארים לפי התור';
+  }
+}
+
+// ============ START ROUND ============
+function startRound() { showTurnTransition(); }
+
+// ============ TURN TRANSITION ============
+function showTurnTransition() {
+  const pIdx = describerOrder[currentDescriberIdx];
+  const p = players[pIdx];
+  const isToddler = level === 'toddlers';
+
+  const screen = document.getElementById('screenPass');
+  screen.innerHTML = `
+    <div class="turn-transition" style="position:relative;inset:auto;flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:0;padding:20px;${isToddler?'background:linear-gradient(135deg,#5a0080,#8000cc,#3300aa)':''}">
+      <div class="pass-label">📱 תעבירו את הטלפון!</div>
+      <div class="label">עכשיו התור של</div>
+      <div class="emoji">${p.avatar}</div>
+      <div class="player-name">${p.name}</div>
+      ${isToddler ? '<div style="margin-bottom:8px;font-size:1rem;color:rgba(255,255,255,.8);background:rgba(255,107,157,.2);border-radius:12px;padding:8px 16px">🍼 מצב פעוטות</div>' : ''}
+      <div class="arrow">👇</div>
+      <div class="countdown" id="passCountdown">5</div>
+      <button class="btn ${isToddler?'btn-toddler':'btn-primary'} mt-20" id="passSkipBtn" onclick="startTurn()" style="opacity:.3;pointer-events:none;font-size:1.4rem;padding:20px 50px">!יאללה</button>
+    </div>
+  `;
+  showScreen('screenPass');
+
+  let countdown = 5;
+  const cd = document.getElementById('passCountdown');
+  const btn = document.getElementById('passSkipBtn');
+  const passTimer = setInterval(() => {
+    countdown--;
+    if (cd) cd.textContent = countdown;
+    if (countdown <= 0) {
+      clearInterval(passTimer);
+      if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
+      if (cd) cd.textContent = '!יאללה';
+    }
+  }, 1000);
+}
+
+// ============ START TURN ============
+function startTurn() { showStartCountdown(); }
+
+function beginTurnAfterCountdown() {
+  skipsLeft = 3;
+  timeLeft = 60;
+  const gameScreen = document.getElementById('screenGame');
+  if (level === 'toddlers') {
+    gameScreen.classList.add('toddler-game-bg');
+  } else {
+    gameScreen.classList.remove('toddler-game-bg');
+  }
+  showScreen('screenGame');
+
+  const ri = document.getElementById('roundIndicator');
+  if (selectedRounds > 1) {
+    ri.textContent = `סיבוב ${currentRound} מתוך ${selectedRounds}`;
+    ri.style.display = '';
+  } else {
+    ri.style.display = 'none';
+  }
+  renderScoreBar();
+  renderCurrentPlayer();
+  nextWord();
+  updateTimer();
+  updateSkipCounter();
+  startTimer();
+}
+
+function showStartCountdown() {
+  const pIdx = describerOrder[currentDescriberIdx];
+  const p = players[pIdx];
+  const isToddler = level === 'toddlers';
+
+  const overlay = document.createElement('div');
+  overlay.className = 'start-countdown-overlay' + (isToddler ? ' toddler-countdown' : '');
+  overlay.innerHTML = `
+    <div class="sco-label">התור של</div>
+    <div class="sco-avatar">${p.avatar}</div>
+    <div class="sco-name" style="${isToddler?'background:linear-gradient(135deg,#ff6b9d,#ffd93d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;':''}">${p.name}</div>
+    <div class="sco-number" id="scoNumber"></div>
+  `;
+  document.body.appendChild(overlay);
+
+  const numEl = overlay.querySelector('#scoNumber');
+  const sequence = ['3', '2', '1', isToddler ? '🍼 GO!' : 'GO!'];
+  let step = 0;
+
+  function showNext() {
+    if (step >= sequence.length) {
+      overlay.remove();
+      beginTurnAfterCountdown();
+      return;
+    }
+    const val = sequence[step];
+    numEl.textContent = val;
+    numEl.style.animation = 'none';
+    numEl.offsetHeight;
+    numEl.className = 'sco-number sco-pop';
+
+    if (val.includes('GO!')) {
+      isToddler ? playToddlerWin() : playGoSound();
+      numEl.classList.add('sco-go');
+      step++;
+      setTimeout(showNext, 600);
+    } else {
+      playCountdownTick();
+      step++;
+      setTimeout(showNext, 1000);
+    }
+  }
+  showNext();
+}
+
+function renderScoreBar() {
+  const bar = document.getElementById('scoreBar');
+  const maxScore = Math.max(...players.map(p => p.score), 0);
+  bar.innerHTML = players.map((p, i) => {
+    const isActive = i === describerOrder[currentDescriberIdx];
+    const isCrown = p.score > 0 && p.score === maxScore;
+    return `<div class="sb-item ${isActive ? 'active' : ''}">
+      ${isCrown ? '<span class="sb-crown">👑</span>' : ''}
+      <span class="sb-emoji">${p.avatar}</span>
+      <span class="sb-score">${p.score}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderCurrentPlayer() {
+  const pIdx = describerOrder[currentDescriberIdx];
+  const p = players[pIdx];
+  document.getElementById('currentPlayerHeader').innerHTML = `
+    <span class="cph-emoji">${p.avatar}</span>
+    <span class="cph-name">${p.name}</span>
+    <span class="cph-score">${p.score} נקודות</span>
+  `;
+}
+
+function nextWord() {
+  const isToddler = level === 'toddlers';
+  const bank = WORDS[level];
+  let item;
+  let attempts = 0;
+
+  if (isToddler) {
+    let key;
+    do {
+      item = bank[Math.floor(Math.random() * bank.length)];
+      key = item.e;
+      attempts++;
+      if (attempts > bank.length) { usedWords.clear(); }
+    } while (usedWords.has(key));
+    usedWords.add(key);
+    currentWord = item.h;
+
+    const wd = document.getElementById('wordDisplay');
+    wd.className = 'word-display toddler-mode';
+    wd.textContent = item.e;
+  } else {
+    do {
+      item = bank[Math.floor(Math.random() * bank.length)];
+      attempts++;
+      if (attempts > bank.length) { usedWords.clear(); }
+    } while (usedWords.has(item));
+    usedWords.add(item);
+    currentWord = item;
+
+    const wd = document.getElementById('wordDisplay');
+    wd.className = 'word-display';
+    wd.textContent = item;
+  }
+
+  // Animate word in
+  const wd = document.getElementById('wordDisplay');
+  wd.style.animation = 'none';
+  wd.offsetHeight;
+  wd.style.animation = 'fadeIn .3s';
+}
+
+function updateTimer() {
+  const text = document.getElementById('timerText');
+  const progress = document.getElementById('timerProgress');
+  const ring = document.getElementById('timerRing');
+  text.textContent = timeLeft;
+  const circumference = 2 * Math.PI * 52;
+  const offset = circumference * (1 - timeLeft / 60);
+  progress.style.strokeDashoffset = offset;
+  if (timeLeft <= 10) {
+    ring.classList.add('urgent');
+    // Color ring toddler-pink if in toddler mode
+    if (level === 'toddlers') {
+      progress.style.stroke = '#ff6b9d';
+    }
+  } else {
+    ring.classList.remove('urgent');
+    progress.style.stroke = level === 'toddlers' ? '#ff6b9d' : 'var(--primary)';
+  }
+}
+
+function updateSkipCounter() {
+  document.getElementById('skipCounter').textContent = `${skipsLeft} דילוגים נותרו`;
+  const skipBtn = document.getElementById('btnSkip');
+  skipBtn.disabled = skipsLeft <= 0;
+  skipBtn.style.opacity = skipsLeft <= 0 ? '.4' : '1';
+  skipBtn.style.pointerEvents = skipsLeft <= 0 ? 'none' : 'auto';
+}
+
+function startTimer() {
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+    if (timeLeft <= 5 && timeLeft > 0) playUrgentBeep();
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      playBuzzer();
+      showTimeoutMessage();
+      setTimeout(() => endTurn(), 2600);
+    }
+  }, 1000);
+}
+
+// ============ GAME ACTIONS ============
+function wordCorrect() {
+  const pIdx = describerOrder[currentDescriberIdx];
+  players[pIdx].score++;
+  level === 'toddlers' ? playToddlerWin() : playCorrect();
+  showScorePopup();
+  showFunnyMessage(false);
+  renderScoreBar();
+  renderCurrentPlayer();
+  nextWord();
+}
+
+function wordSkip() {
+  if (skipsLeft <= 0) return;
+  skipsLeft--;
+  updateSkipCounter();
+  nextWord();
+}
+
+function showScorePopup() {
+  const popup = document.createElement('div');
+  popup.className = 'score-popup';
+  const color = level === 'toddlers' ? '#ff6b9d' : 'var(--green)';
+  popup.style.cssText = `color:${color};font-size:${level==='toddlers'?'3.5rem':'2.5rem'};left:50%;top:40%;transform:translateX(-50%)`;
+  popup.textContent = level === 'toddlers' ? '🌟+1' : '+1';
+  document.body.appendChild(popup);
+  setTimeout(() => popup.remove(), 1200);
+}
+
+function showFunnyMessage(isTimeout) {
+  // 40% chance to show a message on correct, always on timeout
+  if (!isTimeout && Math.random() > 0.4) return;
+  const msgs = isTimeout ? TIMEOUT_MESSAGES : CORRECT_MESSAGES;
+  const msg = msgs[Math.floor(Math.random() * msgs.length)];
+
+  const overlay = document.createElement('div');
+  overlay.className = 'funny-message-overlay';
+  overlay.innerHTML = `
+    <div class="funny-message-bubble${isTimeout?' timeout':''}">
+      <div class="msg-emoji">${msg.e}</div>
+      <div class="msg-text">${msg.t}</div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  setTimeout(() => overlay.remove(), 2500);
+}
+
+function showTimeoutMessage() {
+  showFunnyMessage(true);
+}
+
+// ============ END TURN ============
+function endTurn() {
+  clearInterval(timerInterval);
+  // Remove any lingering funny message overlays
+  document.querySelectorAll('.funny-message-overlay').forEach(el => el.remove());
+  currentDescriberIdx++;
+  if (currentDescriberIdx >= describerOrder.length) {
+    endRound();
+  } else {
+    showTurnTransition();
+  }
+}
+
+// ============ END ROUND ============
+function endRound() {
+  level === 'toddlers' ? playToddlerWin() : playFanfare();
+  launchConfetti();
+
+  players.forEach(p => {
+    totalScores[p.name] = (totalScores[p.name] || 0) + p.score;
+  });
+
+  const sorted = [...players].sort((a, b) => b.score - a.score);
+  const maxScore = sorted[0]?.score || 0;
+
+  const container = document.getElementById('roundScores');
+  container.innerHTML = sorted.map((p, i) => {
+    const medal = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+    const crown = p.score === maxScore && p.score > 0 ? '👑' : '';
+    const winnerClass = i === 0 && p.score > 0 ? 'winner-celebration' : '';
+    return `<div class="round-score-item ${medal}">
+      <span class="rs-avatar ${winnerClass}">${p.avatar}</span>
+      <span class="rs-name">${p.name} ${crown}</span>
+      <span class="rs-score">${p.score}</span>
+    </div>`;
+  }).join('');
+
+  const title = document.getElementById('roundEndTitle');
+  const subtitle = document.getElementById('roundEndSubtitle');
+  const btns = document.getElementById('roundEndButtons');
+  const emoji = document.getElementById('roundEndEmoji');
+
+  // Player-specific celebration for winner
+  if (sorted[0]?.score > 0) {
+    showCelebrationBanner(sorted[0]);
+  }
+
+  if (currentRound < selectedRounds) {
+    title.textContent = `סיום סיבוב ${currentRound}!`;
+    subtitle.textContent = `נותרו עוד ${selectedRounds - currentRound} סיבובים`;
+    emoji.textContent = '🎊';
+    btns.innerHTML = `
+      <button class="btn btn-action btn-primary" style="min-height:75px;font-size:1.2rem;width:100%" onclick="startNextRound()">סיבוב הבא ▸</button>
+      <button class="btn btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);min-height:60px;font-size:1.1rem;width:100%" onclick="backToWelcome()">עזיבה</button>
+    `;
+  } else {
+    if (selectedRounds > 1) {
+      saveToLeaderboard();
+      showScreen('screenRoundEnd');
+      setTimeout(() => showGrandFinal(), 2500);
+      return;
+    }
+    title.textContent = 'סיום סיבוב!';
+    subtitle.textContent = '';
+    emoji.textContent = level === 'toddlers' ? '🍼🎉' : '🏆';
+    btns.innerHTML = `
+      <button class="btn btn-action btn-primary" style="min-height:75px;font-size:1.2rem;width:100%" onclick="playAgain()">שחקו שוב 🔄</button>
+      <button class="btn btn-action btn-purple" style="min-height:75px;font-size:1.2rem;width:100%" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
+      <button class="btn btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);min-height:60px;font-size:1.1rem;width:100%" onclick="backToWelcome()">תפריט ראשי</button>
+    `;
+    saveToLeaderboard();
+  }
+
+  showScreen('screenRoundEnd');
+}
+
+function showCelebrationBanner(player) {
+  const existing = document.querySelector('.celebration-banner');
+  if (existing) existing.remove();
+  const banner = document.createElement('div');
+  banner.className = 'celebration-banner';
+  banner.textContent = `${player.avatar} ${player.name} מוביל/ה! 🔥`;
+  document.body.appendChild(banner);
+  setTimeout(() => banner.remove(), 3500);
+}
+
+function startNextRound() {
+  currentRound++;
+  prepareRound();
+  showScreen('screenReady');
+}
+
+function showGrandFinal() {
+  level === 'toddlers' ? playToddlerWin() : playFanfare();
+  launchConfetti();
+
+  const sortedPlayers = [...players].sort((a, b) => (totalScores[b.name] || 0) - (totalScores[a.name] || 0));
+  const maxTotal = totalScores[sortedPlayers[0]?.name] || 0;
+
+  document.getElementById('grandFinalSubtitle').textContent = `${selectedRounds} סיבובים הושלמו!`;
+
+  const container = document.getElementById('grandFinalScores');
+  container.innerHTML = sortedPlayers.map((p, i) => {
+    const t = totalScores[p.name] || 0;
+    const medal = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+    const crown = t === maxTotal && t > 0 ? '👑' : '';
+    const winnerClass = i === 0 && t > 0 ? 'winner-celebration' : '';
+    return `<div class="round-score-item ${medal}">
+      <span class="rs-avatar ${winnerClass}">${p.avatar}</span>
+      <span class="rs-name">${p.name} ${crown}</span>
+      <span class="rs-score">${t}</span>
+    </div>`;
+  }).join('');
+
+  showScreen('screenGrandFinal');
+}
+
+function playAgain() {
+  prepareRound();
+  currentRound = 1;
+  totalScores = {};
+  players.forEach(p => { totalScores[p.name] = 0; });
+  showScreen('screenReady');
+}
+
+// ============ LEADERBOARD (localStorage) ============
+function getLeaderboardData() {
+  try { return JSON.parse(localStorage.getItem('mila-beli-mila-lb') || '{}'); }
+  catch { return {}; }
+}
+function saveLeaderboardData(data) {
+  localStorage.setItem('mila-beli-mila-lb', JSON.stringify(data));
+}
+
+function saveToLeaderboard() {
+  const data = getLeaderboardData();
+  if (!data.alltime) data.alltime = [];
+  if (!data.tournament) data.tournament = {};
+
+  const useTotal = selectedRounds > 1;
+
+  players.forEach(p => {
+    const score = useTotal ? (totalScores[p.name] || 0) : p.score;
+    if (score > 0) {
+      data.alltime.push({ name: p.name, avatar: p.avatar, score, date: Date.now() });
+    }
+  });
+  data.alltime.sort((a, b) => b.score - a.score);
+  data.alltime = data.alltime.slice(0, 50);
+
+  players.forEach(p => {
+    const score = useTotal ? (totalScores[p.name] || 0) : p.score;
+    const key = `${p.avatar}_${p.name}`;
+    if (!data.tournament[key]) data.tournament[key] = { name: p.name, avatar: p.avatar, total: 0, games: 0 };
+    data.tournament[key].total += score;
+    data.tournament[key].games++;
+  });
+
+  saveLeaderboardData(data);
+}
+
+function showLeaderboard() {
+  lbTab = 'alltime';
+  renderLeaderboard();
+  showScreen('screenLeaderboard');
+  document.querySelectorAll('#lbTabs .tab').forEach((t, i) => {
+    t.classList.toggle('active', i === 0);
+  });
+}
+
+function showLbTab(tab) {
+  lbTab = tab;
+  document.querySelectorAll('#lbTabs .tab').forEach(t => {
+    t.classList.toggle('active', (tab === 'alltime' && t.textContent.includes('כל')) || (tab === 'tournament' && t.textContent.includes('טורניר')));
+  });
+  renderLeaderboard();
+}
+
+function renderLeaderboard() {
+  const data = getLeaderboardData();
+  const list = document.getElementById('leaderboardList');
+  const empty = document.getElementById('lbEmpty');
+
+  if (lbTab === 'alltime') {
+    const entries = data.alltime || [];
+    if (entries.length === 0) { list.innerHTML = ''; empty.style.display = ''; return; }
+    empty.style.display = 'none';
+    list.innerHTML = entries.slice(0, 20).map((e, i) => {
+      const cls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+      const rank = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`;
+      return `<div class="lb-item ${cls}">
+        <span class="rank">${rank}</span>
+        <span class="lb-avatar">${e.avatar}</span>
+        <span class="lb-name">${e.name}</span>
+        <span class="lb-score">${e.score}</span>
+      </div>`;
+    }).join('');
+  } else {
+    const t = data.tournament || {};
+    const entries = Object.values(t).sort((a, b) => b.total - a.total);
+    if (entries.length === 0) { list.innerHTML = ''; empty.style.display = ''; return; }
+    empty.style.display = 'none';
+    list.innerHTML = entries.slice(0, 20).map((e, i) => {
+      const cls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+      const rank = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`;
+      return `<div class="lb-item ${cls}">
+        <span class="rank">${rank}</span>
+        <span class="lb-avatar">${e.avatar}</span>
+        <span class="lb-name">${e.name}</span>
+        <span class="lb-score">${e.total} (${e.games} משחקים)</span>
+      </div>`;
+    }).join('');
+  }
+}
+
+function confirmResetLb() {
+  if (confirm('בטוחים שרוצים לאפס את טבלת האלופים? אי אפשר לשחזר!')) {
+    localStorage.removeItem('mila-beli-mila-lb');
+    renderLeaderboard();
+  }
+}
+
+// ============ CONFETTI ============
+function launchConfetti() {
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const isToddler = level === 'toddlers';
+  const particles = [];
+  const colors = isToddler
+    ? ['#ff6b9d','#c44ddb','#ffd93d','#6bcb77','#ff9a9e','#ffeaa7','#a29bfe']
+    : ['#ffcc00','#ff4081','#00e676','#448aff','#d500f9','#ff9100','#ff1744'];
+
+  // Toddler mode: add emoji particles too
+  const emojis = isToddler ? ['🌟','💖','🍬','🌈','⭐','🎉','✨'] : [];
+
+  for (let i = 0; i < (isToddler ? 200 : 150); i++) {
+    const isEmoji = isToddler && Math.random() > 0.7;
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      w: isEmoji ? 20 : Math.random() * 12 + 5,
+      h: isEmoji ? 20 : Math.random() * 7 + 3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      emoji: isEmoji ? emojis[Math.floor(Math.random() * emojis.length)] : null,
+      vx: (Math.random() - 0.5) * 5,
+      vy: Math.random() * 3 + 2,
+      rotation: Math.random() * 360,
+      rotationSpeed: (Math.random() - 0.5) * 12,
+      opacity: 1
+    });
+  }
+
+  let frame = 0;
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    particles.forEach(p => {
+      if (p.opacity <= 0) return;
+      alive = true;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.05;
+      p.rotation += p.rotationSpeed;
+      if (frame > 60) p.opacity -= 0.008;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.globalAlpha = Math.max(0, p.opacity);
+      if (p.emoji) {
+        ctx.rotate(p.rotation * Math.PI / 180);
+        ctx.font = '18px serif';
+        ctx.fillText(p.emoji, -9, 9);
+      } else {
+        ctx.rotate(p.rotation * Math.PI / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      }
+      ctx.restore();
+    });
+    frame++;
+    if (alive && frame < 350) requestAnimationFrame(animate);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  animate();
+}
+
+// ============ INIT ============
+document.addEventListener('touchstart', () => {
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}, { once: true });
+document.addEventListener('click', () => {
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}, { once: true });
+
+const observer = new MutationObserver(() => {
+  if (document.getElementById('screenSetup').classList.contains('active')) {
+    setTimeout(() => document.getElementById('playerNameInput')?.focus(), 100);
+  }
+});
+observer.observe(document.getElementById('screenSetup'), { attributes: true, attributeFilter: ['class'] });
+</script>
+</body>
+</html>
