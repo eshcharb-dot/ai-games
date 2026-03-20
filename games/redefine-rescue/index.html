@@ -3,30 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <title>הצלת הפרות — Redefine Rescue</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Segoe UI',Tahoma,sans-serif;touch-action:none;user-select:none;-webkit-user-select:none;}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Nunito','Segoe UI',Tahoma,sans-serif;touch-action:none;user-select:none;-webkit-user-select:none;}
 canvas{display:block;width:100%;height:100%;}
 #ui-overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10;}
-#title-screen{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3d0f 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;color:#fff;text-align:center;padding:20px;}
-#title-screen h1{font-size:clamp(28px,6vw,56px);margin-bottom:10px;text-shadow:0 0 20px #00ff6655;}
-#title-screen h2{font-size:clamp(16px,3vw,28px);color:#4ade80;margin-bottom:30px;}
-#title-screen .instructions{font-size:clamp(13px,2.2vw,18px);color:#ccc;max-width:500px;line-height:1.8;margin-bottom:30px;direction:rtl;}
-#start-btn{pointer-events:all;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;padding:18px 50px;font-size:clamp(18px,3vw,26px);border-radius:50px;cursor:pointer;font-weight:bold;box-shadow:0 0 30px #22c55e55;transition:transform .15s,box-shadow .15s;}
+
+/* ---- KEYFRAMES ---- */
+@keyframes bgShift{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+@keyframes titleIn{0%{transform:scale(0.3);opacity:0;filter:blur(8px);}60%{transform:scale(1.08);opacity:1;filter:blur(0);}100%{transform:scale(1);}}
+@keyframes titleGlow{0%,100%{text-shadow:0 0 20px #00ff6644,0 0 60px #00ff6622;}50%{text-shadow:0 0 30px #00ff6688,0 0 80px #00ff6644;}}
+@keyframes cowBob{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-14px) rotate(3deg);}}
+@keyframes pulse{0%,100%{box-shadow:0 0 30px #22c55e55;}50%{box-shadow:0 0 50px #22c55eaa,0 0 80px #22c55e44;}}
+@keyframes fadeSlideUp{0%{opacity:0;transform:translateY(40px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes victoryGlow{0%,100%{text-shadow:0 0 20px #4ade8066,0 0 50px #22c55e33;}50%{text-shadow:0 0 40px #4ade80aa,0 0 90px #22c55e66;}}
+
+/* ---- TITLE SCREEN ---- */
+#title-screen{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3d0f,#1a2e1a);background-size:300% 300%;animation:bgShift 12s ease infinite;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;color:#fff;text-align:center;padding:20px;overflow:hidden;}
+#title-screen::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-conic-gradient(rgba(255,255,255,0.015) 0% 25%,transparent 0% 50%) 0 0/4px 4px;pointer-events:none;z-index:1;}
+#title-screen>*{position:relative;z-index:2;}
+#title-screen h1{font-family:'Bangers','Nunito',sans-serif;font-size:clamp(32px,7vw,64px);margin-bottom:10px;animation:titleIn 0.8s ease-out both,titleGlow 3s ease-in-out infinite;letter-spacing:2px;}
+#title-screen h2{font-family:'Bangers','Nunito',sans-serif;font-size:clamp(18px,3.5vw,32px);color:#4ade80;margin-bottom:10px;animation:titleIn 0.8s 0.15s ease-out both;}
+.cow-deco{font-size:clamp(40px,8vw,72px);animation:cowBob 2.5s ease-in-out infinite;margin-bottom:20px;}
+#title-screen .instructions{font-size:clamp(13px,2.2vw,18px);color:#ccc;max-width:500px;line-height:1.8;margin-bottom:30px;direction:rtl;animation:fadeSlideUp 0.6s 0.3s ease-out both;}
+#start-btn{pointer-events:all;font-family:'Bangers','Nunito',sans-serif;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;padding:18px 50px;font-size:clamp(18px,3vw,26px);border-radius:50px;cursor:pointer;font-weight:bold;animation:pulse 2s ease-in-out infinite;transition:transform .15s,box-shadow .15s;letter-spacing:1px;}
 #start-btn:hover{transform:scale(1.08);box-shadow:0 0 50px #22c55e88;}
-#game-over-screen,#victory-screen{position:absolute;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:100;color:#fff;text-align:center;padding:20px;}
-#game-over-screen{background:rgba(20,0,0,0.92);}
-#victory-screen{background:rgba(0,20,5,0.92);}
-.end-title{font-size:clamp(28px,6vw,52px);margin-bottom:15px;}
-.end-stats{font-size:clamp(14px,2.5vw,22px);line-height:2;margin-bottom:25px;}
-.replay-btn{pointer-events:all;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;padding:16px 44px;font-size:clamp(16px,3vw,24px);border-radius:50px;cursor:pointer;font-weight:bold;box-shadow:0 0 30px #22c55e55;}
+#start-btn:active{transform:scale(0.95);box-shadow:0 0 20px #22c55e44;}
+
+/* ---- END SCREENS ---- */
+#game-over-screen,#victory-screen{position:absolute;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:100;color:#fff;text-align:center;padding:20px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
+#game-over-screen{background:rgba(20,0,0,0.88);}
+#victory-screen{background:rgba(0,20,5,0.88);}
+.end-title{font-family:'Bangers','Nunito',sans-serif;font-size:clamp(32px,7vw,58px);margin-bottom:20px;animation:fadeSlideUp 0.5s ease-out both;letter-spacing:2px;}
+#victory-screen .end-title{animation:fadeSlideUp 0.5s ease-out both,victoryGlow 2.5s ease-in-out 0.5s infinite;}
+.end-stats{font-size:clamp(14px,2.5vw,22px);line-height:2;margin-bottom:25px;animation:fadeSlideUp 0.5s 0.15s ease-out both;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:18px 28px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
+.replay-btn{pointer-events:all;font-family:'Bangers','Nunito',sans-serif;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;padding:16px 44px;font-size:clamp(16px,3vw,24px);border-radius:50px;cursor:pointer;font-weight:bold;box-shadow:0 0 30px #22c55e55;animation:fadeSlideUp 0.5s 0.3s ease-out both;transition:transform .15s,box-shadow .15s;letter-spacing:1px;}
+.replay-btn:hover{transform:scale(1.08);box-shadow:0 0 50px #22c55e88;}
+.replay-btn:active{transform:scale(0.95);box-shadow:0 0 20px #22c55e44;}
 </style>
 </head>
 <body>
 <div id="title-screen">
 <h1>הצלת הפרות</h1>
 <h2>Redefine Rescue</h2>
+<div class="cow-deco" aria-hidden="true">🐄</div>
 <div class="instructions">
 שלטו במדפסת התלת-ממד של Redefine Meat<br>
 ירו סטייקים צמחיים בקצבים כדי להציל את הפרות!<br><br>
@@ -110,11 +134,13 @@ const POWERUP_INTERVAL = 12000;
 // ---- Game State ----
 let W, H, scale;
 let gameState = 'title'; // title, playing, waveBreak, gameOver, victory
-let score, wave, lives, converted, steaks, butchers, cows, particles, powerups, textBubbles;
-let player, keys, mouse, shakeMag, shakeTimer;
-let activePowerups; // {turbo:0, spread:0, wagyu:0}
-let waveTimer, waveSpawnQueue, waveBreakTimer;
-let lastPowerupTime, lastShootTime, shootCooldown;
+let score=0, wave=0, lives=MAX_LIVES, converted=0;
+let steaks=[], butchers=[], cows=[], particles=[], powerups=[], textBubbles=[];
+let player={x:0,y:0,w:50,h:35,angle:0,nozzleGlow:0};
+let keys={}, mouse, shakeMag=0, shakeTimer=0;
+let activePowerups={turbo:0, spread:0, wagyu:0};
+let waveTimer=0, waveSpawnQueue=[], waveBreakTimer=0;
+let lastPowerupTime=0, lastShootTime=0, shootCooldown=280;
 let confettiParts = [];
 let touchJoystick = {active:false, sx:0, sy:0, cx:0, cy:0, dx:0, dy:0};
 let touchShoot = {active:false, tx:0, ty:0};
@@ -647,6 +673,22 @@ function updateTextBubbles(){
 function draw(){
   ctx.save();
 
+  // Only draw background on title/end screens
+  if(gameState === 'title' || gameState === 'gameOver' || gameState === 'victory'){
+    drawBackground();
+    if(gameState === 'victory'){
+      for(const c of confettiParts){
+        c.y += c.vy; c.x += c.vx; c.rot += c.rv;
+        if(c.y > H+20) c.y = -10;
+        ctx.save(); ctx.translate(c.x, c.y); ctx.rotate(c.rot);
+        ctx.fillStyle = c.color; ctx.fillRect(-c.size/2, -c.size/4, c.size, c.size/2);
+        ctx.restore();
+      }
+    }
+    ctx.restore();
+    return;
+  }
+
   // screen shake
   if(shakeTimer > 0){
     ctx.translate(rand(-shakeMag,shakeMag), rand(-shakeMag,shakeMag));
@@ -804,7 +846,7 @@ function draw(){
   for(const t of textBubbles){
     const a = Math.min(1, t.life / (t.maxLife * 0.3));
     ctx.globalAlpha = a;
-    ctx.font = `bold ${t.size}px 'Segoe UI', sans-serif`;
+    ctx.font = `bold ${t.size}px Nunito, sans-serif`;
     ctx.textAlign = 'center';
     ctx.fillStyle = t.color;
     ctx.strokeStyle = '#000';
@@ -819,7 +861,7 @@ function draw(){
     ctx.save();
     const a = Math.min(1, waveBreakTimer / 500);
     ctx.globalAlpha = a;
-    ctx.font = `bold ${48*scale}px 'Segoe UI', sans-serif`;
+    ctx.font = `bold ${48*scale}px Nunito, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#fff';
@@ -828,7 +870,7 @@ function draw(){
     const txt = `!${wave} גל`;
     ctx.strokeText(txt, W/2, H/2);
     ctx.fillText(txt, W/2, H/2);
-    ctx.font = `${24*scale}px 'Segoe UI', sans-serif`;
+    ctx.font = `${24*scale}px Nunito, sans-serif`;
     ctx.fillStyle = '#4ade80';
     ctx.strokeText('...מתכוננים', W/2, H/2 + 50*scale);
     ctx.fillText('...מתכוננים', W/2, H/2 + 50*scale);
@@ -853,32 +895,40 @@ function draw(){
     ctx.globalAlpha = 1;
   }
 
-  // ---- Victory confetti ----
-  if(gameState === 'victory'){
-    for(const c of confettiParts){
-      c.y += c.vy;
-      c.x += c.vx;
-      c.rot += c.rv;
-      if(c.y > H+20) c.y = -10;
-      ctx.save();
-      ctx.translate(c.x, c.y);
-      ctx.rotate(c.rot);
-      ctx.fillStyle = c.color;
-      ctx.fillRect(-c.size/2, -c.size/4, c.size, c.size/2);
-      ctx.restore();
-    }
-  }
-
   ctx.restore();
 }
 
 function drawBackground(){
-  // Grass gradient
+  // Rich grass gradient with more color stops
   const grd = ctx.createLinearGradient(0,0,0,H);
   grd.addColorStop(0, '#2d5016');
-  grd.addColorStop(1, '#1a3a0a');
+  grd.addColorStop(0.3, '#2a5a14');
+  grd.addColorStop(0.5, '#1f4a0e');
+  grd.addColorStop(0.7, '#1a4210');
+  grd.addColorStop(1, '#12300a');
   ctx.fillStyle = grd;
   ctx.fillRect(0, 0, W, H);
+
+  // Darker patches (parallax-style depth)
+  ctx.fillStyle = 'rgba(0,0,0,0.06)';
+  for(let i=0; i<30; i++){
+    const px = ((i * 131 + 47) % W);
+    const py = ((i * 89 + 17) % H);
+    const pr = 30 + (i % 20) * 2;
+    ctx.beginPath();
+    ctx.arc(px, py, pr, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  // Lighter spots (subtle highlights)
+  ctx.fillStyle = 'rgba(74,222,128,0.035)';
+  for(let i=0; i<50; i++){
+    const lx = ((i * 97 + 13) % W);
+    const ly = ((i * 73 + 29) % H);
+    ctx.beginPath();
+    ctx.arc(lx, ly, 18 + i % 15, 0, Math.PI*2);
+    ctx.fill();
+  }
 
   // Subtle grass texture dots
   ctx.fillStyle = 'rgba(74,222,128,0.04)';
@@ -890,8 +940,9 @@ function drawBackground(){
     ctx.fill();
   }
 
-  // Grid lines for techy feel
-  ctx.strokeStyle = 'rgba(74,222,128,0.05)';
+  // Grid lines with subtle pulse
+  const gridPulse = 0.04 + Math.sin(gameTime * 0.001) * 0.015;
+  ctx.strokeStyle = `rgba(74,222,128,${gridPulse})`;
   ctx.lineWidth = 1;
   const gridSize = 80 * scale;
   for(let x=0; x<W; x+=gridSize){
@@ -900,6 +951,13 @@ function drawBackground(){
   for(let y=0; y<H; y+=gridSize){
     ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
   }
+
+  // Vignette effect (darker edges)
+  const vg = ctx.createRadialGradient(W/2, H/2, Math.min(W,H)*0.25, W/2, H/2, Math.max(W,H)*0.75);
+  vg.addColorStop(0, 'rgba(0,0,0,0)');
+  vg.addColorStop(1, 'rgba(0,0,0,0.35)');
+  ctx.fillStyle = vg;
+  ctx.fillRect(0, 0, W, H);
 }
 
 function drawPrinter(){
@@ -952,7 +1010,7 @@ function drawPrinter(){
 
   // "RM" text on printer
   ctx.fillStyle = '#4ade80';
-  ctx.font = `bold ${11*scale}px 'Segoe UI', sans-serif`;
+  ctx.font = `bold ${11*scale}px Nunito, sans-serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('RM', 0, -ph*0.1);
@@ -985,8 +1043,19 @@ function roundRect(ctx, x, y, w, h, r){
 function drawHUD(){
   const fs = Math.max(16, 20*scale);
   const pad = 15;
+  const hudFont = 'Nunito, sans-serif';
 
-  ctx.font = `bold ${fs}px 'Segoe UI', sans-serif`;
+  // Semi-transparent backdrop behind right HUD
+  ctx.fillStyle = 'rgba(0,0,0,0.3)';
+  roundRect(ctx, W - pad - 130*scale, pad - 6, 130*scale + 6, fs*2 + 22, 10*scale);
+  ctx.fill();
+
+  // Semi-transparent backdrop behind left HUD
+  ctx.fillStyle = 'rgba(0,0,0,0.3)';
+  roundRect(ctx, pad - 6, pad - 6, 130*scale + 6, fs*2 + 22, 10*scale);
+  ctx.fill();
+
+  ctx.font = `bold ${fs}px ${hudFont}`;
   ctx.textBaseline = 'top';
 
   // Top-left: Score & Wave (RTL so we put on right side visually)
@@ -1024,8 +1093,14 @@ function drawHUD(){
   if(puTexts.length > 0){
     ctx.textAlign = 'center';
     ctx.fillStyle = '#fff';
-    ctx.font = `bold ${fs*0.85}px 'Segoe UI', sans-serif`;
+    ctx.font = `bold ${fs*0.85}px ${hudFont}`;
+    // Backdrop for power-up indicators
     const puStr = puTexts.join('  ');
+    const puW = ctx.measureText(puStr).width + 24;
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+    roundRect(ctx, W/2 - puW/2, pad - 6, puW, fs + 12, 8*scale);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
     ctx.strokeText(puStr, W/2, pad);
     ctx.fillText(puStr, W/2, pad);
   }
@@ -1037,7 +1112,8 @@ function gameLoop(ts){
   const dt = Math.min((ts - lastTime) / 16.667, 3); // normalize to ~60fps
   lastTime = ts;
 
-  resize(); // keep responsive
+  // responsive resize only when dimensions actually change
+  if(canvas.width !== window.innerWidth || canvas.height !== window.innerHeight) resize();
 
   if(gameState === 'playing' || gameState === 'waveBreak'){
     update(dt);
