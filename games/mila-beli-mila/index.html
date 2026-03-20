@@ -211,6 +211,17 @@ background:rgba(255,255,255,.06);font-size:.8rem;position:relative}
 .sb-item .sb-score{font-weight:700;color:var(--primary)}
 .sb-item .sb-crown{font-size:.7rem;position:absolute;top:-6px;right:-2px}
 
+/* Start countdown overlay */
+.start-countdown-overlay{position:fixed;inset:0;z-index:160;display:flex;flex-direction:column;align-items:center;
+justify-content:center;background:linear-gradient(135deg,#1a1052,#2a1060,#0a0a2e);gap:12px}
+.start-countdown-overlay .sco-label{font-size:clamp(1.4rem,4vw,1.8rem);font-weight:700;color:rgba(255,255,255,.7)}
+.start-countdown-overlay .sco-avatar{font-size:4rem;margin-bottom:4px}
+.start-countdown-overlay .sco-name{font-size:clamp(1.6rem,5vw,2.2rem);font-weight:900;color:var(--primary);margin-bottom:20px}
+.start-countdown-overlay .sco-number{font-size:clamp(8rem,25vw,14rem);font-weight:900;color:#fff;
+text-shadow:0 0 60px rgba(255,204,0,.4),0 0 120px rgba(255,64,129,.2);line-height:1}
+.sco-pop{animation:scoPop .7s cubic-bezier(.17,.67,.21,1.2)}
+@keyframes scoPop{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
+
 @media(max-width:380px){
 .game-title{font-size:2.2rem}
 .btn-primary{font-size:1.2rem;padding:16px 32px}
@@ -481,6 +492,28 @@ function playBuzzer() {
   g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
   o.start(); o.stop(ctx.currentTime + 0.5);
 }
+function playCountdownTick() {
+  if (!soundEnabled) return;
+  const ctx = getAudio(); const o = ctx.createOscillator(); const g = ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.frequency.value = 600; o.type = 'sine';
+  g.gain.setValueAtTime(0.18, ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+  o.start(); o.stop(ctx.currentTime + 0.15);
+}
+function playGoSound() {
+  if (!soundEnabled) return;
+  const ctx = getAudio();
+  [440, 554, 659, 880].forEach((f, i) => {
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = f; o.type = 'triangle';
+    const t = ctx.currentTime + i * 0.06;
+    g.gain.setValueAtTime(0.2, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+    o.start(t); o.stop(t + 0.3);
+  });
+}
 function playFanfare() {
   if (!soundEnabled) return;
   const ctx = getAudio();
@@ -665,6 +698,10 @@ function showTurnTransition() {
 
 // ============ START TURN ============
 function startTurn() {
+  showStartCountdown();
+}
+
+function beginTurnAfterCountdown() {
   skipsLeft = 3;
   timeLeft = 60;
   showScreen('screenGame');
@@ -674,6 +711,56 @@ function startTurn() {
   updateTimer();
   updateSkipCounter();
   startTimer();
+}
+
+function showStartCountdown() {
+  const pIdx = describerOrder[currentDescriberIdx];
+  const p = players[pIdx];
+
+  // Create overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'start-countdown-overlay';
+  overlay.innerHTML = `
+    <div class="sco-label">תור של</div>
+    <div class="sco-avatar">${p.avatar}</div>
+    <div class="sco-name">${p.name}</div>
+    <div class="sco-number" id="scoNumber"></div>
+  `;
+  document.body.appendChild(overlay);
+
+  const numEl = overlay.querySelector('#scoNumber');
+  const sequence = ['3', '2', '1', '!גו'];
+  let step = 0;
+
+  function showNext() {
+    if (step >= sequence.length) {
+      // Done — remove overlay and start gameplay
+      overlay.remove();
+      beginTurnAfterCountdown();
+      return;
+    }
+    const val = sequence[step];
+    numEl.textContent = val;
+    numEl.className = 'sco-number sco-pop';
+    // Reset animation
+    numEl.style.animation = 'none';
+    numEl.offsetHeight;
+    numEl.style.animation = '';
+    numEl.className = 'sco-number sco-pop';
+
+    if (val === '!גו') {
+      playGoSound();
+      numEl.style.color = 'var(--primary)';
+      step++;
+      setTimeout(showNext, 500);
+    } else {
+      playCountdownTick();
+      step++;
+      setTimeout(showNext, 1000);
+    }
+  }
+
+  showNext();
 }
 
 function renderScoreBar() {
@@ -746,7 +833,6 @@ function startTimer() {
     timeLeft--;
     updateTimer();
     if (timeLeft <= 5 && timeLeft > 0) playUrgentBeep();
-    else if (timeLeft > 0) playTick();
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
       playBuzzer();
