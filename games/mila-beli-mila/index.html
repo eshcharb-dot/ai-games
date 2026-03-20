@@ -73,6 +73,19 @@ transition:background .2s;-webkit-tap-highlight-color:transparent;touch-action:m
 -webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;margin-bottom:8px;line-height:1.2;text-align:center}
 .game-subtitle{font-size:1.1rem;color:rgba(255,255,255,.7);margin-bottom:30px;font-weight:400;text-align:center}
 
+/* Welcome screen overrides */
+#screenWelcome{justify-content:space-evenly;min-height:100vh;padding:24px 16px}
+#screenWelcome .welcome-hero{font-size:5rem;line-height:1;margin:0}
+#screenWelcome .game-title{font-size:3.5rem;margin-bottom:4px}
+#screenWelcome .game-subtitle{font-size:1.3rem;color:rgba(255,255,255,.85);margin-bottom:0;font-weight:600}
+#screenWelcome .welcome-actions{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
+#screenWelcome .btn-start{height:80px;font-size:1.4rem;width:85%;max-width:360px;border-radius:20px}
+#screenWelcome .btn-leaderboard{height:60px;font-size:1.1rem;width:85%;max-width:360px;border-radius:16px;
+background:transparent;border:2px solid rgba(255,255,255,.25);color:var(--white);font-family:inherit;font-weight:700;
+cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#screenWelcome .btn-leaderboard:active{transform:scale(.95);background:rgba(255,255,255,.08)}
+#screenWelcome .welcome-version{font-size:0.8rem;color:rgba(255,255,255,.35);text-align:center;padding:4px}
+
 /* Cards */
 .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);
 padding:20px;width:100%;backdrop-filter:blur(8px)}
@@ -255,6 +268,9 @@ h2{font-size:2rem}
 
 @media(max-width:380px){
 .game-title{font-size:1.8rem}
+#screenWelcome .game-title{font-size:2.8rem}
+#screenWelcome .welcome-hero{font-size:4rem}
+#screenWelcome .game-subtitle{font-size:1.15rem}
 .btn-primary{font-size:1.2rem;padding:16px 20px}
 .action-row .btn-game-action{height:100px;font-size:2.2rem}
 .action-row .btn-game-action .action-label{font-size:1rem}
@@ -281,11 +297,16 @@ h2{font-size:2rem}
 
 <!-- WELCOME -->
 <div class="screen active" id="screenWelcome">
-  <div style="font-size:4rem;margin-bottom:8px">🎤</div>
-  <h1 class="game-title">מילה בלי מילה</h1>
-  <p class="game-subtitle">תתארו, תנחשו, תצחקו — בלי לגיד את המילה!</p>
-  <button class="btn btn-primary mt-20" onclick="showScreen('screenSetup')" style="width:100%;max-width:320px;min-height:56px">התחילו משחק 🎮</button>
-  <button class="btn btn-action btn-purple mt-12" onclick="showLeaderboard()" style="width:100%;max-width:320px;min-height:48px;font-size:1rem;padding:14px 24px">🏆 טבלת אלופים</button>
+  <div class="welcome-hero">🎭</div>
+  <div>
+    <h1 class="game-title">מילה בלי מילה</h1>
+    <p class="game-subtitle">תתארו, תנחשו, תצחקו — בלי לגיד את המילה!</p>
+  </div>
+  <div class="welcome-actions">
+    <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">התחילו משחק 🎮</button>
+    <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
+  </div>
+  <div class="welcome-version">v6.0</div>
 </div>
 
 <!-- PLAYER SETUP -->
