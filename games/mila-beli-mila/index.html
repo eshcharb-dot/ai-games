@@ -248,7 +248,7 @@ background:rgba(255,255,255,.06);font-size:.8rem;position:relative}
 <!-- PLAYER SETUP -->
 <div class="screen" id="screenSetup">
   <h2 style="font-size:1.6rem;font-weight:800;margin-bottom:4px">מי משחק? 🎭</h2>
-  <p class="text-muted mb-12">2-8 שחקנים • שם זה אופציונלי</p>
+  <p class="text-muted mb-12" style="line-height:1.6">הוסיפו לפחות 2 שחקנים • שם הוא אופציונלי — דלגו וקבלו כינוי מצחיק!</p>
   <div class="player-list" id="playerList"></div>
   <div class="player-input-row">
     <input type="text" id="playerNameInput" placeholder="שם (או השאירו ריק)" maxlength="20"
@@ -256,7 +256,8 @@ background:rgba(255,255,255,.06);font-size:.8rem;position:relative}
     <button class="btn btn-action btn-green btn-small" onclick="addPlayer()">+ הוסיפו</button>
   </div>
   <p class="text-muted mt-12" id="playerCount">0/8 שחקנים</p>
-  <button class="btn btn-primary mt-20" id="btnToLevel" onclick="showScreen('screenLevel')" disabled style="width:100%;min-height:52px">המשיכו ▸</button>
+  <p id="playerStatus" style="font-size:.85rem;margin-top:8px;min-height:1.4em;transition:opacity .3s;color:rgba(255,255,255,.4)">צריך לפחות 2 שחקנים כדי להתחיל</p>
+  <button class="btn btn-primary mt-20" id="btnToLevel" onclick="showScreen('screenLevel')" disabled style="width:100%;min-height:52px;opacity:.4;cursor:not-allowed;filter:grayscale(.5);transition:all .3s">המשיכו ▸</button>
   <button class="btn btn-small btn-action mt-12" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="showScreen('screenWelcome')">חזרה</button>
 </div>
 
@@ -550,7 +551,29 @@ function renderPlayerList() {
     </div>
   `).join('');
   document.getElementById('playerCount').textContent = `${players.length}/8 שחקנים`;
-  document.getElementById('btnToLevel').disabled = players.length < 2;
+  const btn = document.getElementById('btnToLevel');
+  const status = document.getElementById('playerStatus');
+  const enough = players.length >= 2;
+  btn.disabled = !enough;
+  btn.style.opacity = enough ? '1' : '.4';
+  btn.style.cursor = enough ? 'pointer' : 'not-allowed';
+  btn.style.filter = enough ? 'none' : 'grayscale(.5)';
+  if (players.length === 0) {
+    status.textContent = 'צריך לפחות 2 שחקנים כדי להתחיל';
+    status.style.color = 'rgba(255,255,255,.4)';
+  } else if (players.length === 1) {
+    status.textContent = 'עוד אחד ואפשר להתחיל! 🤞';
+    status.style.color = 'rgba(255,255,255,.5)';
+  } else if (players.length === 2) {
+    status.textContent = 'מוכנים! אפשר להוסיף עוד או להתחיל 🎉';
+    status.style.color = 'var(--green)';
+  } else if (players.length < 8) {
+    status.textContent = `${players.length} שחקנים — יאללה! 🔥`;
+    status.style.color = 'var(--primary)';
+  } else {
+    status.textContent = 'מקסימום שחקנים! אפשר להתחיל 💪';
+    status.style.color = 'var(--primary)';
+  }
 }
 
 // ============ LEVEL SELECT ============
