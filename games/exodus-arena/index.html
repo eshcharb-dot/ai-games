@@ -1245,6 +1245,8 @@ canvas.addEventListener('touchmove', e => { e.preventDefault(); }, { passive: fa
 // ═══════════════════════════════════════
 const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 let mobileMode = isTouchDevice;
+const MOBILE_SPEED_MULTIPLIER = 0.55;
+let mSpd = mobileMode ? MOBILE_SPEED_MULTIPLIER : 1;
 let touchMove = { x: 0, y: 0 };
 let touchAim = { active: false };
 let joystickTouchId = null;
@@ -1270,6 +1272,7 @@ const mobileInstrHTML =
 
 function setMobileMode(on) {
   mobileMode = on;
+  mSpd = on ? MOBILE_SPEED_MULTIPLIER : 1;
   const touchCtrl = document.getElementById('touch-controls');
   const weaponHint = document.getElementById('weapon-hint');
   const titleToggle = document.getElementById('title-mobile-toggle');
@@ -1483,7 +1486,7 @@ function playerAttack() {
   for (let i=0;i<w.projCount;i++) {
     const ao=w.projCount>1?(i-(w.projCount-1)/2)*w.spread:0;
     const a=baseA+ao, pdx=Math.cos(a), pdy=Math.sin(a);
-    projectiles.push({x:player.x+pdx*28,y:player.y+pdy*28,vx:pdx*pSpeed,vy:pdy*pSpeed,r:pSize,color:pColor,dmg:eDmg,owner:'player',life:60,range:eRange,pierce:w.pierce,hitList:[],weaponType:selectedWeapon,angle:a});
+    projectiles.push({x:player.x+pdx*28,y:player.y+pdy*28,vx:pdx*pSpeed*mSpd,vy:pdy*pSpeed*mSpd,r:pSize,color:pColor,dmg:eDmg,owner:'player',life:60/mSpd,range:eRange,pierce:w.pierce,hitList:[],weaponType:selectedWeapon,angle:a});
   }
 
   // Weapon-specific muzzle effects
@@ -1614,7 +1617,7 @@ function update(dt) {
   if(Math.abs(touchMove.x)>0.15||Math.abs(touchMove.y)>0.15){mx+=touchMove.x;my+=touchMove.y;}
   if(mx||my){
     const len=Math.sqrt(mx*mx+my*my);mx/=len;my/=len;
-    const spd=player.speed*f;
+    const spd=player.speed*f*mSpd;
     // Try both axes combined first, then each axis separately (slide along walls)
     const nx=player.x+mx*spd, ny=player.y+my*spd;
     let moved=false;
@@ -1717,7 +1720,7 @@ function update(dt) {
       if(nearD < a.atkRange && Date.now()-a.lastAtk>a.atkSpeed){
         a.lastAtk=Date.now();
         const adx=nearE.x-a.x,ady=nearE.y-a.y,adist=Math.sqrt(adx*adx+ady*ady)||1;
-        projectiles.push({x:a.x+(adx/adist)*22,y:a.y+(ady/adist)*22,vx:(adx/adist)*6.5,vy:(ady/adist)*6.5,r:4,color:a.def.projColor,dmg:a.atkDmg,owner:'ally',life:50});
+        projectiles.push({x:a.x+(adx/adist)*22,y:a.y+(ady/adist)*22,vx:(adx/adist)*6.5*mSpd,vy:(ady/adist)*6.5*mSpd,r:4,color:a.def.projColor,dmg:a.atkDmg,owner:'ally',life:50/mSpd});
       }
       if(nearD > a.atkRange*0.6){
         // Approach from flank angle instead of straight line
@@ -1727,14 +1730,14 @@ function update(dt) {
         const goalY = nearE.y + Math.sin(a.flankAngle)*flankDist*0.4;
         const gdx = goalX-a.x, gdy = goalY-a.y;
         const gd = Math.sqrt(gdx*gdx+gdy*gdy)||1;
-        const nx2=a.x+(gdx/gd)*a.speed*f, ny2=a.y+(gdy/gd)*a.speed*f;
+        const nx2=a.x+(gdx/gd)*a.speed*f*mSpd, ny2=a.y+(gdy/gd)*a.speed*f*mSpd;
         if(allyCanMove(nx2,ny2)){a.x=nx2;a.y=ny2;moved=true;}
       } else if(nearD < a.atkRange*0.4){
         // Too close, back off slightly while strafing
         const adx=a.x-nearE.x,ady=a.y-nearE.y,adist=Math.sqrt(adx*adx+ady*ady)||1;
         const strafeX = -ady/adist, strafeY = adx/adist;
-        const nx2=a.x+(adx/adist)*a.speed*0.3*f+strafeX*a.speed*0.5*f;
-        const ny2=a.y+(ady/adist)*a.speed*0.3*f+strafeY*a.speed*0.5*f;
+        const nx2=a.x+(adx/adist)*a.speed*0.3*f*mSpd+strafeX*a.speed*0.5*f*mSpd;
+        const ny2=a.y+(ady/adist)*a.speed*0.3*f*mSpd+strafeY*a.speed*0.5*f*mSpd;
         if(allyCanMove(nx2,ny2)){a.x=nx2;a.y=ny2;moved=true;}
       }
     } else {
@@ -1743,7 +1746,7 @@ function update(dt) {
       const dpDist=Math.sqrt(dpx*dpx+dpy*dpy);
       if(dpDist>60){
         // Move toward formation position
-        const nx2=a.x+(dpx/dpDist)*a.speed*f, ny2=a.y+(dpy/dpDist)*a.speed*f;
+        const nx2=a.x+(dpx/dpDist)*a.speed*f*mSpd, ny2=a.y+(dpy/dpDist)*a.speed*f*mSpd;
         if(allyCanMove(nx2,ny2)){a.x=nx2;a.y=ny2;moved=true;}
       } else {
         // Patrol around formation offset
@@ -1752,7 +1755,7 @@ function update(dt) {
         const goalX = targetPosX + Math.cos(a.patrolAngle)*patrolR;
         const goalY = targetPosY + Math.sin(a.patrolAngle)*patrolR;
         const pdx=goalX-a.x, pdy=goalY-a.y, pd=Math.sqrt(pdx*pdx+pdy*pdy)||1;
-        const nx2=a.x+(pdx/pd)*a.speed*0.6*f, ny2=a.y+(pdy/pd)*a.speed*0.6*f;
+        const nx2=a.x+(pdx/pd)*a.speed*0.6*f*mSpd, ny2=a.y+(pdy/pd)*a.speed*0.6*f*mSpd;
         if(allyCanMove(nx2,ny2)){a.x=nx2;a.y=ny2;moved=true;}
       }
     }
@@ -1781,17 +1784,17 @@ function update(dt) {
     const dx=player.x-e.x,dy=player.y-e.y,dist=Math.sqrt(dx*dx+dy*dy);
     if(dist<400)e.state='chase'; else if(dist>550)e.state='wander';
     if(e.state==='chase'){
-      if(dist>e.atkRange*0.8){const nx=e.x+(dx/dist)*e.speed*f,ny=e.y+(dy/dist)*e.speed*f;if(isWalkable(nx,ny)){let bl=false;for(const o of obstacles)if(Math.sqrt((nx-o.x)**2+(ny-o.y)**2)<e.r+o.r){bl=true;break;}if(!bl){e.x=nx;e.y=ny;}}}
+      if(dist>e.atkRange*0.8){const nx=e.x+(dx/dist)*e.speed*f*mSpd,ny=e.y+(dy/dist)*e.speed*f*mSpd;if(isWalkable(nx,ny)){let bl=false;for(const o of obstacles)if(Math.sqrt((nx-o.x)**2+(ny-o.y)**2)<e.r+o.r){bl=true;break;}if(!bl){e.x=nx;e.y=ny;}}}
       // Enemy shoots at player
       if(dist<e.atkRange&&Date.now()-e.lastAtk>e.atkSpeed){
         e.lastAtk=Date.now();
         const dxx=dx/dist,dyy=dy/dist;
-        projectiles.push({x:e.x+dxx*22,y:e.y+dyy*22,vx:dxx*5.5,vy:dyy*5.5,r:5,color:e.def.projColor,dmg:e.atkDmg,owner:'enemy',life:55});
+        projectiles.push({x:e.x+dxx*22,y:e.y+dyy*22,vx:dxx*5.5*mSpd,vy:dyy*5.5*mSpd,r:5,color:e.def.projColor,dmg:e.atkDmg,owner:'enemy',life:55/mSpd});
       }
     } else {
       e.wanderTimer-=f;
       if(e.wanderTimer<=0){e.wanderAngle=Math.random()*Math.PI*2;e.wanderTimer=60+Math.random()*120;}
-      const nx=e.x+Math.cos(e.wanderAngle)*e.speed*0.4*f,ny=e.y+Math.sin(e.wanderAngle)*e.speed*0.4*f;
+      const nx=e.x+Math.cos(e.wanderAngle)*e.speed*0.4*f*mSpd,ny=e.y+Math.sin(e.wanderAngle)*e.speed*0.4*f*mSpd;
       if(isWalkable(nx,ny)){e.x=nx;e.y=ny;}
     }
   });
