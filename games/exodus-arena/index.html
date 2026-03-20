@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>זירת יציאת מצרים — קרב האי</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,9 +22,9 @@ body {
   position: fixed; inset: 0;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  background: linear-gradient(135deg, #1a0a2e 0%, #0d1b3e 50%, #2d1810 100%);
-  background-size: 300% 300%;
-  animation: bgShift 12s ease-in-out infinite;
+  background: linear-gradient(135deg, #1a0a2e, #2d1810, #4a1a0a, #0d1b3e, #1a0a2e);
+  background-size: 400% 400%;
+  animation: bgShift 16s ease-in-out infinite;
   z-index: 100;
   overflow-y: auto;
   padding: 1.5rem 1rem;
@@ -40,11 +40,9 @@ body {
 }
 #title-screen > * { position: relative; z-index: 1; }
 @keyframes bgShift {
-  0% { background-position: 0% 50%; background-color: #1a0a2e; }
-  25% { background: linear-gradient(135deg, #2d1810 0%, #4a1a0a 30%, #1a0a2e 60%, #0d1b3e 100%); background-size: 300% 300%; background-position: 50% 0%; }
-  50% { background: linear-gradient(135deg, #3d200a 0%, #1a0a2e 40%, #0d1b3e 70%, #2d1810 100%); background-size: 300% 300%; background-position: 100% 50%; }
-  75% { background: linear-gradient(135deg, #0d1b3e 0%, #2d1810 35%, #4a1a0a 65%, #1a0a2e 100%); background-size: 300% 300%; background-position: 50% 100%; }
-  100% { background-position: 0% 50%; background-color: #1a0a2e; }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 #title-screen h1 {
@@ -357,7 +355,7 @@ body, canvas { touch-action: none; }
 }
 .touch-btn:active { background: rgba(255,255,255,0.22); }
 #touch-special {
-  right: 68px; bottom: 16px;
+  right: 136px; bottom: 24px;
   background: rgba(255,215,0,0.12);
   border-color: rgba(255,215,0,0.35);
 }
@@ -366,11 +364,53 @@ body, canvas { touch-action: none; }
   box-shadow: 0 0 12px rgba(255,215,0,0.3);
 }
 #touch-weapon {
-  right: 8px; bottom: 16px;
+  right: 8px; bottom: 24px;
   background: rgba(100,180,255,0.12);
   border-color: rgba(100,180,255,0.35);
   font-size: 15px;
 }
+#touch-attack {
+  right: 68px; bottom: 88px;
+  min-width: 68px; min-height: 68px;
+  background: rgba(255,80,80,0.15);
+  border-color: rgba(255,80,80,0.4);
+  font-size: 22px;
+}
+
+/* Mobile Mode Toggle */
+.mobile-toggle {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.45rem 0.9rem; border-radius: 50px; cursor: pointer;
+  background: rgba(255,255,255,0.07); border: 2px solid rgba(255,255,255,0.2);
+  color: #ccc; font-size: 0.8rem; font-family: 'Outfit', sans-serif;
+  transition: all 0.25s; user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.mobile-toggle:hover { background: rgba(255,255,255,0.12); }
+.mobile-toggle.on {
+  border-color: rgba(100,220,255,0.6); color: #6ef;
+  background: rgba(100,220,255,0.12);
+  box-shadow: 0 0 10px rgba(100,220,255,0.15);
+}
+.mobile-toggle .toggle-icon { font-size: 1.1rem; }
+.mobile-toggle .toggle-label { font-weight: 600; }
+
+#title-mobile-toggle { margin-top: 0.5rem; margin-bottom: 0.3rem; }
+
+#ingame-mobile-toggle {
+  position: fixed; top: 6px; left: 58px; z-index: 15;
+  min-width: 44px; min-height: 44px; width: 44px; height: 44px;
+  border-radius: 12px; border: 2px solid rgba(255,255,255,0.25);
+  background: rgba(0,0,0,0.5); color: #fff; font-size: 18px;
+  display: none; align-items: center; justify-content: center;
+  cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s; padding: 0;
+}
+#ingame-mobile-toggle:hover { background: rgba(255,255,255,0.15); }
+#ingame-mobile-toggle:active { transform: scale(0.92); }
+#ingame-mobile-toggle.active { display: flex; }
+#ingame-mobile-toggle.on { border-color: rgba(100,220,255,0.6); background: rgba(100,220,255,0.15); }
+
+#touch-attack:active { background: rgba(255,80,80,0.35); }
 </style>
 </head>
 <body>
@@ -398,6 +438,11 @@ body, canvas { touch-action: none; }
     <div class="weapon-card" data-weapon="hammer"><div class="w-icon">🔨</div><div class="w-name">פטיש הבנאי</div><div class="w-desc">טווח קצר, נזק גדול</div></div>
     <div class="weapon-card" data-weapon="scroll"><div class="w-icon">📜</div><div class="w-name">מגילת חוכמה</div><div class="w-desc">חודר אויבים</div></div>
     <div class="weapon-card" data-weapon="sun"><div class="w-icon">☀️</div><div class="w-name">עין רע</div><div class="w-desc">ירי מפוזר, 3 קליעים</div></div>
+  </div>
+
+  <div class="mobile-toggle" id="title-mobile-toggle">
+    <span class="toggle-icon">📱</span>
+    <span class="toggle-label">Mobile Mode</span>
   </div>
 
   <button id="play-btn">בחר גיבור ונשק</button>
@@ -459,12 +504,14 @@ body, canvas { touch-action: none; }
     <div id="trivia-result"></div>
   </div>
   <button id="pause-btn" aria-label="Pause">⏸</button>
+  <button id="ingame-mobile-toggle" aria-label="Mobile Mode">📱</button>
   <div id="weapon-hint">1-5 להחלפת נשק</div>
   <div id="touch-controls">
     <div class="joystick-zone" id="joystick-zone"></div>
     <div class="joystick-base" id="joystick-base"></div>
     <div class="joystick-thumb" id="joystick-thumb"></div>
     <div class="aim-zone" id="aim-zone"></div>
+    <div class="touch-btn" id="touch-attack">⚔️</div>
     <div class="touch-btn" id="touch-special">⚡</div>
     <div class="touch-btn" id="touch-weapon">🔄</div>
   </div>
@@ -998,6 +1045,8 @@ function startGame() {
   document.getElementById('game-screen').style.display = 'block';
   document.getElementById('game-screen').classList.add('active');
   document.getElementById('pause-btn').classList.add('active');
+  document.getElementById('ingame-mobile-toggle').classList.add('active');
+  if (mobileMode) document.getElementById('ingame-mobile-toggle').classList.add('on');
 
   currentWorld = 0;
   buildWorld();
@@ -1187,21 +1236,78 @@ window.addEventListener('keydown', e => {
 window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
 window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
 canvas.addEventListener('click', () => { if (gameState==='playing'&&!paused) playerAttack(); });
+// Prevent pinch-zoom and double-tap zoom on canvas
+canvas.addEventListener('touchstart', e => { e.preventDefault(); }, { passive: false });
+canvas.addEventListener('touchmove', e => { e.preventDefault(); }, { passive: false });
 
 // ═══════════════════════════════════════
-// TOUCH CONTROLS
+// MOBILE MODE & TOUCH CONTROLS
 // ═══════════════════════════════════════
 const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+let mobileMode = isTouchDevice;
 let touchMove = { x: 0, y: 0 };
 let touchAim = { active: false };
 let joystickTouchId = null;
 let aimTouchId = null;
 let autoFireInterval = null;
 
-if (isTouchDevice) {
-  document.getElementById('touch-controls').classList.add('active');
-  document.getElementById('weapon-hint').textContent = 'שמאל: תנועה | ימין: כיוון + ירי';
+const desktopInstrHTML =
+  '<div class="instr-desc">הזז את הגיבור</div><div class="instr-key">W A S D</div>' +
+  '<div class="instr-desc">גם מזיז</div><div class="instr-key">חצים</div>' +
+  '<div class="instr-desc">כוון את הנשק</div><div class="instr-key">עכבר</div>' +
+  '<div class="instr-desc">ירה</div><div class="instr-key">לחיצה / רווח</div>' +
+  '<div class="instr-desc">כוח מיוחד</div><div class="instr-key">Q</div>' +
+  '<div class="instr-desc">החלף נשק</div><div class="instr-key">1-5</div>' +
+  '<div class="instr-desc">אסוף = התחזק וגדל!</div><div class="instr-key">🍬</div>' +
+  '<div class="instr-desc">ענה נכון = בונוס!</div><div class="instr-key">📜</div>';
+const mobileInstrHTML =
+  '<div class="instr-desc">הזז את הגיבור</div><div class="instr-key">ג׳ויסטיק שמאל</div>' +
+  '<div class="instr-desc">כוון + ירה</div><div class="instr-key">גע בימין / ⚔️</div>' +
+  '<div class="instr-desc">כוח מיוחד</div><div class="instr-key">⚡ כפתור</div>' +
+  '<div class="instr-desc">החלף נשק</div><div class="instr-key">🔄 כפתור</div>' +
+  '<div class="instr-desc">אסוף = התחזק וגדל!</div><div class="instr-key">🍬</div>' +
+  '<div class="instr-desc">ענה נכון = בונוס!</div><div class="instr-key">📜</div>';
 
+function setMobileMode(on) {
+  mobileMode = on;
+  const touchCtrl = document.getElementById('touch-controls');
+  const weaponHint = document.getElementById('weapon-hint');
+  const titleToggle = document.getElementById('title-mobile-toggle');
+  const ingameToggle = document.getElementById('ingame-mobile-toggle');
+  const instrGrid = document.querySelector('.instr-grid');
+
+  if (on) {
+    touchCtrl.classList.add('active');
+    weaponHint.textContent = 'שמאל: תנועה | ימין: כיוון + ירי';
+    titleToggle.classList.add('on');
+    ingameToggle.classList.add('on');
+    if (instrGrid) instrGrid.innerHTML = mobileInstrHTML;
+  } else {
+    touchCtrl.classList.remove('active');
+    weaponHint.textContent = '1-5 להחלפת נשק';
+    titleToggle.classList.remove('on');
+    ingameToggle.classList.remove('on');
+    // Reset touch state
+    touchMove.x = 0; touchMove.y = 0;
+    touchAim.active = false;
+    joystickTouchId = null; aimTouchId = null;
+    if (autoFireInterval) { clearInterval(autoFireInterval); autoFireInterval = null; }
+    if (instrGrid) instrGrid.innerHTML = desktopInstrHTML;
+  }
+}
+
+// Title screen toggle
+document.getElementById('title-mobile-toggle').addEventListener('click', () => setMobileMode(!mobileMode));
+// In-game toggle
+document.getElementById('ingame-mobile-toggle').addEventListener('click', () => {
+  setMobileMode(!mobileMode);
+});
+
+// Apply initial state
+setMobileMode(mobileMode);
+
+// ── Always set up touch listeners (they only fire on touch devices) ──
+{
   const joystickZone = document.getElementById('joystick-zone');
   const joystickBase = document.getElementById('joystick-base');
   const joystickThumb = document.getElementById('joystick-thumb');
@@ -1211,6 +1317,7 @@ if (isTouchDevice) {
 
   // ── Joystick (movement) ──
   joystickZone.addEventListener('touchstart', e => {
+    if (!mobileMode) return;
     e.preventDefault();
     const t = e.changedTouches[0];
     joystickTouchId = t.identifier;
@@ -1224,6 +1331,7 @@ if (isTouchDevice) {
   }, { passive: false });
 
   joystickZone.addEventListener('touchmove', e => {
+    if (!mobileMode) return;
     e.preventDefault();
     for (const t of e.changedTouches) {
       if (t.identifier === joystickTouchId) {
@@ -1254,6 +1362,7 @@ if (isTouchDevice) {
 
   // ── Aim zone (aim + auto-fire) ──
   aimZone.addEventListener('touchstart', e => {
+    if (!mobileMode) return;
     e.preventDefault();
     const t = e.changedTouches[0];
     aimTouchId = t.identifier;
@@ -1266,6 +1375,7 @@ if (isTouchDevice) {
   }, { passive: false });
 
   aimZone.addEventListener('touchmove', e => {
+    if (!mobileMode) return;
     e.preventDefault();
     for (const t of e.changedTouches) {
       if (t.identifier === aimTouchId) {
@@ -1286,14 +1396,34 @@ if (isTouchDevice) {
   aimZone.addEventListener('touchend', endAim);
   aimZone.addEventListener('touchcancel', endAim);
 
+  // ── Attack button ──
+  let atkFireInterval = null;
+  document.getElementById('touch-attack').addEventListener('touchstart', e => {
+    if (!mobileMode) return;
+    e.preventDefault(); e.stopPropagation();
+    if (gameState === 'playing') playerAttack();
+    atkFireInterval = setInterval(() => {
+      if (gameState === 'playing') playerAttack();
+    }, 100);
+  }, { passive: false });
+  document.getElementById('touch-attack').addEventListener('touchend', e => {
+    e.preventDefault();
+    if (atkFireInterval) { clearInterval(atkFireInterval); atkFireInterval = null; }
+  }, { passive: false });
+  document.getElementById('touch-attack').addEventListener('touchcancel', e => {
+    if (atkFireInterval) { clearInterval(atkFireInterval); atkFireInterval = null; }
+  }, { passive: false });
+
   // ── Special ability button ──
   document.getElementById('touch-special').addEventListener('touchstart', e => {
+    if (!mobileMode) return;
     e.preventDefault(); e.stopPropagation();
     if (gameState === 'playing') playerSpecial();
   }, { passive: false });
 
   // ── Weapon cycle button ──
   document.getElementById('touch-weapon').addEventListener('touchstart', e => {
+    if (!mobileMode) return;
     e.preventDefault(); e.stopPropagation();
     if (gameState === 'playing') {
       const unlocked = WEAPON_KEYS.filter(k => unlockedWeapons.has(k));
@@ -1304,26 +1434,28 @@ if (isTouchDevice) {
     }
   }, { passive: false });
 
-  // Update special button glow in game loop
-  const _origUpdate = typeof update === 'undefined' ? null : null;
+  // Update special button glow
   setInterval(() => {
     const btn = document.getElementById('touch-special');
     if (specialCharge >= 100) btn.classList.add('ready');
     else btn.classList.remove('ready');
   }, 200);
-
-  // Update instruction screen for touch
-  const instrGrid = document.querySelector('.instr-grid');
-  if (instrGrid) {
-    instrGrid.innerHTML =
-      '<div class="instr-desc">הזז את הגיבור</div><div class="instr-key">ג׳ויסטיק שמאל</div>' +
-      '<div class="instr-desc">כוון + ירה</div><div class="instr-key">גע בימין</div>' +
-      '<div class="instr-desc">כוח מיוחד</div><div class="instr-key">⚡ כפתור</div>' +
-      '<div class="instr-desc">החלף נשק</div><div class="instr-key">🔄 כפתור</div>' +
-      '<div class="instr-desc">אסוף = התחזק וגדל!</div><div class="instr-key">🍬</div>' +
-      '<div class="instr-desc">ענה נכון = בונוס!</div><div class="instr-key">📜</div>';
-  }
 }
+
+// ── Prevent pinch-zoom and double-tap zoom during gameplay ──
+document.addEventListener('touchstart', e => {
+  if (e.touches.length > 1) e.preventDefault();
+}, { passive: false });
+document.addEventListener('touchmove', e => {
+  if (e.touches.length > 1) e.preventDefault();
+}, { passive: false });
+// Prevent double-tap zoom on game UI
+let lastTouchEnd = 0;
+document.addEventListener('touchend', e => {
+  const now = Date.now();
+  if (now - lastTouchEnd < 300) e.preventDefault();
+  lastTouchEnd = now;
+}, { passive: false });
 
 // ═══════════════════════════════════════
 // COMBAT
@@ -1471,6 +1603,7 @@ function gameLoop(time) {
 }
 
 function update(dt) {
+  const f = dt / 16.67; // delta-time factor (1.0 at 60fps)
   gameTime++;
 
   // Movement
@@ -1481,7 +1614,7 @@ function update(dt) {
   if(Math.abs(touchMove.x)>0.15||Math.abs(touchMove.y)>0.15){mx+=touchMove.x;my+=touchMove.y;}
   if(mx||my){
     const len=Math.sqrt(mx*mx+my*my);mx/=len;my/=len;
-    const spd=player.speed;
+    const spd=player.speed*f;
     // Try both axes combined first, then each axis separately (slide along walls)
     const nx=player.x+mx*spd, ny=player.y+my*spd;
     let moved=false;
@@ -1507,23 +1640,23 @@ function update(dt) {
   }
 
   // Camera
-  camera.x+=(player.x-W/2-camera.x)*0.1; camera.y+=(player.y-H/2-camera.y)*0.1;
-  if(shakeTimer>0)shakeTimer--;
-  if(player.invuln>0)player.invuln--;
-  if(specialActive){specialTimer--;if(specialTimer<=0)specialActive=false;}
-  obstacles=obstacles.filter(o=>{if(o.temp){o.timer--;return o.timer>0;}return true;});
+  camera.x+=(player.x-W/2-camera.x)*0.1*f; camera.y+=(player.y-H/2-camera.y)*0.1*f;
+  if(shakeTimer>0)shakeTimer-=f;
+  if(player.invuln>0)player.invuln-=f;
+  if(specialActive){specialTimer-=f;if(specialTimer<=0)specialActive=false;}
+  obstacles=obstacles.filter(o=>{if(o.temp){o.timer-=f;return o.timer>0;}return true;});
 
   // Scrolls
-  scrolls.forEach(s=>{s.bob+=0.05;if(!s.collected){const d=Math.sqrt((s.x-player.x)**2+(s.y-player.y)**2);if(d<player.r+s.r+5){s.collected=true;hp(s.x,s.y,'#ffd700',12);score+=20;showTrivia();playSFX(440,0.1);}}});
+  scrolls.forEach(s=>{s.bob+=0.05*f;if(!s.collected){const d=Math.sqrt((s.x-player.x)**2+(s.y-player.y)**2);if(d<player.r+s.r+5){s.collected=true;hp(s.x,s.y,'#ffd700',12);score+=20;showTrivia();playSFX(440,0.1);}}});
   scrolls=scrolls.filter(s=>!s.collected);
 
   // Candies
-  candies.forEach(c=>{c.bob+=0.06;c.glow=(c.glow+0.03)%(Math.PI*2);if(!c.collected){const d=Math.sqrt((c.x-player.x)**2+(c.y-player.y)**2);if(d<80){c.x+=(player.x-c.x)/d*2.5;c.y+=(player.y-c.y)/d*2.5;}if(d<player.r+c.r+5)collectCandy(c);}});
+  candies.forEach(c=>{c.bob+=0.06*f;c.glow=(c.glow+0.03*f)%(Math.PI*2);if(!c.collected){const d=Math.sqrt((c.x-player.x)**2+(c.y-player.y)**2);if(d<80){c.x+=(player.x-c.x)/d*2.5*f;c.y+=(player.y-c.y)/d*2.5*f;}if(d<player.r+c.r+5)collectCandy(c);}});
   candies=candies.filter(c=>!c.collected);
 
   // Weapon pickups
   weaponPickups.forEach(wp=>{
-    wp.bob+=0.05;
+    wp.bob+=0.05*f;
     if(!wp.collected){
       const d=Math.sqrt((wp.x-player.x)**2+(wp.y-player.y)**2);
       if(d<player.r+18){
@@ -1539,17 +1672,17 @@ function update(dt) {
   weaponPickups=weaponPickups.filter(wp=>!wp.collected);
 
   // Medicine pickups
-  medicines.forEach(m=>{m.bob+=0.05;m.glow=(m.glow+0.04)%(Math.PI*2);if(!m.collected){const d=Math.sqrt((m.x-player.x)**2+(m.y-player.y)**2);if(d<70){m.x+=(player.x-m.x)/d*2;m.y+=(player.y-m.y)/d*2;}if(d<player.r+m.r+5)collectMedicine(m);}});
+  medicines.forEach(m=>{m.bob+=0.05*f;m.glow=(m.glow+0.04*f)%(Math.PI*2);if(!m.collected){const d=Math.sqrt((m.x-player.x)**2+(m.y-player.y)**2);if(d<70){m.x+=(player.x-m.x)/d*2*f;m.y+=(player.y-m.y)/d*2*f;}if(d<player.r+m.r+5)collectMedicine(m);}});
   medicines=medicines.filter(m=>!m.collected);
 
   // Damage reduction buff timer
-  if(player.dmgReductionTimer>0){player.dmgReductionTimer--;if(player.dmgReductionTimer<=0)player.dmgReduction=0;}
+  if(player.dmgReductionTimer>0){player.dmgReductionTimer-=f;if(player.dmgReductionTimer<=0)player.dmgReduction=0;}
 
   // Ally AI — spread formation, pick different targets, flank, patrol
   // First: assign unique targets so allies don't all attack the same enemy
   const assignedEnemies = new Set();
   allies.forEach(a=>{
-    if(a.hitFlash>0)a.hitFlash--;
+    if(a.hitFlash>0)a.hitFlash-=f;
     a.assignedTarget = null;
     // Find best unassigned enemy
     let bestE=null, bestD=Infinity;
@@ -1588,20 +1721,20 @@ function update(dt) {
       }
       if(nearD > a.atkRange*0.6){
         // Approach from flank angle instead of straight line
-        a.flankAngle += 0.02 * (allyIdx%2===0 ? 1 : -1);
+        a.flankAngle += 0.02*f * (allyIdx%2===0 ? 1 : -1);
         const flankDist = Math.min(nearD, a.atkRange*0.75);
         const goalX = nearE.x + Math.cos(a.flankAngle)*flankDist*0.4;
         const goalY = nearE.y + Math.sin(a.flankAngle)*flankDist*0.4;
         const gdx = goalX-a.x, gdy = goalY-a.y;
         const gd = Math.sqrt(gdx*gdx+gdy*gdy)||1;
-        const nx2=a.x+(gdx/gd)*a.speed, ny2=a.y+(gdy/gd)*a.speed;
+        const nx2=a.x+(gdx/gd)*a.speed*f, ny2=a.y+(gdy/gd)*a.speed*f;
         if(allyCanMove(nx2,ny2)){a.x=nx2;a.y=ny2;moved=true;}
       } else if(nearD < a.atkRange*0.4){
         // Too close, back off slightly while strafing
         const adx=a.x-nearE.x,ady=a.y-nearE.y,adist=Math.sqrt(adx*adx+ady*ady)||1;
         const strafeX = -ady/adist, strafeY = adx/adist;
-        const nx2=a.x+(adx/adist)*a.speed*0.3+strafeX*a.speed*0.5;
-        const ny2=a.y+(ady/adist)*a.speed*0.3+strafeY*a.speed*0.5;
+        const nx2=a.x+(adx/adist)*a.speed*0.3*f+strafeX*a.speed*0.5*f;
+        const ny2=a.y+(ady/adist)*a.speed*0.3*f+strafeY*a.speed*0.5*f;
         if(allyCanMove(nx2,ny2)){a.x=nx2;a.y=ny2;moved=true;}
       }
     } else {
@@ -1610,16 +1743,16 @@ function update(dt) {
       const dpDist=Math.sqrt(dpx*dpx+dpy*dpy);
       if(dpDist>60){
         // Move toward formation position
-        const nx2=a.x+(dpx/dpDist)*a.speed, ny2=a.y+(dpy/dpDist)*a.speed;
+        const nx2=a.x+(dpx/dpDist)*a.speed*f, ny2=a.y+(dpy/dpDist)*a.speed*f;
         if(allyCanMove(nx2,ny2)){a.x=nx2;a.y=ny2;moved=true;}
       } else {
         // Patrol around formation offset
-        a.patrolAngle += 0.03 + allyIdx*0.01;
+        a.patrolAngle += (0.03 + allyIdx*0.01)*f;
         const patrolR = 35+Math.sin(gameTime*0.02+allyIdx)*15;
         const goalX = targetPosX + Math.cos(a.patrolAngle)*patrolR;
         const goalY = targetPosY + Math.sin(a.patrolAngle)*patrolR;
         const pdx=goalX-a.x, pdy=goalY-a.y, pd=Math.sqrt(pdx*pdx+pdy*pdy)||1;
-        const nx2=a.x+(pdx/pd)*a.speed*0.6, ny2=a.y+(pdy/pd)*a.speed*0.6;
+        const nx2=a.x+(pdx/pd)*a.speed*0.6*f, ny2=a.y+(pdy/pd)*a.speed*0.6*f;
         if(allyCanMove(nx2,ny2)){a.x=nx2;a.y=ny2;moved=true;}
       }
     }
@@ -1644,11 +1777,11 @@ function update(dt) {
 
   // Enemy AI
   enemies.forEach(e=>{
-    if(e.hitFlash>0)e.hitFlash--;
+    if(e.hitFlash>0)e.hitFlash-=f;
     const dx=player.x-e.x,dy=player.y-e.y,dist=Math.sqrt(dx*dx+dy*dy);
     if(dist<400)e.state='chase'; else if(dist>550)e.state='wander';
     if(e.state==='chase'){
-      if(dist>e.atkRange*0.8){const nx=e.x+(dx/dist)*e.speed,ny=e.y+(dy/dist)*e.speed;if(isWalkable(nx,ny)){let bl=false;for(const o of obstacles)if(Math.sqrt((nx-o.x)**2+(ny-o.y)**2)<e.r+o.r){bl=true;break;}if(!bl){e.x=nx;e.y=ny;}}}
+      if(dist>e.atkRange*0.8){const nx=e.x+(dx/dist)*e.speed*f,ny=e.y+(dy/dist)*e.speed*f;if(isWalkable(nx,ny)){let bl=false;for(const o of obstacles)if(Math.sqrt((nx-o.x)**2+(ny-o.y)**2)<e.r+o.r){bl=true;break;}if(!bl){e.x=nx;e.y=ny;}}}
       // Enemy shoots at player
       if(dist<e.atkRange&&Date.now()-e.lastAtk>e.atkSpeed){
         e.lastAtk=Date.now();
@@ -1656,16 +1789,16 @@ function update(dt) {
         projectiles.push({x:e.x+dxx*22,y:e.y+dyy*22,vx:dxx*5.5,vy:dyy*5.5,r:5,color:e.def.projColor,dmg:e.atkDmg,owner:'enemy',life:55});
       }
     } else {
-      e.wanderTimer--;
+      e.wanderTimer-=f;
       if(e.wanderTimer<=0){e.wanderAngle=Math.random()*Math.PI*2;e.wanderTimer=60+Math.random()*120;}
-      const nx=e.x+Math.cos(e.wanderAngle)*e.speed*0.4,ny=e.y+Math.sin(e.wanderAngle)*e.speed*0.4;
+      const nx=e.x+Math.cos(e.wanderAngle)*e.speed*0.4*f,ny=e.y+Math.sin(e.wanderAngle)*e.speed*0.4*f;
       if(isWalkable(nx,ny)){e.x=nx;e.y=ny;}
     }
   });
 
   // Projectiles
   projectiles.forEach(p=>{
-    p.x+=p.vx;p.y+=p.vy;p.life--;
+    p.x+=p.vx*f;p.y+=p.vy*f;p.life-=f;
     if(gameTime%2===0)particles.push({x:p.x,y:p.y,vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5,r:p.r*0.35,color:p.color,life:8});
     if(p.owner==='player'||p.owner==='ally'){
       enemies.forEach(e=>{if(p.hitList&&p.hitList.includes(e))return;const d=Math.sqrt((p.x-e.x)**2+(p.y-e.y)**2);if(d<e.r+p.r){e.hp-=p.dmg;e.hitFlash=6;if(!p.pierce)p.life=0;else if(p.hitList)p.hitList.push(e);hp(p.x,p.y,p.color,6);shakeTimer=3;if(p.owner==='player')specialCharge=Math.min(100,specialCharge+5);}});
@@ -1693,7 +1826,7 @@ function update(dt) {
   });
 
   // Process dead enemy respawns
-  deadEnemies.forEach(de=>de.timer--);
+  deadEnemies.forEach(de=>de.timer-=f);
   deadEnemies=deadEnemies.filter(de=>{
     if(de.timer<=0){
       // Respawn
@@ -1721,7 +1854,7 @@ function update(dt) {
   }
 
   // Particles
-  particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.life--;p.r*=0.97;});
+  particles.forEach(p=>{p.x+=p.vx*f;p.y+=p.vy*f;p.life-=f;p.r*=Math.pow(0.97,f);});
   particles=particles.filter(p=>p.life>0);
 
   // HUD
