@@ -16,7 +16,7 @@
 --radius:16px;--shadow:0 8px 32px rgba(0,0,0,.4);
 --teamA:#448aff;--teamB:#ff4081;
 }
-html{font-size:18px}
+html{font-size:22px}
 html{margin:0;padding:0;width:100%;height:100%;overflow-x:hidden;box-sizing:border-box;background:#1a1a2e}
 body{margin:0;padding:0;width:100%;min-height:100svh;overflow-x:hidden;box-sizing:border-box;
 font-family:system-ui,sans-serif;background:#1a1a2e;color:#fff;
@@ -167,10 +167,10 @@ font-size:2.2rem;font-weight:900;text-align:center}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
 
 /* Word display */
-.word-display{font-size:clamp(1.6rem,8vw,3.2rem);font-weight:900;text-align:center;padding:8px 12px;
+.word-display{font-size:clamp(1.4rem,7vw,3rem);font-weight:900;text-align:center;padding:8px 12px;
 margin:6px 0;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-text-shadow:0 0 30px rgba(255,204,0,.3);width:100%;white-space:nowrap;overflow:hidden;
-text-overflow:ellipsis;line-height:1.2}
+text-shadow:0 0 30px rgba(255,204,0,.3);width:100%;word-break:keep-all;overflow-wrap:normal;
+line-height:1.2;color:#fff}
 
 /* Emoji word for kids mode */
 .emoji-word{font-size:7rem;animation:emojiBounce 1.5s ease-in-out infinite;line-height:1}
@@ -454,7 +454,7 @@ h1,h2{font-size:1.4rem}
       🏆 טבלת אלופים
       <div style="font-size:0.75rem;font-weight:400;opacity:.7;margin-top:3px">ראו את הניקוד הכי גבוה</div>
     </button>
-    <div class="welcome-version">v14.0</div>
+    <div class="welcome-version" style="font-size:1.1rem;font-weight:700;color:rgba(255,204,0,.5);letter-spacing:2px">v16</div>
   </div>
 </div>
 
