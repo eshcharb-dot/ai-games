@@ -632,6 +632,10 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
   align-items: center !important; 
   justify-content: center !important;
   min-height: 0 !important;
+  overflow: visible !important;
+  width: 100% !important;
+  padding: 0 4vw !important;
+  box-sizing: border-box !important;
   background: radial-gradient(ellipse at center, rgba(255,204,0,.06) 0%, transparent 70%) !important;
 }
 
@@ -1713,7 +1717,7 @@ function nextWord() {
         wd.style.whiteSpace = 'normal';
         wd.style.wordBreak = 'break-word';
       }
-    }, 30);
+    }, 100);
   }
 
   wd.className = 'word-display game-word-area word-pop';
