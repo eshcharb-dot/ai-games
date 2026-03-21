@@ -552,6 +552,12 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 /* Score / leaderboard */
 .pg-emoji { font-size: 9vw !important; }
 .pg-name { font-size: 4.5vw !important; }
+
+/* Setup screen: no void — push everything up, buttons at bottom */
+#screenSetup { justify-content: flex-start !important; gap: 3vw !important; }
+#screenSetup .player-list { flex: 0 1 auto !important; max-height: 35vh !important; }
+#screenSetup #btnToLevel, 
+#screenSetup button[onclick*="screenWelcome"] { margin-top: auto !important; }
 </style>
 </head>
 <body>
