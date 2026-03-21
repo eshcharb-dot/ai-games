@@ -625,7 +625,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 
 <!-- PLAYER SETUP -->
 <div class="screen" id="screenSetup">
-  <h2 class="setup-title">מי משחק? 👥</h2>
+  <h2 class="setup-title">מי משחק?</h2>
   <p class="screen-subtitle setup-subtitle" id="setupSubtitle">הוסיפו לפחות 2 שחקנים — בלי שם? תקבלו כינוי מצחיק!</p>
 
   <div class="mode-toggle">
@@ -1242,7 +1242,7 @@ function renderPlayerList() {
         ${teamBadge}
       </div>
       <button class="kids-btn ${p.cannotRead ? 'active' : ''}" onclick="event.stopPropagation();toggleCannotRead(${i})" title="${p.cannotRead ? 'יראה אמוג\'י במקום מילה' : 'לחצו אם לא יודע לקרוא'}">
-        🍼<span class="kids-dot"></span>
+        🌟<span class="kids-dot"></span>
         <span style="font-size:.45rem;font-weight:600;display:block;margin-top:2px;line-height:1;opacity:${p.cannotRead ? '1' : '0.5'}">${p.cannotRead ? 'פעיל' : 'לחץ'}</span>
       </button>
       <button class="remove" onclick="removePlayer(${i})">✕</button>
@@ -1622,6 +1622,13 @@ function nextWord() {
     } while (usedWords.has(currentWord));
     usedWords.add(currentWord);
     wd.innerHTML = currentWord;
+    // Scale font size based on word length
+    const len = currentWord.length;
+    if (len <= 4) wd.style.fontSize = '16vw';
+    else if (len <= 6) wd.style.fontSize = '13vw';
+    else if (len <= 8) wd.style.fontSize = '11vw';
+    else if (len <= 10) wd.style.fontSize = '9vw';
+    else wd.style.fontSize = '7vw';
   }
 
   wd.className = 'word-display game-word-area word-pop';
