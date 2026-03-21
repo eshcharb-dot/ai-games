@@ -601,13 +601,18 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 .player-item .remove { font-size: 5vw !important; min-width: 10vw !important; min-height: 10vw !important; flex-shrink: 0 !important; }
 
 /* Game top bar — bigger, high specificity */
-#screenGame .game-top-bar { height: 18vw !important; padding: 0 4vw !important; flex-shrink: 0 !important; background: rgba(255,255,255,.06) !important; }
-#screenGame .game-top-bar .current-player-header { margin: 0 !important; }
-#screenGame .game-top-bar .cph-avatar { font-size: 7vw !important; }
-#screenGame .game-top-bar .cph-name { font-size: 5vw !important; color: var(--primary) !important; }
-#screenGame .game-top-bar .round-indicator { font-size: 4vw !important; color: rgba(255,255,255,.6) !important; }
-#screenGame .game-top-bar .timer-ring { width: 15vw !important; height: 15vw !important; min-width: 15vw !important; }
-#screenGame .game-top-bar .time-text { font-size: 6vw !important; font-weight: 900 !important; }
+#screenGame .game-top-bar { height: 20vw !important; padding: 0 4vw !important; flex-shrink: 0 !important; background: rgba(255,255,255,.06) !important; gap: 3vw !important; }
+#screenGame .game-top-bar .current-player-header { margin: 0 !important; flex: 1 !important; display: flex !important; align-items: center !important; gap: 2vw !important; justify-content: flex-end !important; }
+#screenGame .game-top-bar .cph-avatar { font-size: 9vw !important; }
+#screenGame .game-top-bar .cph-name { font-size: 5.5vw !important; color: var(--primary) !important; }
+#screenGame .game-top-bar .cph-score { font-size: 5vw !important; color: rgba(255,255,255,.8) !important; }
+#screenGame .game-top-bar .round-indicator { font-size: 4vw !important; color: rgba(255,255,255,.5) !important; white-space: nowrap !important; }
+#screenGame .game-top-bar .timer-ring { width: 16vw !important; height: 16vw !important; min-width: 16vw !important; flex-shrink: 0 !important; }
+#screenGame .game-top-bar .time-text { font-size: 6.5vw !important; font-weight: 900 !important; }
+
+/* Funny msg and skip counter bigger */
+#screenGame .game-feedback { font-size: 6vw !important; min-height: 10vw !important; }
+#screenGame .skip-counter, #screenGame [id="skipCounter"] { font-size: 5vw !important; color: rgba(255,255,255,.7) !important; }
 
 /* Word centered vertically */
 #screenGame.active { flex-direction: column !important; height: 100dvh !important; }
