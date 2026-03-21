@@ -571,11 +571,13 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 .pg-emoji { font-size: 9vw !important; }
 .pg-name { font-size: 4.5vw !important; }
 
-/* Setup screen: no void — push everything up, buttons at bottom */
-#screenSetup { justify-content: flex-start !important; gap: 3vw !important; }
-#screenSetup .player-list { flex: 0 1 auto !important; max-height: 35vh !important; }
-#screenSetup #btnToLevel, 
-#screenSetup button[onclick*="screenWelcome"] { margin-top: auto !important; }
+/* Setup screen: fixed layout, no scroll */
+#screenSetup { justify-content: flex-start !important; gap: 2vw !important; overflow: hidden !important; }
+#screenSetup .setup-subtitle { display: none !important; }
+#screenSetup .setup-title::after { content: '' !important; }
+#screenSetup .player-list { flex: 1 1 auto !important; min-height: 0 !important; max-height: 30vh !important; overflow-y: auto !important; }
+#screenSetup .setup-continue-btn, #screenSetup #btnToLevel { margin-top: 0 !important; }
+#screenSetup .setup-back-btn, #screenSetup button:last-child { font-size: 4vw !important; min-height: 10vw !important; }
 </style>
 </head>
 <body>
