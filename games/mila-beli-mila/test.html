@@ -538,17 +538,39 @@ p, .screen-subtitle, .game-subtitle { font-size: 5vw !important; }
 /* Input */
 input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; padding: 0 4vw !important; border-radius: 3vw !important; }
 
-/* Game screen word */
-.word-display { font-size: 16vw !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Game screen — structured layout */
+#screenGame { justify-content: flex-start !important; gap: 0 !important; padding: 0 !important; }
+
+/* Timer bar at top */
+#screenGame > div:first-child,
+#screenGame .round-indicator { flex-shrink: 0 !important; }
+
+/* Word area — takes all remaining space */
+.word-display, .game-word-area { 
+  flex: 1 !important; 
+  display: flex !important; 
+  align-items: center !important; 
+  justify-content: center !important;
+  font-size: 16vw !important; 
+  white-space: nowrap !important; 
+  overflow: hidden !important; 
+  text-overflow: ellipsis !important;
+  width: 100% !important;
+  padding: 0 4vw !important;
+}
 .emoji-word { font-size: 35vw !important; }
 
+/* Skip counter and funny msg — compact */
+.funny-msg { flex-shrink: 0 !important; min-height: 8vw !important; font-size: 5vw !important; padding: 0 4vw !important; }
+.skip-counter { flex-shrink: 0 !important; font-size: 4.5vw !important; padding: 0 4vw 2vw !important; margin: 0 !important; }
+
 /* Timer */
-.timer-ring { width: 14vw !important; height: 14vw !important; }
+.timer-ring { width: 14vw !important; height: 14vw !important; flex-shrink: 0 !important; }
 .timer-ring .time-text { font-size: 5vw !important; }
 
-/* Action buttons */
-.action-row { gap: 3vw !important; }
-.action-row .btn-game-action { height: 30vw !important; border-radius: 5vw !important; }
+/* Action buttons — big, fixed height at bottom */
+.action-row { gap: 4vw !important; padding: 3vw 4vw 6vw !important; flex-shrink: 0 !important; width: 100% !important; }
+.action-row .btn-game-action { height: 28vw !important; border-radius: 5vw !important; min-height: unset !important; }
 .action-row .btn-game-action.btn-green { font-size: 10vw !important; }
 .action-row .btn-game-action.btn-orange { font-size: 10vw !important; }
 .action-row .btn-game-action .action-label { font-size: 5vw !important; }
