@@ -530,48 +530,47 @@ h1,h2{font-size:1.3rem}
 </div>
 
 <!-- GAME PLAY -->
-<div class="screen" id="screenGame" style="justify-content:center;gap:4px;padding:8px 16px calc(10px + env(safe-area-inset-bottom));overflow:hidden">
-  <div class="round-indicator" id="roundIndicator"></div>
-  <p class="screen-subtitle" style="margin:0 0 4px 0">תאר את המילה — בלי לומר אותה!</p>
-  <!-- Team scoreboard (shown in team mode) -->
-  <div id="teamScoreboard" style="display:none;width:100%">
-    <div class="team-scoreboard">
-      <div class="team-score-card team-a" id="teamACard">
-        <div class="team-label" id="teamALabel">קבוצה א׳</div>
-        <div class="team-score-num" id="teamAScore">0</div>
-      </div>
-      <div class="team-score-card team-b" id="teamBCard">
-        <div class="team-label" id="teamBLabel">קבוצה ב׳</div>
-        <div class="team-score-num" id="teamBScore">0</div>
-      </div>
-    </div>
-    <div class="team-bar-wrap">
-      <div class="team-bar-a" id="teamBarA" style="width:50%"></div>
-      <div class="team-bar-b" id="teamBarB" style="width:50%"></div>
-    </div>
-  </div>
-  <!-- Solo score bar (shown in free mode) -->
-  <div class="score-bar" id="scoreBar"></div>
-  <div style="display:flex;align-items:center;gap:8px;width:100%;justify-content:center;flex-shrink:0">
-    <div id="currentPlayerHeader" class="current-player-header" style="margin-bottom:0"></div>
-    <div class="timer-ring" id="timerRing">
-      <svg viewBox="0 0 120 120">
+<div class="screen" id="screenGame" style="justify-content:flex-start;gap:0;padding:0;overflow:hidden">
+
+  <!-- TOP BAR: player + timer -->
+  <div style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;flex-shrink:0;background:rgba(255,255,255,.05)">
+    <div id="currentPlayerHeader" class="current-player-header" style="margin:0"></div>
+    <div class="round-indicator" id="roundIndicator" style="font-size:14px;color:rgba(255,255,255,.5)"></div>
+    <div class="timer-ring" id="timerRing" style="width:52px;height:52px">
+      <svg viewBox="0 0 120 120" style="width:100%;height:100%">
         <circle class="track" cx="60" cy="60" r="52"/>
-        <circle class="progress" id="timerProgress" cx="60" cy="60" r="52"
-          stroke-dasharray="326.73" stroke-dashoffset="0"/>
+        <circle class="progress" id="timerProgress" cx="60" cy="60" r="52" stroke-dasharray="326.73" stroke-dashoffset="0"/>
       </svg>
-      <div class="time-text" id="timerText">60</div>
+      <div class="time-text" id="timerText" style="font-size:20px">60</div>
     </div>
   </div>
-  <div class="word-display" id="wordDisplay"></div>
-  <div class="funny-msg" id="funnyMsg"></div>
-  <p class="skip-counter" id="skipCounter"></p>
-  <div class="action-row">
-    <button class="btn btn-game-action btn-green" onclick="wordCorrect()" style="box-shadow:0 6px 24px rgba(0,230,118,.3)">
-      ✅<br><span class="action-label">נכון!</span>
+
+  <!-- Team scoreboard (shown in team mode only) -->
+  <div id="teamScoreboard" style="display:none;width:100%;padding:8px 20px;flex-shrink:0">
+    <div class="team-scoreboard">
+      <div class="team-score-card team-a" id="teamACard"><div class="team-label" id="teamALabel">א׳</div><div class="team-score-num" id="teamAScore">0</div></div>
+      <div class="team-score-card team-b" id="teamBCard"><div class="team-label" id="teamBLabel">ב׳</div><div class="team-score-num" id="teamBScore">0</div></div>
+    </div>
+    <div class="team-bar-wrap"><div class="team-bar-a" id="teamBarA" style="width:50%"></div><div class="team-bar-b" id="teamBarB" style="width:50%"></div></div>
+  </div>
+  <div class="score-bar" id="scoreBar" style="display:none"></div>
+
+  <!-- WORD — fills all remaining space -->
+  <div class="word-display" id="wordDisplay" style="flex:1;font-size:clamp(2rem,12vw,4rem);display:flex;align-items:center;justify-content:center;width:100%;padding:20px;color:#fff;font-weight:900;text-align:center;word-break:break-word"></div>
+
+  <!-- Feedback -->
+  <div class="funny-msg" id="funnyMsg" style="flex-shrink:0;min-height:36px;font-size:18px;padding:0 20px"></div>
+  <p class="skip-counter" id="skipCounter" style="flex-shrink:0;font-size:14px;color:rgba(255,255,255,.5);margin:0;padding:0 20px 8px"></p>
+
+  <!-- ACTION BUTTONS — fixed at bottom, big -->
+  <div style="display:flex;gap:12px;padding:12px 20px 28px;width:100%;flex-shrink:0">
+    <button onclick="wordCorrect()" style="flex:1;height:140px;border-radius:24px;background:#22c55e;border:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:0 6px 24px rgba(0,230,118,.3)">
+      <span style="font-size:3rem">✅</span>
+      <span style="font-size:18px;font-weight:800;color:#fff">נכון!</span>
     </button>
-    <button class="btn btn-game-action btn-orange" onclick="wordSkip()" id="btnSkip" style="box-shadow:0 6px 24px rgba(255,145,0,.3)">
-      ⏭️<br><span class="action-label">דלג</span>
+    <button id="btnSkip" onclick="wordSkip()" style="flex:1;height:140px;border-radius:24px;background:#f97316;border:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:0 6px 24px rgba(255,145,0,.3)">
+      <span style="font-size:3rem">⏭️</span>
+      <span style="font-size:18px;font-weight:800;color:#fff">דלג</span>
     </button>
   </div>
 </div>
