@@ -16,7 +16,7 @@
 --radius:16px;--shadow:0 8px 32px rgba(0,0,0,.4);
 --teamA:#448aff;--teamB:#ff4081;
 }
-html{font-size:28px}
+html{font-size:32px}
 html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;box-sizing:border-box;
 font-family:system-ui,sans-serif;background:#1a1a2e;color:#fff}
 body{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;
@@ -24,7 +24,7 @@ background:#1a1a2e}
 
 /* Screens */
 .screen{display:none;flex-direction:column;align-items:center;justify-content:space-between;
-height:100svh;min-height:100svh;width:100%;max-width:100%;margin:0;padding:20px 16px 32px;box-sizing:border-box;
+height:100svh;min-height:100svh;width:100%;max-width:100%;margin:0;padding:24px 18px 36px;box-sizing:border-box;
 position:relative;text-align:center;overflow-y:auto;overflow-x:hidden}
 @media(min-width:600px){.screen{max-width:480px;margin:0 auto}}
 .screen.active{display:flex;animation:screenSlideIn .35s cubic-bezier(.4,0,.2,1)}
@@ -53,13 +53,13 @@ opacity:.4}
 .container{position:relative;z-index:1;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
 
 /* All buttons base */
-.btn{min-height:72px;border-radius:16px;font-size:1.2rem;width:100%;cursor:pointer;border:none;font-family:inherit;
+.btn{min-height:80px;border-radius:20px;font-size:1.1rem;width:100%;cursor:pointer;border:none;font-family:inherit;
 font-weight:700;transition:transform .1s;position:relative;overflow:hidden;
 touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .btn:active{transform:scale(.95)!important}
 .btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.2) 0%,transparent 50%);pointer-events:none;border-radius:inherit}
 
-.btn-primary{background:linear-gradient(135deg,var(--primary),#ffa000);color:#1a1a00;font-size:1.3rem;padding:16px 20px;
+.btn-primary{background:linear-gradient(135deg,var(--primary),#ffa000);color:#1a1a00;font-size:1.2rem;padding:20px 24px;
 box-shadow:0 6px 20px rgba(255,204,0,.3)}
 .btn-primary:hover{transform:scale(1.03);box-shadow:0 8px 28px rgba(255,204,0,.5)}
 
@@ -121,10 +121,10 @@ input::placeholder{color:rgba(255,255,255,.4)}
 /* Player setup */
 .player-list{width:100%;flex:1;min-height:0;max-height:30vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin:8px 0;
 scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
-.player-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border-radius:14px;padding:10px 14px;
-border:1px solid rgba(255,255,255,.08);min-height:64px}
-.player-item .avatar{font-size:2rem;min-width:40px;text-align:center}
-.player-item .name{flex:1;font-size:1.1rem;font-weight:600}
+.player-item{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.06);border-radius:18px;padding:14px 16px;
+border:1px solid rgba(255,255,255,.08);min-height:80px}
+.player-item .avatar{font-size:2.4rem;min-width:48px;text-align:center}
+.player-item .name{flex:1;font-size:1.1rem;font-weight:700}
 .player-item .remove{background:none;border:none;color:var(--red);font-size:1.2rem;cursor:pointer;padding:8px 10px;
 -webkit-tap-highlight-color:transparent;touch-action:manipulation;min-width:56px;min-height:56px;display:flex;align-items:center;justify-content:center}
 .player-input-row{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:6px}
@@ -132,7 +132,7 @@ border:1px solid rgba(255,255,255,.08);min-height:64px}
 .player-input-row .btn{min-height:64px;font-size:1.1rem;padding:14px 20px;width:100%}
 
 /* Kids toggle in player item — icon button */
-.kids-btn{width:52px;height:52px;border-radius:14px;border:2px solid rgba(255,255,255,.15);
+.kids-btn{width:64px;height:64px;border-radius:16px;border:2px solid rgba(255,255,255,.15);
 background:rgba(255,255,255,.06);font-size:1.6rem;cursor:pointer;display:flex;align-items:center;
 justify-content:center;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
 flex-shrink:0;position:relative}
@@ -144,10 +144,10 @@ background:var(--primary);border:2px solid #1a1a2e;display:none}
 
 /* Level select */
 .level-grid{display:flex;flex-direction:column;gap:10px;width:100%;margin:12px 0;flex:1;justify-content:center}
-.level-btn{display:flex;align-items:center;gap:14px;padding:20px 16px;border-radius:var(--radius);border:2px solid rgba(255,255,255,.1);
-background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:100px;flex:1}
+.level-btn{display:flex;align-items:center;gap:18px;padding:22px 18px;border-radius:20px;border:2px solid rgba(255,255,255,.1);
+background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:110px;flex:1}
 .level-btn:hover,.level-btn:active{border-color:var(--primary);background:rgba(255,204,0,.08);transform:scale(1.02)}
-.level-btn .icon{font-size:2.5rem}
+.level-btn .icon{font-size:3rem}
 .level-btn .info{text-align:right}
 .level-btn .info h3{font-size:1.2rem;font-weight:700;margin-bottom:2px}
 .level-btn .info p{font-size:.85rem;color:rgba(255,255,255,.6);font-weight:400}
@@ -164,7 +164,7 @@ font-size:2.8rem;font-weight:900;text-align:center}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
 
 /* Word display */
-.word-display{font-size:3.8rem;font-weight:900;text-align:center;padding:12px;
+.word-display{font-size:4.5rem;font-weight:900;text-align:center;padding:12px;
 margin:6px 0;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
 text-shadow:0 0 30px rgba(255,204,0,.3);width:100%;word-break:break-word;line-height:1.2}
 
@@ -182,12 +182,12 @@ text-shadow:0 0 30px rgba(255,204,0,.3);width:100%;word-break:break-word;line-he
 
 /* Action buttons for gameplay — correct + skip */
 .action-row{display:flex;gap:10px;width:100%;padding:0;flex-shrink:0;margin-top:auto;padding-bottom:6px}
-.action-row .btn-game-action{flex:1;width:48%;height:140px;border-radius:20px;font-weight:800;
+.action-row .btn-game-action{flex:1;width:48%;height:160px;border-radius:24px;font-weight:800;
 display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:auto}
-.action-row .btn-game-action.btn-green{font-size:2.2rem;background:#22c55e}
-.action-row .btn-game-action.btn-green .action-label{font-size:1.3rem}
-.action-row .btn-game-action.btn-orange{font-size:2.2rem;background:#f97316}
-.action-row .btn-game-action.btn-orange .action-label{font-size:1rem}
+.action-row .btn-game-action.btn-green{font-size:2.8rem;background:#22c55e}
+.action-row .btn-game-action.btn-green .action-label{font-size:1.2rem}
+.action-row .btn-game-action.btn-orange{font-size:2.8rem;background:#f97316}
+.action-row .btn-game-action.btn-orange .action-label{font-size:1.1rem}
 .skip-counter{font-size:.85rem;color:rgba(255,255,255,.6);margin-top:4px;margin-bottom:6px;flex-shrink:0}
 
 /* Score popup */
@@ -336,11 +336,11 @@ h1,h2{font-size:1.8rem;margin:0}
 p,small{font-size:1rem;text-align:center}
 
 /* ===== TEAM MODE STYLES ===== */
-.mode-toggle{display:flex;gap:8px;margin:10px 0;width:100%}
-.mode-btn{flex:1;padding:12px 10px;border-radius:14px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);
-cursor:pointer;font-family:inherit;font-weight:700;font-size:1rem;color:rgba(255,255,255,.7);
-transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:56px;
-display:flex;align-items:center;justify-content:center;gap:6px}
+.mode-toggle{display:flex;gap:12px;margin:12px 0;width:100%}
+.mode-btn{flex:1;padding:18px 10px;border-radius:18px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);
+cursor:pointer;font-family:inherit;font-weight:700;font-size:1.1rem;color:rgba(255,255,255,.7);
+transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:72px;
+display:flex;align-items:center;justify-content:center;gap:8px}
 .mode-btn.active{background:rgba(255,204,0,.12);border-color:var(--primary);color:var(--primary)}
 
 /* Team name inputs */
@@ -449,24 +449,6 @@ h1,h2{font-size:1.6rem}
 </div>
 
 <!-- GAME MODE SELECT -->
-<div class="screen" id="screenMode">
-  <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:2px">איך משחקים? 🎲</h2>
-  <p class="screen-subtitle">בחרו מצב משחק</p>
-  <div class="mode-toggle">
-    <button class="mode-btn active" id="modeFree" onclick="setGameMode('free')">🎭 חופשי</button>
-    <button class="mode-btn" id="modeTeam" onclick="setGameMode('team')">⚔️ קבוצות</button>
-  </div>
-  <div id="teamNamesSection" style="display:none;width:100%">
-    <p style="font-size:.85rem;color:rgba(255,255,255,.5);margin-bottom:6px">שמות הקבוצות (אופציונלי)</p>
-    <div class="team-names-row">
-      <input type="text" class="team-a-input" id="teamAName" placeholder="קבוצה א׳" maxlength="15" style="border:2px solid rgba(68,138,255,.4);background:rgba(68,138,255,.1)">
-      <input type="text" class="team-b-input" id="teamBName" placeholder="קבוצה ב׳" maxlength="15" style="border:2px solid rgba(255,64,129,.4);background:rgba(255,64,129,.1)">
-    </div>
-  </div>
-  <button class="btn btn-primary mt-16" onclick="showScreen('screenSetup')" style="font-size:1.3rem;min-height:64px">המשיכו ▸</button>
-  <button class="btn btn-small btn-action mt-8" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:1rem" onclick="showScreen('screenWelcome')">חזרה</button>
-</div>
-
 <!-- PLAYER SETUP -->
 <div class="screen" id="screenSetup">
   <h2 style="font-size:1.8rem;font-weight:800;margin-bottom:2px">מי משחק? 🎭</h2>
