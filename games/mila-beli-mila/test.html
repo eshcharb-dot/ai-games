@@ -594,11 +594,19 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 .pg-name { font-size: 4vw !important; max-width: none !important; overflow: visible !important; text-overflow: unset !important; white-space: normal !important; text-align: center !important; }
 
 /* Player list rows (setup screen) — fix overlap */
-.player-item { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 3vw !important; padding: 3vw 4vw !important; min-height: 18vw !important; }
+.player-item { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 3vw !important; padding: 3vw 4vw !important; min-height: 18vw !important; overflow: visible !important; }
 .player-item .avatar { font-size: 8vw !important; flex-shrink: 0 !important; min-width: 10vw !important; }
 .player-item .name { flex: 1 !important; font-size: 5.5vw !important; font-weight: 700 !important; text-align: right !important; min-width: 0 !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; }
-.kids-btn { width: 12vw !important; height: 12vw !important; font-size: 6vw !important; flex-shrink: 0 !important; }
+.kids-btn { width: 14vw !important; height: 14vw !important; min-height: 14vw !important; font-size: 6vw !important; flex-shrink: 0 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; }
 .player-item .remove { font-size: 5vw !important; min-width: 10vw !important; min-height: 10vw !important; flex-shrink: 0 !important; }
+
+/* Game top bar — bigger */
+.game-top-bar { height: 16vw !important; padding: 0 4vw !important; font-size: 5vw !important; }
+.current-player-header .cph-avatar { font-size: 7vw !important; }
+.current-player-header .cph-name { font-size: 4.5vw !important; }
+.round-indicator { font-size: 4.5vw !important; }
+.timer-ring { width: 14vw !important; height: 14vw !important; }
+.timer-ring .time-text { font-size: 5.5vw !important; }
 
 /* Ready screen */
 #screenReady { justify-content: space-evenly !important; gap: 0 !important; padding: 6vw 6vw 8vw !important; }
