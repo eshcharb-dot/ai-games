@@ -493,8 +493,11 @@ h1,h2{font-size:1.4rem}
     </div>
   </div>
 
-  <!-- MIDDLE: player list, scrolls if needed -->
-  <div class="player-list" id="playerList" style="flex:1;min-height:0;max-height:none;overflow-y:auto;margin-bottom:10px"></div>
+  <!-- MIDDLE: player list, grows as players added -->
+  <div class="player-list" id="playerList" style="flex:0 1 auto;min-height:0;max-height:35vh;overflow-y:auto;margin-bottom:6px"></div>
+
+  <!-- SPACER -->
+  <div style="flex:1"></div>
 
   <!-- BOTTOM: fixed -->
   <div style="flex-shrink:0;display:flex;flex-direction:column;gap:10px">
