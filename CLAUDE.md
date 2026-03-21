@@ -104,6 +104,12 @@ Before shipping any game, mentally walk through every screen on a 375px phone:
 **Desktop adapts from mobile — not the other way around.**
 Use `@media(min-width: 600px)` to add max-width constraints for desktop. Mobile is the default.
 
+**ABSOLUTE RULES — never break these:**
+- [ ] ZERO scrolling on any screen in the main game flow — if content overflows, make it smaller, not scrollable
+- [ ] Words must always fit on ONE line — use `clamp()` font-size + `white-space:nowrap` + `text-overflow:ellipsis`
+- [ ] Base font-size: 18px — gives good scaling without overflow
+- [ ] Use `vh` units for game action buttons (height: 22vh) so they scale with the screen height
+
 ### 8. Updating the Arcade Hub
 When adding a new game, update `games/index.html` to add a card with:
 - Emoji icon

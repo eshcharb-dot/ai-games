@@ -16,7 +16,7 @@
 --radius:16px;--shadow:0 8px 32px rgba(0,0,0,.4);
 --teamA:#448aff;--teamB:#ff4081;
 }
-html{font-size:32px}
+html{font-size:18px}
 html{margin:0;padding:0;width:100%;height:100%;overflow-x:hidden;box-sizing:border-box;background:#1a1a2e}
 body{margin:0;padding:0;width:100%;min-height:100svh;overflow-x:hidden;box-sizing:border-box;
 font-family:system-ui,sans-serif;background:#1a1a2e;color:#fff;
@@ -24,8 +24,8 @@ display:flex;flex-direction:column;align-items:center;justify-content:flex-start
 
 /* Screens */
 .screen{display:none;flex-direction:column;align-items:center;justify-content:space-between;
-height:100svh;min-height:100svh;width:100%;max-width:600px;margin:0 auto;padding:24px 20px 36px;box-sizing:border-box;
-position:relative;text-align:center;overflow-y:auto;overflow-x:hidden}
+height:100svh;min-height:100svh;width:100%;max-width:600px;margin:0 auto;padding:16px 20px 24px;box-sizing:border-box;
+position:relative;text-align:center;overflow:hidden}
 @media(min-width:600px){.screen{max-width:480px;margin:0 auto}}
 .screen.active{display:flex;animation:screenSlideIn .35s cubic-bezier(.4,0,.2,1)}
 
@@ -35,7 +35,7 @@ position:relative;text-align:center;overflow-y:auto;overflow-x:hidden}
 }
 
 /* Subtitle line on every screen */
-.screen-subtitle{font-size:14px;color:rgba(255,255,255,.5);margin-top:2px;margin-bottom:8px;font-weight:400;text-align:center;line-height:1.4}
+.screen-subtitle{font-size:0.85rem;color:rgba(255,255,255,.5);margin-top:4px;margin-bottom:10px;font-weight:400;text-align:center;line-height:1.4}
 
 /* Full-viewport background fill */
 body::after{content:'';position:fixed;inset:0;background:#1a1a2e;z-index:-1;pointer-events:none}
@@ -56,24 +56,24 @@ opacity:.4}
 .container{position:relative;z-index:1;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
 
 /* All buttons base */
-.btn{min-height:80px;border-radius:20px;font-size:1.1rem;width:100%;cursor:pointer;border:none;font-family:inherit;
+.btn{min-height:60px;border-radius:16px;font-size:1.1rem;width:100%;cursor:pointer;border:none;font-family:inherit;
 font-weight:700;transition:transform .1s;position:relative;overflow:hidden;
 touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .btn:active{transform:scale(.95)!important}
 .btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.2) 0%,transparent 50%);pointer-events:none;border-radius:inherit}
 
-.btn-primary{background:linear-gradient(135deg,var(--primary),#ffa000);color:#1a1a00;font-size:1.2rem;padding:20px 24px;
+.btn-primary{background:linear-gradient(135deg,var(--primary),#ffa000);color:#1a1a00;font-size:1.35rem;padding:18px 24px;
 box-shadow:0 6px 20px rgba(255,204,0,.3)}
 .btn-primary:hover{transform:scale(1.03);box-shadow:0 8px 28px rgba(255,204,0,.5)}
 
-.btn-action{font-size:1.1rem;padding:14px 20px;box-shadow:var(--shadow)}
+.btn-action{font-size:1.2rem;padding:14px 20px;box-shadow:var(--shadow)}
 .btn-green{background:linear-gradient(135deg,var(--green),#00c853);color:#003300}
 .btn-red{background:linear-gradient(135deg,var(--red),#d50000);color:#fff}
 .btn-blue{background:linear-gradient(135deg,var(--blue),#2962ff);color:#fff}
 .btn-accent{background:linear-gradient(135deg,var(--accent),#c51162);color:#fff}
 .btn-purple{background:linear-gradient(135deg,var(--purple),#aa00ff);color:#fff}
 .btn-orange{background:linear-gradient(135deg,var(--orange),#ff6d00);color:#fff}
-.btn-small{font-size:1rem;padding:12px 16px;border-radius:14px;min-height:56px}
+.btn-small{font-size:1.05rem;padding:12px 16px;border-radius:14px;min-height:52px}
 
 .btn-icon{width:72px;height:72px;border-radius:50%;font-size:2rem;display:flex;align-items:center;justify-content:center;padding:0;min-height:auto}
 
@@ -91,24 +91,24 @@ font-size:.7rem;font-weight:600;display:none;align-items:center;gap:4px}
 .offline-badge.visible{display:flex}
 
 /* Title */
-.game-title{font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--accent));
--webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;margin-bottom:4px;line-height:1.2;text-align:center}
-.game-subtitle{font-size:1rem;color:rgba(255,255,255,.7);margin-bottom:16px;font-weight:400;text-align:center}
+.game-title{font-size:1.7rem;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--accent));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;margin-bottom:6px;line-height:1.2;text-align:center}
+.game-subtitle{font-size:1.05rem;color:rgba(255,255,255,.7);margin-bottom:16px;font-weight:400;text-align:center}
 
 /* Welcome screen overrides */
 #screenWelcome{justify-content:space-between;min-height:100vh;height:100svh;padding:0;display:flex;flex-direction:column}
-#screenWelcome .welcome-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:100%;padding:10vh 16px 20px;min-height:0}
-#screenWelcome .welcome-bottom{width:100%;padding:16px 16px env(safe-area-inset-bottom, 32px);display:flex;flex-direction:column;gap:12px;flex-shrink:0}
-#screenWelcome .welcome-hero{font-size:7rem;line-height:1;margin:0 0 20px}
-#screenWelcome .game-title{font-size:3.8rem;margin-bottom:8px}
-#screenWelcome .game-subtitle{font-size:1.1rem;color:rgba(255,255,255,.85);margin-bottom:0;font-weight:600}
+#screenWelcome .welcome-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:8vh 20px 20px;min-height:0}
+#screenWelcome .welcome-bottom{width:100%;padding:16px 20px env(safe-area-inset-bottom, 32px);display:flex;flex-direction:column;gap:12px;flex-shrink:0}
+#screenWelcome .welcome-hero{font-size:25vw;line-height:1;margin:0 0 20px}
+#screenWelcome .game-title{font-size:2.8rem;margin-bottom:8px}
+#screenWelcome .game-subtitle{font-size:1.2rem;color:rgba(255,255,255,.85);margin-bottom:0;font-weight:600}
 #screenWelcome .welcome-actions{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}
-#screenWelcome .btn-start{height:88px;font-size:1.6rem;width:100%;border-radius:20px}
-#screenWelcome .btn-leaderboard{height:72px;font-size:1.1rem;width:100%;border-radius:16px;
+#screenWelcome .btn-start{height:80px;font-size:1.45rem;width:100%;border-radius:20px}
+#screenWelcome .btn-leaderboard{height:72px;font-size:1.2rem;width:100%;border-radius:16px;
 background:transparent;border:2px solid rgba(255,255,255,.25);color:var(--white);font-family:inherit;font-weight:700;
 cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 #screenWelcome .btn-leaderboard:active{transform:scale(.95);background:rgba(255,255,255,.08)}
-#screenWelcome .welcome-version{font-size:0.7rem;color:rgba(255,255,255,.35);text-align:center;padding:4px}
+#screenWelcome .welcome-version{font-size:0.7rem;color:rgba(255,255,255,.3);text-align:center;padding:4px}
 
 /* Cards */
 .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);
@@ -116,27 +116,27 @@ padding:16px;width:100%;backdrop-filter:blur(8px)}
 
 /* All inputs */
 input[type="text"],input[type="number"],input[type="email"],input[type="search"]{
-height:56px;font-size:1.1rem;width:100%;border-radius:12px;padding:0 14px;box-sizing:border-box;
+height:60px;font-size:1.15rem;width:100%;border-radius:14px;padding:0 16px;box-sizing:border-box;
 background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.15);color:#fff;font-family:inherit;outline:none;transition:border-color .2s}
 input:focus{border-color:var(--primary)}
 input::placeholder{color:rgba(255,255,255,.4)}
 
 /* Player setup */
-.player-list{width:100%;flex:1;min-height:0;max-height:30vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin:8px 0;
+.player-list{width:100%;flex:1;min-height:0;max-height:35vh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin:10px 0;
 scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
 .player-item{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.06);border-radius:18px;padding:14px 16px;
-border:1px solid rgba(255,255,255,.08);min-height:80px}
-.player-item .avatar{font-size:2.4rem;min-width:48px;text-align:center}
-.player-item .name{flex:1;font-size:1.1rem;font-weight:700}
-.player-item .remove{background:none;border:none;color:var(--red);font-size:1.2rem;cursor:pointer;padding:8px 10px;
--webkit-tap-highlight-color:transparent;touch-action:manipulation;min-width:56px;min-height:56px;display:flex;align-items:center;justify-content:center}
-.player-input-row{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:6px}
-.player-input-row input{width:100%;height:56px;font-size:1.1rem}
-.player-input-row .btn{min-height:64px;font-size:1.1rem;padding:14px 20px;width:100%}
+border:1px solid rgba(255,255,255,.08);min-height:72px}
+.player-item .avatar{font-size:2rem;min-width:44px;text-align:center}
+.player-item .name{flex:1;font-size:1.15rem;font-weight:700}
+.player-item .remove{background:none;border:none;color:var(--red);font-size:1.3rem;cursor:pointer;padding:8px 10px;
+-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-width:48px;min-height:48px;display:flex;align-items:center;justify-content:center}
+.player-input-row{display:flex;flex-direction:row;gap:10px;width:100%;margin-top:8px}
+.player-input-row input{flex:1;height:60px;font-size:1.15rem;min-width:0}
+.player-input-row .btn{min-height:60px;font-size:1.15rem;padding:14px 20px;width:auto;white-space:nowrap;flex-shrink:0}
 
 /* Kids toggle in player item — icon button */
-.kids-btn{width:64px;height:64px;border-radius:16px;border:2px solid rgba(255,255,255,.15);
-background:rgba(255,255,255,.06);font-size:1.6rem;cursor:pointer;display:flex;align-items:center;
+.kids-btn{width:52px;height:52px;border-radius:14px;border:2px solid rgba(255,255,255,.15);
+background:rgba(255,255,255,.06);font-size:1.4rem;cursor:pointer;display:flex;align-items:center;
 justify-content:center;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
 flex-shrink:0;position:relative}
 .kids-btn.active{background:rgba(255,204,0,.15);border-color:rgba(255,204,0,.5);
@@ -146,14 +146,14 @@ background:var(--primary);border:2px solid #1a1a2e;display:none}
 .kids-btn.active .kids-dot{display:block}
 
 /* Level select */
-.level-grid{display:flex;flex-direction:column;gap:10px;width:100%;margin:12px 0;flex:1;justify-content:center}
-.level-btn{display:flex;align-items:center;gap:18px;padding:22px 18px;border-radius:20px;border:2px solid rgba(255,255,255,.1);
-background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:110px;flex:1}
+.level-grid{display:flex;flex-direction:column;gap:12px;width:100%;margin:14px 0;flex:1;justify-content:center}
+.level-btn{display:flex;align-items:center;gap:16px;padding:18px 16px;border-radius:20px;border:2px solid rgba(255,255,255,.1);
+background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:100px;flex:1}
 .level-btn:hover,.level-btn:active{border-color:var(--primary);background:rgba(255,204,0,.08);transform:scale(1.02)}
-.level-btn .icon{font-size:3rem}
+.level-btn .icon{font-size:2.5rem}
 .level-btn .info{text-align:right}
-.level-btn .info h3{font-size:1.2rem;font-weight:700;margin-bottom:2px}
-.level-btn .info p{font-size:.85rem;color:rgba(255,255,255,.6);font-weight:400}
+.level-btn .info h3{font-size:1.2rem;font-weight:700;margin-bottom:3px}
+.level-btn .info p{font-size:0.9rem;color:rgba(255,255,255,.6);font-weight:400}
 
 /* Timer */
 .timer-ring{position:relative;width:80px;height:80px;margin:0 auto;flex-shrink:0}
@@ -162,17 +162,18 @@ background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:
 .timer-ring .progress{fill:none;stroke-width:8;stroke-linecap:round;
 transition:stroke-dashoffset .3s linear,stroke .3s}
 .timer-ring .time-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-font-size:2.8rem;font-weight:900;text-align:center}
+font-size:2.2rem;font-weight:900;text-align:center}
 .timer-ring.urgent .time-text{color:var(--red);animation:pulse .5s ease-in-out infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
 
 /* Word display */
-.word-display{font-size:4.5rem;font-weight:900;text-align:center;padding:12px;
+.word-display{font-size:clamp(1.6rem,8vw,3.2rem);font-weight:900;text-align:center;padding:8px 12px;
 margin:6px 0;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-text-shadow:0 0 30px rgba(255,204,0,.3);width:100%;word-break:break-word;line-height:1.2}
+text-shadow:0 0 30px rgba(255,204,0,.3);width:100%;white-space:nowrap;overflow:hidden;
+text-overflow:ellipsis;line-height:1.2}
 
 /* Emoji word for kids mode */
-.emoji-word{font-size:9rem;animation:emojiBounce 1.5s ease-in-out infinite;line-height:1}
+.emoji-word{font-size:7rem;animation:emojiBounce 1.5s ease-in-out infinite;line-height:1}
 @keyframes emojiBounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-12px) scale(1.08)}}
 
 /* Word pop animation */
@@ -184,14 +185,14 @@ text-shadow:0 0 30px rgba(255,204,0,.3);width:100%;word-break:break-word;line-he
 .word-pop{animation:wordPop .4s cubic-bezier(.17,.67,.21,1.3)}
 
 /* Action buttons for gameplay — correct + skip */
-.action-row{display:flex;gap:10px;width:100%;padding:0;flex-shrink:0;margin-top:auto;padding-bottom:6px}
-.action-row .btn-game-action{flex:1;width:48%;height:160px;border-radius:24px;font-weight:800;
-display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:auto}
-.action-row .btn-game-action.btn-green{font-size:2.8rem;background:#22c55e}
-.action-row .btn-game-action.btn-green .action-label{font-size:1.2rem}
-.action-row .btn-game-action.btn-orange{font-size:2.8rem;background:#f97316}
-.action-row .btn-game-action.btn-orange .action-label{font-size:1.1rem}
-.skip-counter{font-size:.85rem;color:rgba(255,255,255,.6);margin-top:4px;margin-bottom:6px;flex-shrink:0}
+.action-row{display:flex;gap:12px;width:100%;padding:0;flex-shrink:0;margin-top:auto;padding-bottom:8px}
+.action-row .btn-game-action{flex:1;width:48%;height:22vh;max-height:140px;min-height:100px;border-radius:20px;font-weight:800;
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0}
+.action-row .btn-game-action.btn-green{font-size:2.2rem;background:#22c55e}
+.action-row .btn-game-action.btn-green .action-label{font-size:1rem}
+.action-row .btn-game-action.btn-orange{font-size:2.2rem;background:#f97316}
+.action-row .btn-game-action.btn-orange .action-label{font-size:.9rem}
+.skip-counter{font-size:0.85rem;color:rgba(255,255,255,.6);margin-top:4px;margin-bottom:8px;flex-shrink:0}
 
 /* Score popup */
 .score-popup{position:fixed;pointer-events:none;z-index:200;font-size:2.5rem;font-weight:900;
@@ -209,14 +210,14 @@ color:var(--green);animation:scoreUp 1s ease-out forwards}
 /* Player turn transition */
 .turn-transition{position:fixed;inset:0;z-index:150;display:flex;flex-direction:column;align-items:center;
 justify-content:center;background:linear-gradient(135deg,#ff4081,#d500f9);animation:fadeIn .3s}
-.turn-transition .pass-label{font-size:2rem;font-weight:900;color:#fff;margin-bottom:10px;
+.turn-transition .pass-label{font-size:1.8rem;font-weight:900;color:#fff;margin-bottom:12px;
 text-shadow:0 2px 20px rgba(0,0,0,.3);letter-spacing:1px;text-align:center}
-.turn-transition .emoji{font-size:4.5rem;margin-bottom:10px;animation:bounce 1s ease infinite}
-.turn-transition .label{font-size:1.05rem;color:rgba(255,255,255,.8);margin-bottom:6px;text-align:center}
-.turn-transition .player-name{font-size:1.8rem;font-weight:900;color:#fff;margin-bottom:14px;
+.turn-transition .emoji{font-size:5rem;margin-bottom:12px;animation:bounce 1s ease infinite}
+.turn-transition .label{font-size:1.1rem;color:rgba(255,255,255,.8);margin-bottom:8px;text-align:center}
+.turn-transition .player-name{font-size:2rem;font-weight:900;color:#fff;margin-bottom:16px;
 text-shadow:0 2px 20px rgba(0,0,0,.3);text-align:center}
-.turn-transition .arrow{font-size:3.5rem;animation:bounce 1s ease infinite}
-.turn-transition .countdown{font-size:1.6rem;font-weight:bold;color:#fff;margin-top:14px;text-shadow:0 2px 20px rgba(0,0,0,.3);text-align:center}
+.turn-transition .arrow{font-size:3rem;animation:bounce 1s ease infinite}
+.turn-transition .countdown{font-size:1.5rem;font-weight:bold;color:#fff;margin-top:14px;text-shadow:0 2px 20px rgba(0,0,0,.3);text-align:center}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
@@ -233,10 +234,10 @@ opacity:0;animation:lbReveal .4s ease forwards}
 .lb-item.silver{background:linear-gradient(135deg,rgba(192,192,192,.1),rgba(192,192,192,.04));border-color:rgba(192,192,192,.2)}
 .lb-item.bronze{background:linear-gradient(135deg,rgba(205,127,50,.1),rgba(205,127,50,.04));border-color:rgba(205,127,50,.2)}
 .lb-item .rank{font-size:1.3rem;min-width:32px;text-align:center;font-weight:800}
-.lb-item .lb-avatar{font-size:1.6rem;min-width:32px;text-align:center}
-.lb-item .lb-name{flex:1;font-weight:600;font-size:1rem}
-.lb-item .lb-score{font-size:1.1rem;font-weight:800;color:var(--primary)}
-.lb-item .lb-best{font-size:.7rem;color:rgba(255,255,255,.4);font-weight:400}
+.lb-item .lb-avatar{font-size:1.5rem;min-width:32px;text-align:center}
+.lb-item .lb-name{flex:1;font-weight:600;font-size:1.05rem}
+.lb-item .lb-score{font-size:1.15rem;font-weight:800;color:var(--primary)}
+.lb-item .lb-best{font-size:0.75rem;color:rgba(255,255,255,.4);font-weight:400}
 .lb-item .crown{position:absolute;top:-8px;right:-4px;font-size:1.1rem}
 
 @keyframes lbReveal{
@@ -253,17 +254,17 @@ scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
 .round-score-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;
 background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);min-height:56px;
 opacity:0;animation:lbReveal .4s ease forwards}
-.round-score-item .rs-avatar{font-size:1.6rem}
+.round-score-item .rs-avatar{font-size:1.5rem}
 .round-score-item .rs-name{flex:1;font-weight:600;font-size:1.1rem}
-.round-score-item .rs-score{font-size:1.3rem;font-weight:800;color:var(--primary)}
-.round-score-item .rs-best{font-size:.7rem;color:rgba(255,255,255,.4)}
+.round-score-item .rs-score{font-size:1.2rem;font-weight:800;color:var(--primary)}
+.round-score-item .rs-best{font-size:0.75rem;color:rgba(255,255,255,.4)}
 .round-score-item .rs-crown{font-size:1.1rem}
 
 /* Tabs */
 .tabs{display:flex;gap:6px;margin-bottom:12px;width:100%}
 .tab{flex:1;padding:10px;border-radius:12px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);
-cursor:pointer;font-family:inherit;font-weight:600;font-size:.95rem;color:rgba(255,255,255,.7);
-transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:56px}
+cursor:pointer;font-family:inherit;font-weight:600;font-size:1rem;color:rgba(255,255,255,.7);
+transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:52px}
 .tab.active{background:rgba(255,204,0,.1);border-color:var(--primary);color:var(--primary)}
 
 /* Misc */
@@ -290,9 +291,9 @@ border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,25
 
 /* Current player header in game */
 .current-player-header{display:flex;align-items:center;gap:8px;margin-bottom:4px}
-.current-player-header .cph-emoji{font-size:1.8rem}
-.current-player-header .cph-name{font-size:1.1rem;font-weight:800;color:var(--primary)}
-.current-player-header .cph-score{font-size:.85rem;color:rgba(255,255,255,.6);font-weight:600}
+.current-player-header .cph-emoji{font-size:1.6rem}
+.current-player-header .cph-name{font-size:1.15rem;font-weight:800;color:var(--primary)}
+.current-player-header .cph-score{font-size:0.85rem;color:rgba(255,255,255,.6);font-weight:600}
 
 /* Score bar */
 .score-bar{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0;width:100%}
@@ -307,43 +308,43 @@ background:rgba(255,255,255,.06);font-size:.75rem;position:relative}
 .start-countdown-overlay{position:fixed;inset:0;z-index:160;display:flex;flex-direction:column;align-items:center;
 justify-content:center;background:linear-gradient(135deg,#1a1052,#2a1060,#0a0a2e);gap:10px}
 .start-countdown-overlay .sco-label{font-size:1.3rem;font-weight:700;color:rgba(255,255,255,.8);text-align:center}
-.start-countdown-overlay .sco-avatar{font-size:3.5rem;margin-bottom:4px}
-.start-countdown-overlay .sco-name{font-size:1.8rem;font-weight:900;color:var(--primary);margin-bottom:16px;text-align:center}
-.start-countdown-overlay .sco-number{font-size:7rem;font-weight:900;color:#fff;
+.start-countdown-overlay .sco-avatar{font-size:3.5rem;margin-bottom:6px}
+.start-countdown-overlay .sco-name{font-size:1.8rem;font-weight:900;color:var(--primary);margin-bottom:20px;text-align:center}
+.start-countdown-overlay .sco-number{font-size:6rem;font-weight:900;color:#fff;
 text-shadow:0 0 60px rgba(255,204,0,.4),0 0 120px rgba(255,64,129,.2);line-height:1;text-align:center}
-.start-countdown-overlay .sco-number.sco-go{font-size:5rem;color:gold}
+.start-countdown-overlay .sco-number.sco-go{font-size:4.5rem;color:gold}
 .sco-pop{animation:scoPop .7s cubic-bezier(.17,.67,.21,1.2)}
 @keyframes scoPop{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
 
 /* Rounds select */
-.rounds-grid{display:flex;flex-direction:column;gap:10px;width:100%;margin:12px 0}
-.round-btn{height:72px;width:100%;border-radius:var(--radius);border:2px solid rgba(255,255,255,.1);
+.rounds-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;margin:14px 0}
+.round-btn{height:auto;min-height:80px;width:100%;border-radius:var(--radius);border:2px solid rgba(255,255,255,.1);
 background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;
 -webkit-tap-highlight-color:transparent;font-family:inherit;color:#fff;display:flex;flex-direction:column;
-align-items:center;justify-content:center;gap:2px}
+align-items:center;justify-content:center;gap:4px;padding:14px 8px}
 .round-btn:hover,.round-btn:active{border-color:var(--primary);background:rgba(255,204,0,.08);transform:scale(1.02)}
 .round-btn.selected{border-color:var(--primary);background:rgba(255,204,0,.15);box-shadow:0 0 20px rgba(255,204,0,.2)}
-.round-btn .rb-title{font-size:1.1rem;font-weight:700}
-.round-btn .rb-time{font-size:.8rem;color:rgba(255,255,255,.5);font-weight:400}
+.round-btn .rb-title{font-size:1.15rem;font-weight:700}
+.round-btn .rb-time{font-size:0.8rem;color:rgba(255,255,255,.5);font-weight:400}
 
 /* Round indicator */
 .round-indicator{font-size:.85rem;color:rgba(255,255,255,.5);font-weight:600;text-align:center;margin-bottom:4px;flex-shrink:0}
 
 /* Grand final */
-.grand-title{font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--accent));
+.grand-title{font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--accent));
 -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;text-align:center}
 
 /* Headings */
 h1,h2,h3{text-align:center}
-h1,h2{font-size:1.8rem;margin:0}
+h1,h2{font-size:1.6rem;margin:0}
 p,small{font-size:1rem;text-align:center}
 
 /* ===== TEAM MODE STYLES ===== */
 .mode-toggle{display:flex;gap:12px;margin:12px 0;width:100%}
-.mode-btn{flex:1;padding:18px 10px;border-radius:18px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);
-cursor:pointer;font-family:inherit;font-weight:700;font-size:1.1rem;color:rgba(255,255,255,.7);
-transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:72px;
-display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.mode-btn{flex:1;padding:16px 10px;border-radius:18px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);
+cursor:pointer;font-family:inherit;font-weight:700;font-size:1.2rem;color:rgba(255,255,255,.7);
+transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:70px;
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
 .mode-btn.active{background:rgba(255,204,0,.12);border-color:var(--primary);color:var(--primary)}
 
 /* Team name inputs */
@@ -359,7 +360,7 @@ display:flex;flex-direction:column;align-items:center;justify-content:center;gap
 .team-score-card.team-b{background:rgba(255,64,129,.12);border:2px solid rgba(255,64,129,.3)}
 .team-score-card.active-team{box-shadow:0 0 20px rgba(255,204,0,.3);border-color:var(--primary)}
 .team-score-card .team-label{font-size:.75rem;font-weight:600;color:rgba(255,255,255,.7);margin-bottom:2px}
-.team-score-card .team-score-num{font-size:2rem;font-weight:900;transition:all .2s}
+.team-score-card .team-score-num{font-size:1.8rem;font-weight:900;transition:all .2s}
 .team-score-card.team-a .team-score-num{color:var(--teamA)}
 .team-score-card.team-b .team-score-num{color:var(--teamB)}
 
@@ -374,7 +375,7 @@ font-size:.65rem;font-weight:700;color:#fff;min-width:0}
 /* Team winner celebration */
 .winner-crown{font-size:4.5rem;animation:winnerBounce 1s ease infinite}
 @keyframes winnerBounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-15px) scale(1.1)}}
-.winner-team-name{font-size:2.2rem;font-weight:900;margin:10px 0}
+.winner-team-name{font-size:2rem;font-weight:900;margin:10px 0}
 .winner-team-a{color:var(--teamA);text-shadow:0 0 30px rgba(68,138,255,.4)}
 .winner-team-b{color:var(--teamB);text-shadow:0 0 30px rgba(255,64,129,.4)}
 
@@ -394,36 +395,36 @@ animation:fadeIn .5s;text-align:center}
 .btn-share{background:linear-gradient(135deg,#25D366,#128C7E);color:#fff}
 
 @media(max-width:380px){
-.game-title{font-size:1.5rem}
-#screenWelcome .game-title{font-size:2.2rem}
-#screenWelcome .welcome-hero{font-size:3.5rem}
-#screenWelcome .game-subtitle{font-size:1rem}
-.btn-primary{font-size:1.1rem;padding:14px 16px}
-.action-row .btn-game-action{height:100px}
-.action-row .btn-game-action.btn-green{font-size:1.8rem}
-.action-row .btn-game-action.btn-orange{font-size:1.6rem}
-.timer-ring{width:65px;height:65px}
-.timer-ring .time-text{font-size:2.2rem}
-.current-player-header .cph-name{font-size:1rem}
-.word-display{font-size:2.5rem}
-.emoji-word{font-size:7rem}
-.level-btn{min-height:70px;padding:14px 12px}
+.game-title{font-size:1.4rem}
+#screenWelcome .game-title{font-size:2.4rem}
+#screenWelcome .welcome-hero{font-size:22vw}
+#screenWelcome .game-subtitle{font-size:1.05rem}
+.btn-primary{font-size:1.2rem;padding:14px 16px}
+.action-row .btn-game-action{height:120px}
+.action-row .btn-game-action.btn-green{font-size:2.2rem}
+.action-row .btn-game-action.btn-orange{font-size:2rem}
+.timer-ring{width:70px;height:70px}
+.timer-ring .time-text{font-size:2rem}
+.current-player-header .cph-name{font-size:1.05rem}
+.word-display{font-size:3rem}
+.emoji-word{font-size:5.5rem}
+.level-btn{min-height:80px;padding:14px 12px}
 .level-btn .icon{font-size:2rem}
-.level-btn .info h3{font-size:1.05rem}
-.round-btn{height:64px}
+.level-btn .info h3{font-size:1.1rem}
+.round-btn{min-height:70px}
 .round-score-item{min-height:48px}
 .lb-item{min-height:48px}
-.team-score-card .team-score-num{font-size:1.6rem}
-h1,h2{font-size:1.6rem}
+.team-score-card .team-score-num{font-size:1.5rem}
+h1,h2{font-size:1.4rem}
 }
 @media(max-height:600px){
-.action-row .btn-game-action{height:90px}
-.action-row .btn-game-action.btn-green{font-size:1.8rem}
-.action-row .btn-game-action.btn-orange{font-size:1.6rem}
-.word-display{font-size:2.5rem}
-.emoji-word{font-size:6rem}
-.timer-ring{width:60px;height:60px}
-.timer-ring .time-text{font-size:2.2rem}
+.action-row .btn-game-action{height:110px}
+.action-row .btn-game-action.btn-green{font-size:2rem}
+.action-row .btn-game-action.btn-orange{font-size:1.8rem}
+.word-display{font-size:2.8rem}
+.emoji-word{font-size:5rem}
+.timer-ring{width:65px;height:65px}
+.timer-ring .time-text{font-size:1.8rem}
 }
 </style>
 </head>
@@ -447,13 +448,13 @@ h1,h2{font-size:1.6rem}
   <div class="welcome-bottom">
     <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">
       התחילו משחק 🎮
-      <div style="font-size:.6rem;font-weight:400;opacity:.8;margin-top:3px">הוסיפו שחקנים ובחרו רמה</div>
+      <div style="font-size:0.75rem;font-weight:400;opacity:.8;margin-top:4px">הוסיפו שחקנים ובחרו רמה</div>
     </button>
     <button class="btn-leaderboard" onclick="showLeaderboard()">
       🏆 טבלת אלופים
-      <div style="font-size:.6rem;font-weight:400;opacity:.7;margin-top:2px">ראו את הניקוד הכי גבוה</div>
+      <div style="font-size:0.75rem;font-weight:400;opacity:.7;margin-top:3px">ראו את הניקוד הכי גבוה</div>
     </button>
-    <div class="welcome-version" style="font-size:1.2rem;font-weight:700;color:rgba(255,204,0,.6);letter-spacing:2px">v14</div>
+    <div class="welcome-version">v14.0</div>
   </div>
 </div>
 
