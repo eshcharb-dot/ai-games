@@ -593,8 +593,8 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 .pg-emoji { font-size: 9vw !important; }
 .pg-name { font-size: 4.5vw !important; }
 
-/* Setup screen: fixed layout, no scroll */
-#screenSetup { justify-content: flex-start !important; gap: 2vw !important; overflow: hidden !important; }
+/* Setup screen: fixed layout, scroll when keyboard opens */
+#screenSetup { justify-content: flex-start !important; gap: 2vw !important; overflow-y: auto !important; overflow-x: hidden !important; height: 100dvh !important; }
 #screenSetup .setup-subtitle { display: none !important; }
 #screenSetup .setup-title::after { content: '' !important; }
 #screenSetup .player-list { flex: 1 1 auto !important; min-height: 0 !important; max-height: 30vh !important; overflow-y: auto !important; }
@@ -652,7 +652,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 
   <div class="mode-toggle">
     <button class="mode-btn active" id="modeFree" onclick="setGameMode('free')">🎭 חופשי</button>
-    <button class="mode-btn" id="modeTeam" onclick="setGameMode('team')">⚔️ קבוצות</button>
+    <button class="mode-btn" id="modeTeam" onclick="setGameMode('team')">🤝 קבוצות</button>
   </div>
 
   <div id="teamNamesSection" class="team-names-section" style="display:none">
@@ -664,7 +664,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 
   <p style="font-size:4vw;color:rgba(255,255,255,.5);margin:0;text-align:right">🌟 = מצב תמונות לילדים שלא קוראים</p>
   <div class="player-input-row">
-    <input type="text" id="playerNameInput" placeholder="שם (או ריק לכינוי מצחיק)" maxlength="20" onkeydown="if(event.key==='Enter')addPlayer()">
+    <input type="text" id="playerNameInput" placeholder="שם (או ריק לכינוי מצחיק)" maxlength="20" onkeydown="if(event.key==='Enter')addPlayer()" onfocus="setTimeout(()=>this.scrollIntoView({behavior:'smooth',block:'center'}),300)">
     <button class="btn btn-action btn-green" onclick="addPlayer()">+ הוסיפו</button>
   </div>
 
