@@ -606,7 +606,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 .player-item-actions { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 3vw !important; width: 100% !important; }
 
 /* Game top bar — bigger, high specificity */
-#screenGame .game-top-bar { height: 20vw !important; padding: 0 4vw !important; flex-shrink: 0 !important; background: rgba(255,255,255,.06) !important; gap: 3vw !important; }
+#screenGame .game-top-bar { height: 20vw !important; padding: 2vw 4vw 0 4vw !important; flex-shrink: 0 !important; background: rgba(255,255,255,.06) !important; gap: 3vw !important; margin-top: env(safe-area-inset-top, 0px) !important; }
 #screenGame .game-top-bar .current-player-header { margin: 0 !important; flex: 1 !important; display: flex !important; align-items: center !important; gap: 2vw !important; justify-content: flex-end !important; }
 #screenGame .game-top-bar .cph-avatar { font-size: 9vw !important; }
 #screenGame .game-top-bar .cph-name { font-size: 5.5vw !important; color: var(--primary) !important; }
@@ -620,7 +620,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 #screenGame .skip-counter, #screenGame [id="skipCounter"] { font-size: 5vw !important; color: rgba(255,255,255,.7) !important; }
 
 /* Word centered vertically */
-#screenGame.active { flex-direction: column !important; height: 100dvh !important; overflow: hidden !important; }
+#screenGame.active { flex-direction: column !important; height: 100dvh !important; overflow: hidden !important; padding-top: env(safe-area-inset-top, 8px) !important; }
 #screenGame .game-word-area { 
   flex: 1 !important; 
   display: flex !important; 
