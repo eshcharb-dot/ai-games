@@ -1706,14 +1706,20 @@ function nextWord() {
     wd.style.overflow = 'hidden';
     // Auto-shrink until it fits
     setTimeout(() => {
-      let size = parseFloat(wd.style.fontSize) || 12;
+      let size = parseFloat(wd.style.fontSize) || 20;
       wd.style.whiteSpace = 'nowrap';
+      // First try to grow to fill the space
+      const maxSize = 35;
+      while (wd.scrollWidth < wd.offsetWidth * 0.85 && size < maxSize) {
+        size += 1;
+        wd.style.fontSize = size + 'vw';
+      }
+      // Then shrink if overflowing
       while (wd.scrollWidth > wd.offsetWidth && size > 4) {
         size -= 0.5;
         wd.style.fontSize = size + 'vw';
       }
       if (size <= 4) {
-        // Still too long — wrap it
         wd.style.whiteSpace = 'normal';
         wd.style.wordBreak = 'break-word';
       }
