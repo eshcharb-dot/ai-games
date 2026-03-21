@@ -152,25 +152,6 @@ background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:
 .level-btn .info h3{font-size:1.2rem;font-weight:700;margin-bottom:2px}
 .level-btn .info p{font-size:.85rem;color:rgba(255,255,255,.6);font-weight:400}
 
-/* Taboo toggle in setup */
-.taboo-toggle{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0;width:100%;
-padding:12px 16px;border-radius:14px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);
-cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:56px}
-.taboo-toggle.active{background:rgba(255,64,129,.1);border-color:rgba(255,64,129,.4)}
-.taboo-toggle input{display:none}
-.taboo-toggle span{font-size:1rem;font-weight:600;color:rgba(255,255,255,.7)}
-.taboo-toggle.active span{color:var(--accent)}
-
-/* Taboo words under main word */
-.taboo-words{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:6px}
-.taboo-word{padding:4px 12px;border-radius:10px;background:rgba(255,23,68,.12);border:1px solid rgba(255,23,68,.3);
-color:var(--red);font-size:.85rem;font-weight:600;text-decoration:line-through}
-.taboo-btn{min-height:56px;border-radius:14px;font-size:1rem;font-weight:700;padding:10px 16px;
-background:linear-gradient(135deg,#ff1744,#d50000);color:#fff;border:none;cursor:pointer;
-font-family:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
-transition:transform .1s;width:100%;margin-top:4px}
-.taboo-btn:active{transform:scale(.95)}
-
 /* Timer */
 .timer-ring{position:relative;width:80px;height:80px;margin:0 auto;flex-shrink:0}
 .timer-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
@@ -498,11 +479,7 @@ html{font-size:18px}
       onkeydown="if(event.key==='Enter')addPlayer()">
     <button class="btn btn-action btn-green" onclick="addPlayer()" style="min-height:64px;font-size:1.1rem">+ הוסיפו</button>
   </div>
-  <!-- Taboo toggle -->
-  <label class="taboo-toggle" id="tabooToggle" onclick="toggleTaboo()">
-    <input type="checkbox" id="tabooCheckbox">
-    <span>🚫 מצב טאבו — מילים אסורות</span>
-  </label>
+
   <p style="font-size:.85rem;color:rgba(255,255,255,.6);margin-top:4px" id="playerCount">0/8 שחקנים</p>
   <p id="playerStatus" style="font-size:.85rem;margin-top:4px;min-height:1.3em;transition:opacity .3s;color:rgba(255,255,255,.4)">צריך לפחות 2 שחקנים כדי להתחיל</p>
   <button class="btn btn-primary" id="btnToLevel" onclick="showScreen('screenRounds')" disabled style="width:100%;min-height:64px;font-size:1.3rem;opacity:.4;cursor:not-allowed;filter:grayscale(.5);transition:all .3s;margin-top:auto">המשיכו ▸</button>
@@ -585,11 +562,8 @@ html{font-size:18px}
     </div>
   </div>
   <div class="word-display" id="wordDisplay"></div>
-  <div id="tabooWordsDisplay" class="taboo-words" style="display:none"></div>
   <div class="funny-msg" id="funnyMsg"></div>
   <p class="skip-counter" id="skipCounter"></p>
-  <!-- Taboo button (opponents press when taboo word used) -->
-  <button class="taboo-btn" id="tabooBtn" style="display:none" onclick="tabooViolation()">טאבו! 🚫</button>
   <div class="action-row">
     <button class="btn btn-game-action btn-green" onclick="wordCorrect()" style="box-shadow:0 6px 24px rgba(0,230,118,.3)">
       ✅<br><span class="action-label">נכון!</span>
@@ -802,30 +776,6 @@ const EMOJI_WORDS = [
 {emoji:'🦈',label:'כריש'},{emoji:'🐸',label:'צפרדע'},{emoji:'🍿',label:'פופקורן'},{emoji:'☂️',label:'מטריה'}
 ];
 
-// ============ TABOO WORD LISTS ============
-const TABOO_LISTS = {
-'כלב': ['חיה','לנבוח','זנב'],
-'חתול': ['חיה','מיאו','פרווה'],
-'פיצה': ['אוכל','איטלקי','גבינה'],
-'שמש': ['שמיים','אור','חם'],
-'ים': ['מים','חוף','גלים'],
-'בית': ['גר','דירה','חדר'],
-'ספר': ['לקרוא','דפים','סיפור'],
-'מכונית': ['נסיעה','כביש','גלגלים'],
-'שוקולד': ['מתוק','חום','ממתק'],
-'גלידה': ['קר','מתוק','גביע'],
-'כדורגל': ['ספורט','שער','כדור'],
-'פלאפל': ['אוכל','כדורים','פיתה'],
-'חומוס': ['אוכל','חומוסייה','טחינה'],
-'תל אביב': ['עיר','ישראל','חוף'],
-'ירושלים': ['עיר','בירה','קדוש'],
-'שווארמה': ['בשר','לאפה','אוכל'],
-'שקשוקה': ['ביצים','עגבניות','ארוחת בוקר'],
-'במבה': ['חטיף','בוטנים','תינוק'],
-'קרמבו': ['חורף','מתוק','קצפת'],
-'אופניים': ['רכיבה','גלגלים','פדלים']
-};
-
 // ============ FUNNY MESSAGES ============
 const FUNNY_CORRECT = [
 '!אלוף','גאון!','!נכון מאוד','וואו!','רצח!','מטורף!','!בול','כל הכבוד!','שריפה!',
@@ -853,7 +803,6 @@ let level = 'family';
 let describerOrder = [];
 let currentDescriberIdx = 0;
 let currentWord = '';
-let currentTabooWords = [];
 let usedWords = new Set();
 let usedEmojiWords = new Set();
 let skipsLeft = 3;
@@ -866,8 +815,6 @@ let selectedRounds = 1;
 let currentRound = 1;
 let totalScores = {};
 let bestRoundScores = {};
-let tabooMode = false;
-
 // Team mode state
 let gameMode = 'free';
 let teams = { a: { name: 'קבוצה א׳', score: 0, totalScore: 0, players: [] }, b: { name: 'קבוצה ב׳', score: 0, totalScore: 0, players: [] } };
@@ -974,16 +921,6 @@ function playTeamWin() {
     o.start(t); o.stop(t + 0.5);
   });
 }
-function playTabooBuzz() {
-  if (!soundEnabled) return;
-  const ctx = getAudio(); const o = ctx.createOscillator(); const g = ctx.createGain();
-  o.connect(g); g.connect(ctx.destination);
-  o.frequency.value = 150; o.type = 'square';
-  g.gain.setValueAtTime(0.25, ctx.currentTime);
-  g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
-  o.start(); o.stop(ctx.currentTime + 0.4);
-}
-
 function toggleSound() {
   soundEnabled = !soundEnabled;
   document.getElementById('soundToggle').textContent = soundEnabled ? '🔊' : '🔇';
@@ -1004,14 +941,6 @@ function setGameMode(mode) {
   document.getElementById('modeFree').classList.toggle('active', mode === 'free');
   document.getElementById('modeTeam').classList.toggle('active', mode === 'team');
   document.getElementById('teamNamesSection').style.display = mode === 'team' ? '' : 'none';
-  haptic(10);
-}
-
-// ============ TABOO TOGGLE ============
-function toggleTaboo() {
-  tabooMode = !tabooMode;
-  document.getElementById('tabooToggle').classList.toggle('active', tabooMode);
-  document.getElementById('tabooCheckbox').checked = tabooMode;
   haptic(10);
 }
 
@@ -1234,7 +1163,7 @@ function prepareRound() {
   let readyLabel = `רמה: ${labels[level]}`;
   if (selectedRounds > 1) readyLabel += ` • סיבוב ${currentRound} מתוך ${selectedRounds}`;
   if (gameMode === 'team') readyLabel += ' • ⚔️ מצב קבוצות';
-  if (tabooMode) readyLabel += ' • 🚫 טאבו';
+
   document.getElementById('readyLevelLabel').textContent = readyLabel;
 
   // Update ready subtitle with first player name
@@ -1354,10 +1283,6 @@ function beginTurnAfterCountdown() {
     document.getElementById('scoreBar').style.display = '';
     renderScoreBar();
   }
-
-  // Show/hide taboo elements
-  document.getElementById('tabooWordsDisplay').style.display = tabooMode ? '' : 'none';
-  document.getElementById('tabooBtn').style.display = tabooMode ? '' : 'none';
 
   renderCurrentPlayer();
   nextWord();
@@ -1493,7 +1418,6 @@ function nextWord() {
   const pIdx = getCurrentPlayerIdx();
   const p = players[pIdx];
   const wd = document.getElementById('wordDisplay');
-  const tabooDisplay = document.getElementById('tabooWordsDisplay');
 
   if (p.cannotRead) {
     // Emoji mode for this player
@@ -1507,7 +1431,6 @@ function nextWord() {
     usedEmojiWords.add(emojiWord.emoji);
     currentWord = emojiWord.label;
     wd.innerHTML = `<span class="emoji-word">${emojiWord.emoji}</span>`;
-    tabooDisplay.style.display = 'none';
   } else {
     // Normal text word
     const bank = WORDS[level];
@@ -1519,27 +1442,10 @@ function nextWord() {
     } while (usedWords.has(currentWord));
     usedWords.add(currentWord);
     wd.innerHTML = currentWord;
-
-    // Taboo words
-    if (tabooMode) {
-      currentTabooWords = getTabooWords(currentWord);
-      tabooDisplay.style.display = '';
-      tabooDisplay.innerHTML = currentTabooWords.map(w => `<span class="taboo-word">${w}</span>`).join('');
-    } else {
-      tabooDisplay.style.display = 'none';
-    }
   }
 
   wd.className = 'word-display word-pop';
   setTimeout(() => { wd.classList.remove('word-pop'); }, 500);
-}
-
-function getTabooWords(word) {
-  if (TABOO_LISTS[word]) return TABOO_LISTS[word];
-  // Generic fallback: generate 3 related-ish forbidden words
-  const generics = ['לתאר','להסביר','לומר','מילה','דבר','זה','כזה','משהו','ככה','ה...'];
-  const shuffled = shuffleArray(generics);
-  return shuffled.slice(0, 3);
 }
 
 function updateTimer() {
@@ -1643,14 +1549,6 @@ function wordSkip() {
   haptic(10);
   showFunnyMsg(FUNNY_SKIP);
   updateSkipCounter();
-  nextWord();
-}
-
-function tabooViolation() {
-  // Opponents press this when describing player uses a taboo word
-  playTabooBuzz();
-  haptic(200);
-  showFunnyMsg(['!טאבו! אמרת מילה אסורה','!תפסנו אותך','!אסור! הבא','🚫 מילה אסורה!']);
   nextWord();
 }
 
