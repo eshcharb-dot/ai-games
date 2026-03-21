@@ -469,7 +469,7 @@ h1,h2{font-size:1.4rem}
   <div style="width:100%;display:flex;flex-direction:column;gap:14px;margin-top:auto">
     <button class="btn btn-primary" onclick="showScreen('screenSetup')" style="font-size:1.5rem;min-height:80px">התחילו משחק 🎮</button>
     <button class="btn-leaderboard" onclick="showLeaderboard()" style="font-size:1.2rem;min-height:64px">🏆 טבלת אלופים</button>
-    <div style="font-size:1rem;font-weight:700;color:rgba(255,204,0,.35);letter-spacing:2px;text-align:center">v19</div>
+    <div style="font-size:1rem;font-weight:700;color:rgba(255,204,0,.35);letter-spacing:2px;text-align:center">v20</div>
   </div>
 </div>
 
@@ -550,7 +550,7 @@ h1,h2{font-size:1.4rem}
 <!-- READY -->
 <div class="screen" id="screenReady">
   <h2 style="font-size:1.6rem;font-weight:900;margin-bottom:4px">מוכנים? 🏁</h2>
-  <p class="screen-subtitle" id="readySubtitle">עברו את הטלפון לשחקן הראשון</p>
+  <p class="screen-subtitle" id="readySubtitle">העבירו את הטלפון לשחקן הראשון</p>
   <p class="text-muted" id="readyLevelLabel"></p>
   <div class="players-grid" id="readyPlayers"></div>
   <p class="text-muted" id="readyDescriberNote"></p>
@@ -653,12 +653,12 @@ h1,h2{font-size:1.4rem}
 <script>
 // ============ FORCE CACHE CLEAR ============
 if ('caches' in window) {
-  caches.keys().then(keys => keys.forEach(k => { if (k !== 'mila-beli-mila-v19') caches.delete(k); }));
+  caches.keys().then(keys => keys.forEach(k => { if (k !== 'mila-beli-mila-v20') caches.delete(k); }));
 }
 // ============ SERVICE WORKER (Offline PWA) ============
 if ('serviceWorker' in navigator) {
   const swCode = `
-    const CACHE_NAME = 'mila-beli-mila-v19';
+    const CACHE_NAME = 'mila-beli-mila-v20';
     self.addEventListener('install', e => {
       e.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
@@ -701,7 +701,7 @@ if ('serviceWorker' in navigator) {
   }).catch(err => console.log('SW failed:', err));
 
   if ('caches' in window) {
-    caches.open('mila-beli-mila-v19').then(cache => {
+    caches.open('mila-beli-mila-v20').then(cache => {
       cache.add(window.location.href).catch(() => {});
     });
   }
@@ -813,23 +813,38 @@ const EMOJI_WORDS = [
 
 // ============ FUNNY MESSAGES ============
 const FUNNY_CORRECT = [
-'!אלוף','גאון!','!נכון מאוד','וואו!','רצח!','מטורף!','!בול','כל הכבוד!','שריפה!',
-'!איזה ראש','מפלצת!','!פצצה','לגמרי!','!מכונה','בום!','!חיית בר','מלך!','!עף','סותם ת\'פה!','!ברוטלי'
+'אלוף!','גאון!','נכון מאוד!','וואו!','יופי!','מעולה!','בול!','כל הכבוד!',
+'איזה ראש!','לגמרי!','בום!','מלך!','אש!','קלעת!','מושלם!','סגרת!','חזק!','עוד אחד!','על הפנים!','יאללה!'
 ];
 const FUNNY_SKIP = [
-'...אוקיי','הלאה!','!הבא','...פספוס','...לא נורא','...יהיה בסדר','קדימה!','...חבל','...נו טוב','...בפעם הבאה'
+'אוקיי...','הלאה!','הבא!','פספוס...','לא נורא...','יהיה בסדר...','קדימה!','חבל...','נו טוב...','בפעם הבאה...'
 ];
 const FUNNY_TIMESUP = [
-'!נגמר הזמן','!טיק טוק','!הזמן אזל','!סוף','!Game Over','!צ\'יק צ\'ק'
+'נגמר הזמן!','טיק טוק!','הזמן אזל!','סוף!','Game Over!','נגמר!'
 ];
 
-// ============ AVATARS & NICKNAMES ============
-const AVATARS = ['🦊','🐼','🦁','🐸','🐙','🦄','🐯','🐨','🦋','🐺','🦈','🐻','🦉','🐹','🐲','🦖','🐳','🦜','🐧','🐬'];
-const NICKNAMES = [
-'הפנדה המסתורי','הכריש הנינג\'ה','הקוף הגאון','השועל הערמומי','הדוב הרוקד',
-'הארנב המהיר','הינשוף החכם','הדולפין הצוחק','החתול הסודי','הנמר המעופף',
-'הקסם הסגול','הכוכב הנופל','הענן המתגלגל','הרעם השקט','הברק הוורוד',
-'הפינגווין המגניב','הדרקון הקטן','האריה הביישן','הזברה המשוגעת','הפלמינגו הלוהט'
+// ============ AVATARS & NICKNAMES (paired — emoji matches name) ============
+const AVATAR_PAIRS = [
+  {emoji:'🦊', name:'השועל הערמומי'},
+  {emoji:'🐼', name:'הפנדה המסתורית'},
+  {emoji:'🦁', name:'האריה האמיץ'},
+  {emoji:'🐸', name:'הצפרדע הקופצת'},
+  {emoji:'🐙', name:'התמנון המתוחכם'},
+  {emoji:'🦄', name:'חד הקרן הקסום'},
+  {emoji:'🐯', name:'הנמר המהיר'},
+  {emoji:'🐨', name:'הקואלה החמודה'},
+  {emoji:'🦋', name:'הפרפר הצבעוני'},
+  {emoji:'🐺', name:'הזאב החכם'},
+  {emoji:'🦈', name:'הכריש המגניב'},
+  {emoji:'🐻', name:'הדוב הרוקד'},
+  {emoji:'🦉', name:'הינשוף החכם'},
+  {emoji:'🐹', name:'האוגר השובב'},
+  {emoji:'🐲', name:'הדרקון הקטן'},
+  {emoji:'🦖', name:'הדינוזאור הירוק'},
+  {emoji:'🐳', name:'הלווייתן הענק'},
+  {emoji:'🦜', name:'התוכי הצבעוני'},
+  {emoji:'🐧', name:'הפינגווין המגניב'},
+  {emoji:'🐬', name:'הדולפין הצוחק'}
 ];
 
 // ============ STATE ============
@@ -1008,8 +1023,7 @@ function updateRoundsGrid() {
 }
 
 // ============ PLAYER SETUP ============
-let usedAvatarIdx = 0;
-let usedNicknameIdx = 0;
+let usedPairIdx = 0;
 
 function shuffleArray(arr) {
   const a = [...arr];
@@ -1017,18 +1031,17 @@ function shuffleArray(arr) {
   return a;
 }
 
-let shuffledAvatars = shuffleArray(AVATARS);
-let shuffledNicknames = shuffleArray(NICKNAMES);
+let shuffledPairs = shuffleArray(AVATAR_PAIRS);
 
 function addPlayer() {
   if (players.length >= 8) return;
   const input = document.getElementById('playerNameInput');
   let name = input.value.trim();
-  const avatar = shuffledAvatars[usedAvatarIdx % shuffledAvatars.length];
-  usedAvatarIdx++;
+  const pair = shuffledPairs[usedPairIdx % shuffledPairs.length];
+  usedPairIdx++;
+  const avatar = pair.emoji;
   if (!name) {
-    name = shuffledNicknames[usedNicknameIdx % shuffledNicknames.length];
-    usedNicknameIdx++;
+    name = pair.name;
   }
   const team = gameMode === 'team' ? (players.length % 2 === 0 ? 'a' : 'b') : null;
   players.push({ name, avatar, score: 0, team, cannotRead: false });
@@ -1206,7 +1219,7 @@ function prepareRound() {
   // Update ready subtitle with first player name
   const firstIdx = gameMode === 'team' ? teamTurnOrder[0]?.playerIdx : describerOrder[0];
   const firstName = players[firstIdx]?.name || '';
-  document.getElementById('readySubtitle').textContent = `עברו את הטלפון ל${firstName}`;
+  document.getElementById('readySubtitle').textContent = `העבירו את הטלפון ל${firstName}`;
 
   const grid = document.getElementById('readyPlayers');
   if (gameMode === 'team') {
@@ -1265,7 +1278,7 @@ function showTurnTransition() {
   screen.innerHTML = `
     <div class="turn-transition ${teamClass}">
       <div class="pass-label">📱 תעבירו את הטלפון!</div>
-      <p class="screen-subtitle" style="color:rgba(255,255,255,.7)">עברו את הטלפון ל${p.name}</p>
+      <p class="screen-subtitle" style="color:rgba(255,255,255,.7)">העבירו את הטלפון ל${p.name}</p>
       ${teamInfo}
       <div style="font-size:.8rem;color:rgba(255,255,255,.6);margin-bottom:4px">תור ${turnNum} מתוך ${maxTurns}</div>
       <div class="label">עכשיו התור של</div>
