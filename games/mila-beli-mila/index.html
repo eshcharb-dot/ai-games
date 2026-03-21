@@ -93,11 +93,11 @@ font-size:.7rem;font-weight:600;display:none;align-items:center;gap:4px}
 .game-subtitle{font-size:1rem;color:rgba(255,255,255,.7);margin-bottom:16px;font-weight:400;text-align:center}
 
 /* Welcome screen overrides */
-#screenWelcome{justify-content:space-between;min-height:100vh;height:100vh;padding:0;flex:1}
-#screenWelcome .welcome-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:20px 16px 0}
-#screenWelcome .welcome-bottom{width:100%;padding:16px 16px 32px;display:flex;flex-direction:column;gap:12px}
-#screenWelcome .welcome-hero{font-size:8rem;line-height:1;margin:0 0 16px}
-#screenWelcome .game-title{font-size:3.2rem;margin-bottom:6px}
+#screenWelcome{justify-content:space-between;min-height:100vh;height:100svh;padding:0;display:flex;flex-direction:column}
+#screenWelcome .welcome-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:40px 16px 20px;min-height:0}
+#screenWelcome .welcome-bottom{width:100%;padding:16px 16px env(safe-area-inset-bottom, 32px);display:flex;flex-direction:column;gap:12px;flex-shrink:0}
+#screenWelcome .welcome-hero{font-size:7rem;line-height:1;margin:0 0 20px}
+#screenWelcome .game-title{font-size:3.8rem;margin-bottom:8px}
 #screenWelcome .game-subtitle{font-size:1.1rem;color:rgba(255,255,255,.85);margin-bottom:0;font-weight:600}
 #screenWelcome .welcome-actions{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}
 #screenWelcome .btn-start{height:88px;font-size:1.6rem;width:100%;border-radius:20px}
