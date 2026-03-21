@@ -620,8 +620,15 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 #screenGame .skip-counter, #screenGame [id="skipCounter"] { font-size: 5vw !important; color: rgba(255,255,255,.7) !important; }
 
 /* Word centered vertically */
-#screenGame.active { flex-direction: column !important; height: 100dvh !important; }
-#screenGame .game-word-area { flex: 1 !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+#screenGame.active { flex-direction: column !important; height: 100dvh !important; overflow: hidden !important; }
+#screenGame .game-word-area { 
+  flex: 1 !important; 
+  display: flex !important; 
+  align-items: center !important; 
+  justify-content: center !important;
+  min-height: 0 !important;
+  background: radial-gradient(ellipse at center, rgba(255,204,0,.06) 0%, transparent 70%) !important;
+}
 
 /* Ready screen */
 #screenReady { justify-content: space-evenly !important; gap: 0 !important; padding: 6vw 6vw 8vw !important; }
