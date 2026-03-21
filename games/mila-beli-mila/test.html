@@ -724,7 +724,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
     </div>
   </div>
 
-  <p style="font-size:4vw;color:rgba(255,255,255,.5);margin:0;text-align:center;white-space:nowrap">🌟 = מצב תמונות לילדים שלא קוראים</p>
+  <p style="font-size:3.8vw;color:rgba(255,255,255,.5);margin:0;text-align:center">🌟 = מצב תמונות לילדים</p>
   <div class="player-input-row">
     <input type="text" id="playerNameInput" placeholder="שם (או ריק לכינוי מצחיק)" maxlength="20" onkeydown="if(event.key==='Enter')addPlayer()" onfocus="setTimeout(()=>this.scrollIntoView({behavior:'smooth',block:'center'}),300)">
     <button class="btn btn-action btn-green" onclick="addPlayer()">+ הוסיפו</button>
@@ -1316,14 +1316,12 @@ function renderPlayerList() {
         </span>
       </div>` : '';
     return `
-    <div class="player-item" style="display:flex;flex-direction:row;align-items:center;gap:2vw;padding:2.5vw 3vw;min-height:15vw;${isTeam ? (p.team === 'a' ? 'border-color:rgba(68,138,255,.3)' : 'border-color:rgba(255,64,129,.3)') : ''}">
-      <div style="font-size:7vw;flex-shrink:0">${p.avatar}</div>
-      <div style="flex:1;font-size:5vw;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;max-width:45vw">${p.name}</div>
-      ${teamBadge}
-      <button class="kids-btn ${p.cannotRead ? 'active' : ''}" onclick="event.stopPropagation();toggleCannotRead(${i})" style="font-size:4.5vw;padding:1.5vw 3vw;border-radius:2.5vw;min-height:9vw;width:auto;flex-shrink:0;display:inline-flex;align-items:center;gap:1.5vw;background:${p.cannotRead ? 'rgba(255,204,0,.2)' : 'rgba(255,255,255,.08)'};border:${p.cannotRead ? '2px solid rgba(255,204,0,.5)' : '2px solid rgba(255,255,255,.1)'};color:#fff;font-family:inherit;cursor:pointer">
-        🌟<span style="font-size:4vw;font-weight:700;color:${p.cannotRead ? '#ffcc00' : 'rgba(255,255,255,.5)'}">${p.cannotRead ? 'פעיל' : 'ילדים'}</span>
-      </button>
-      <button onclick="removePlayer(${i})" style="font-size:5vw;min-width:10vw;min-height:10vw;background:none;border:none;color:var(--red);cursor:pointer;flex-shrink:0;padding:0;display:flex;align-items:center;justify-content:center">✕</button>
+    <div style="display:flex;flex-direction:row;align-items:center;gap:2vw;padding:2vw 3vw;min-height:13vw;background:rgba(255,255,255,.06);border-radius:4vw;border:1px solid rgba(255,255,255,.1);width:100%;box-sizing:border-box;${isTeam ? (p.team === 'a' ? 'border-color:rgba(68,138,255,.3)' : 'border-color:rgba(255,64,129,.3)') : ''}">
+      <span style="font-size:7vw;flex-shrink:0">${p.avatar}</span>
+      <span style="flex:1;font-size:5vw;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">${p.name}</span>
+      ${isTeam ? `<span onclick="event.stopPropagation();togglePlayerTeam(${i})" style="font-size:4vw;padding:1.5vw 2.5vw;border-radius:2vw;background:${p.team==='a'?'rgba(68,138,255,.2)':'rgba(255,64,129,.2)'};color:#fff;cursor:pointer;flex-shrink:0">${p.team==='a'?'🔵 א׳':'🔴 ב׳'}</span>` : ''}
+      <button onclick="event.stopPropagation();toggleCannotRead(${i})" style="font-size:4.5vw;padding:1.5vw 3vw;border-radius:2.5vw;min-height:9vw;flex-shrink:0;background:${p.cannotRead?'rgba(255,204,0,.2)':'rgba(255,255,255,.08)'};border:2px solid ${p.cannotRead?'rgba(255,204,0,.5)':'rgba(255,255,255,.1)'};color:${p.cannotRead?'#ffcc00':'rgba(255,255,255,.6)'};font-family:inherit;cursor:pointer">🌟${p.cannotRead?' ✓':''}</button>
+      <button onclick="removePlayer(${i})" style="font-size:5vw;min-width:9vw;min-height:9vw;background:none;border:none;color:#ff4444;cursor:pointer;flex-shrink:0;padding:0">✕</button>
     </div>`;
   }).join('');
 
