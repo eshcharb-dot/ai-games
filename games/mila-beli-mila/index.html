@@ -2,14 +2,16 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>מילה בלי מילה</title>
 <link rel="manifest" href="../manifest.json">
 <meta name="theme-color" content="#1a1a2e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800;900&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
 :root{
 --bg:#0a0a2e;--bg2:#141452;--primary:#ffcc00;--accent:#ff4081;--green:#00e676;--blue:#448aff;
 --orange:#ff9100;--red:#ff1744;--purple:#d500f9;--white:#fff;--dark:#1a1a3e;
@@ -18,13 +20,14 @@
 }
 html{font-size:28px}
 html{margin:0;padding:0;width:100%;height:100%;overflow-x:hidden;box-sizing:border-box;background:#1a1a2e}
-body{margin:0;padding:0;width:100%;min-height:100svh;overflow-x:hidden;box-sizing:border-box;
-font-family:system-ui,sans-serif;background:#1a1a2e;color:#fff;
-display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+body{margin:0;padding:0;width:100%;min-height:100dvh;overflow-x:hidden;box-sizing:border-box;
+font-family:'Rubik',system-ui,sans-serif;background:#1a1a2e;color:#fff;
+display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+overscroll-behavior:none;-webkit-user-select:none;user-select:none}
 
 /* Screens */
 .screen{display:none;flex-direction:column;align-items:center;justify-content:space-between;
-height:100svh;min-height:100svh;width:100%;max-width:600px;margin:0 auto;padding:16px 20px 24px;box-sizing:border-box;
+height:100dvh;min-height:100dvh;width:100%;max-width:600px;margin:0 auto;padding:16px 20px 24px;box-sizing:border-box;
 position:relative;text-align:center;overflow:hidden}
 @media(min-width:600px){.screen{max-width:480px;margin:0 auto}}
 .screen.active{display:flex;animation:screenSlideIn .35s cubic-bezier(.4,0,.2,1)}
@@ -41,7 +44,7 @@ position:relative;text-align:center;overflow:hidden}
 body::after{content:'';position:fixed;inset:0;background:#1a1a2e;z-index:-1;pointer-events:none}
 
 /* Noise overlay */
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
 opacity:.4}
 
@@ -117,6 +120,7 @@ padding:16px;width:100%;backdrop-filter:blur(8px)}
 input[type="text"],input[type="number"],input[type="email"],input[type="search"]{
 height:60px;font-size:1.15rem;width:100%;border-radius:14px;padding:0 16px;box-sizing:border-box;
 background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.15);color:#fff;font-family:inherit;outline:none;transition:border-color .2s}
+input[type="text"],input[type="number"],input[type="email"],input[type="search"]{-webkit-user-select:text;user-select:text}
 input:focus{border-color:var(--primary)}
 input::placeholder{color:rgba(255,255,255,.4)}
 
@@ -465,13 +469,14 @@ h1,h2{font-size:1.4rem}
   <div style="width:100%;display:flex;flex-direction:column;gap:14px;margin-top:auto">
     <button class="btn btn-primary" onclick="showScreen('screenSetup')" style="font-size:1.5rem;min-height:80px">התחילו משחק 🎮</button>
     <button class="btn-leaderboard" onclick="showLeaderboard()" style="font-size:1.2rem;min-height:64px">🏆 טבלת אלופים</button>
-    <div style="font-size:1rem;font-weight:700;color:rgba(255,204,0,.35);letter-spacing:2px;text-align:center">v16</div>
+    <div style="font-size:1rem;font-weight:700;color:rgba(255,204,0,.35);letter-spacing:2px;text-align:center">v17</div>
   </div>
 </div>
 
 <!-- PLAYER SETUP -->
 <div class="screen" id="screenSetup" style="justify-content:flex-start;padding:20px;gap:14px;overflow:hidden">
   <h2 style="font-size:2rem;font-weight:900;margin:0;width:100%;text-align:right">מי משחק? 👥</h2>
+  <p class="screen-subtitle" id="setupSubtitle">הוסיפו לפחות 2 שחקנים • שם אופציונלי — דלגו וקבלו כינוי מצחיק!</p>
 
   <div class="mode-toggle" style="width:100%;margin:0">
     <button class="mode-btn active" id="modeFree" onclick="setGameMode('free')">🎭 חופשי</button>
@@ -649,7 +654,7 @@ h1,h2{font-size:1.4rem}
 // ============ SERVICE WORKER (Offline PWA) ============
 if ('serviceWorker' in navigator) {
   const swCode = `
-    const CACHE_NAME = 'mila-beli-mila-v13';
+    const CACHE_NAME = 'mila-beli-mila-v17';
     self.addEventListener('install', e => {
       e.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
@@ -692,7 +697,7 @@ if ('serviceWorker' in navigator) {
   }).catch(err => console.log('SW failed:', err));
 
   if ('caches' in window) {
-    caches.open('mila-beli-mila-v13').then(cache => {
+    caches.open('mila-beli-mila-v17').then(cache => {
       cache.add(window.location.href).catch(() => {});
     });
   }
@@ -1995,6 +2000,7 @@ function launchConfetti() {
 }
 
 // ============ INIT ============
+document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('touchstart', () => {
   if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
 }, { once: true });
