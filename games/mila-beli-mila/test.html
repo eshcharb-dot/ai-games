@@ -600,13 +600,18 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 .kids-btn { width: 14vw !important; height: 14vw !important; min-height: 14vw !important; font-size: 6vw !important; flex-shrink: 0 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; }
 .player-item .remove { font-size: 5vw !important; min-width: 10vw !important; min-height: 10vw !important; flex-shrink: 0 !important; }
 
-/* Game top bar — bigger */
-.game-top-bar { height: 16vw !important; padding: 0 4vw !important; font-size: 5vw !important; }
-.current-player-header .cph-avatar { font-size: 7vw !important; }
-.current-player-header .cph-name { font-size: 4.5vw !important; }
-.round-indicator { font-size: 4.5vw !important; }
-.timer-ring { width: 14vw !important; height: 14vw !important; }
-.timer-ring .time-text { font-size: 5.5vw !important; }
+/* Game top bar — bigger, high specificity */
+#screenGame .game-top-bar { height: 18vw !important; padding: 0 4vw !important; flex-shrink: 0 !important; background: rgba(255,255,255,.06) !important; }
+#screenGame .game-top-bar .current-player-header { margin: 0 !important; }
+#screenGame .game-top-bar .cph-avatar { font-size: 7vw !important; }
+#screenGame .game-top-bar .cph-name { font-size: 5vw !important; color: var(--primary) !important; }
+#screenGame .game-top-bar .round-indicator { font-size: 4vw !important; color: rgba(255,255,255,.6) !important; }
+#screenGame .game-top-bar .timer-ring { width: 15vw !important; height: 15vw !important; min-width: 15vw !important; }
+#screenGame .game-top-bar .time-text { font-size: 6vw !important; font-weight: 900 !important; }
+
+/* Word centered vertically */
+#screenGame { display: flex !important; flex-direction: column !important; height: 100dvh !important; }
+#screenGame .game-word-area { flex: 1 !important; display: flex !important; align-items: center !important; justify-content: center !important; }
 
 /* Ready screen */
 #screenReady { justify-content: space-evenly !important; gap: 0 !important; padding: 6vw 6vw 8vw !important; }
