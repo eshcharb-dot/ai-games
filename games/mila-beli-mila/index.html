@@ -131,13 +131,16 @@ border:1px solid rgba(255,255,255,.08);min-height:64px}
 .player-input-row input{width:100%;height:56px;font-size:1.1rem}
 .player-input-row .btn{min-height:64px;font-size:1.1rem;padding:14px 20px;width:100%}
 
-/* Kids toggle in player item */
-.kids-toggle{display:flex;align-items:center;gap:4px;margin-top:4px}
-.kids-toggle label{font-size:.7rem;color:rgba(255,255,255,.5);cursor:pointer;display:flex;align-items:center;gap:4px;
-padding:3px 8px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);transition:all .2s;
-touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:32px}
-.kids-toggle label.active{background:rgba(255,204,0,.12);border-color:rgba(255,204,0,.3);color:var(--primary)}
-.kids-toggle input{display:none}
+/* Kids toggle in player item — icon button */
+.kids-btn{width:52px;height:52px;border-radius:14px;border:2px solid rgba(255,255,255,.15);
+background:rgba(255,255,255,.06);font-size:1.6rem;cursor:pointer;display:flex;align-items:center;
+justify-content:center;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+flex-shrink:0;position:relative}
+.kids-btn.active{background:rgba(255,204,0,.15);border-color:rgba(255,204,0,.5);
+box-shadow:0 0 12px rgba(255,204,0,.3)}
+.kids-btn .kids-dot{position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;
+background:var(--primary);border:2px solid #1a1a2e;display:none}
+.kids-btn.active .kids-dot{display:block}
 
 /* Level select */
 .level-grid{display:flex;flex-direction:column;gap:10px;width:100%;margin:12px 0}
@@ -1110,20 +1113,16 @@ function renderPlayerList() {
           ${p.team === 'a' ? '🔵 א׳' : '🔴 ב׳'}
         </span>
       </div>` : '';
-    const kidsToggle = `
-      <div class="kids-toggle">
-        <label class="${p.cannotRead ? 'active' : ''}" onclick="event.stopPropagation();toggleCannotRead(${i})">
-          <input type="checkbox" ${p.cannotRead ? 'checked' : ''}>🍼 לא יודע לקרוא
-        </label>
-      </div>`;
     return `
     <div class="player-item" style="${isTeam ? (p.team === 'a' ? 'border-color:rgba(68,138,255,.3)' : 'border-color:rgba(255,64,129,.3)') : ''}">
       <div class="avatar">${p.avatar}</div>
       <div style="flex:1">
         <div class="name">${p.name}</div>
         ${teamBadge}
-        ${kidsToggle}
       </div>
+      <button class="kids-btn ${p.cannotRead ? 'active' : ''}" onclick="event.stopPropagation();toggleCannotRead(${i})" title="לא יודע לקרוא">
+        🍼<span class="kids-dot"></span>
+      </button>
       <button class="remove" onclick="removePlayer(${i})">✕</button>
     </div>`;
   }).join('');
