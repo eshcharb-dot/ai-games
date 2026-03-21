@@ -340,7 +340,7 @@ p,small{font-size:1rem;text-align:center}
 .mode-btn{flex:1;padding:18px 10px;border-radius:18px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);
 cursor:pointer;font-family:inherit;font-weight:700;font-size:1.1rem;color:rgba(255,255,255,.7);
 transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:72px;
-display:flex;align-items:center;justify-content:center;gap:8px}
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
 .mode-btn.active{background:rgba(255,204,0,.12);border-color:var(--primary);color:var(--primary)}
 
 /* Team name inputs */
@@ -442,8 +442,14 @@ h1,h2{font-size:1.6rem}
     <p class="screen-subtitle">משחק מסיבה בעברית לכל המשפחה</p>
   </div>
   <div class="welcome-bottom">
-    <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">התחילו משחק 🎮</button>
-    <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
+    <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">
+      התחילו משחק 🎮
+      <div style="font-size:.6rem;font-weight:400;opacity:.8;margin-top:3px">הוסיפו שחקנים ובחרו רמה</div>
+    </button>
+    <button class="btn-leaderboard" onclick="showLeaderboard()">
+      🏆 טבלת אלופים
+      <div style="font-size:.6rem;font-weight:400;opacity:.7;margin-top:2px">ראו את הניקוד הכי גבוה</div>
+    </button>
     <div class="welcome-version">v13.0</div>
   </div>
 </div>
@@ -453,9 +459,15 @@ h1,h2{font-size:1.6rem}
 <div class="screen" id="screenSetup">
   <h2 style="font-size:1.8rem;font-weight:800;margin-bottom:2px">מי משחק? 🎭</h2>
   <p class="screen-subtitle">הוסיפו שחקנים ובחרו רמה</p>
-  <div class="mode-toggle" style="margin-bottom:8px">
-    <button class="mode-btn active" id="modeFree" onclick="setGameMode('free')">🎭 חופשי</button>
-    <button class="mode-btn" id="modeTeam" onclick="setGameMode('team')">⚔️ קבוצות</button>
+  <div class="mode-toggle" style="margin-bottom:4px">
+    <button class="mode-btn active" id="modeFree" onclick="setGameMode('free')">
+      <div>🎭 חופשי</div>
+      <div style="font-size:.65rem;font-weight:400;opacity:.7;margin-top:3px">כל אחד לעצמו</div>
+    </button>
+    <button class="mode-btn" id="modeTeam" onclick="setGameMode('team')">
+      <div>⚔️ קבוצות</div>
+      <div style="font-size:.65rem;font-weight:400;opacity:.7;margin-top:3px">שתי קבוצות מתחרות</div>
+    </button>
   </div>
   <div id="teamNamesSection" style="display:none;width:100%;margin-bottom:6px">
     <div class="team-names-row">
@@ -493,15 +505,27 @@ h1,h2{font-size:1.6rem}
   <div class="level-grid">
     <div class="level-btn" onclick="selectLevel('kids')">
       <div class="icon">👶</div>
-      <div class="info"><h3>ילדים</h3><p>חיות, אוכל, צבעים, דברים פשוטים</p></div>
+      <div class="info">
+        <h3>ילדים</h3>
+        <p>מילים פשוטות — לילדים מגיל 5+</p>
+        <p style="font-size:.65rem;opacity:.6;margin-top:2px">חיות, אוכל, צבעים, כלי תחבורה</p>
+      </div>
     </div>
     <div class="level-btn" onclick="selectLevel('family')">
       <div class="icon">👨‍👩‍👧</div>
-      <div class="info"><h3>משפחה</h3><p>חיים ישראליים, תרבות, מקומות, אוכל</p></div>
+      <div class="info">
+        <h3>משפחה</h3>
+        <p>מומלץ לרוב המשחקים</p>
+        <p style="font-size:.65rem;opacity:.6;margin-top:2px">ישראלי, תרבות, אוכל, מקומות</p>
+      </div>
     </div>
     <div class="level-btn" onclick="selectLevel('pro')">
       <div class="icon">🔥</div>
-      <div class="info"><h3>פרו</h3><p>מושגים מופשטים, מקצועות, אתגר אמיתי</p></div>
+      <div class="info">
+        <h3>פרו</h3>
+        <p>לקהל מבוגר — אתגר אמיתי</p>
+        <p style="font-size:.65rem;opacity:.6;margin-top:2px">מושגים מופשטים, מקצועות, סלנג</p>
+      </div>
     </div>
   </div>
   <button class="btn btn-small btn-action mt-8" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:1rem;margin-top:auto" onclick="showScreen('screenRounds')">חזרה</button>
@@ -1040,8 +1064,9 @@ function renderPlayerList() {
         <div class="name">${p.name}</div>
         ${teamBadge}
       </div>
-      <button class="kids-btn ${p.cannotRead ? 'active' : ''}" onclick="event.stopPropagation();toggleCannotRead(${i})" title="לא יודע לקרוא">
+      <button class="kids-btn ${p.cannotRead ? 'active' : ''}" onclick="event.stopPropagation();toggleCannotRead(${i})" title="${p.cannotRead ? 'יראה אמוג\'י במקום מילה' : 'לחצו אם לא יודע לקרוא'}">
         🍼<span class="kids-dot"></span>
+        <span style="font-size:.45rem;font-weight:600;display:block;margin-top:2px;line-height:1;opacity:${p.cannotRead ? '1' : '0.5'}">${p.cannotRead ? 'פעיל' : 'לחץ'}</span>
       </button>
       <button class="remove" onclick="removePlayer(${i})">✕</button>
     </div>`;
