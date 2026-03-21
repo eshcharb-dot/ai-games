@@ -568,12 +568,12 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 .timer-ring { width: 14vw !important; height: 14vw !important; flex-shrink: 0 !important; }
 .timer-ring .time-text { font-size: 5vw !important; }
 
-/* Action buttons — big, fixed height at bottom */
-.action-row { gap: 4vw !important; padding: 3vw 4vw 6vw !important; flex-shrink: 0 !important; width: 100% !important; }
-.action-row .btn-game-action { height: 28vw !important; border-radius: 5vw !important; min-height: unset !important; }
-.action-row .btn-game-action.btn-green { font-size: 10vw !important; }
-.action-row .btn-game-action.btn-orange { font-size: 10vw !important; }
-.action-row .btn-game-action .action-label { font-size: 5vw !important; }
+/* Action buttons — fill bottom, tall */
+.action-row { gap: 4vw !important; padding: 2vw 4vw 6vw !important; flex-shrink: 0 !important; width: 100% !important; }
+.action-row .btn-game-action { height: 35vw !important; border-radius: 5vw !important; min-height: unset !important; }
+.action-row .btn-game-action.btn-green { font-size: 12vw !important; }
+.action-row .btn-game-action.btn-orange { font-size: 12vw !important; }
+.action-row .btn-game-action .action-label { font-size: 5.5vw !important; }
 
 /* Pass screen */
 .turn-transition .pass-label { font-size: 8vw !important; }
@@ -601,14 +601,14 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 .player-item .remove { font-size: 5vw !important; width: 9vw !important; min-height: 9vw !important; flex-shrink: 0 !important; display: flex !important; align-items: center !important; justify-content: center !important; }
 
 /* Game top bar — bigger, high specificity */
-#screenGame .game-top-bar { height: 20vw !important; padding: 2vw 4vw 0 4vw !important; flex-shrink: 0 !important; background: rgba(255,255,255,.06) !important; gap: 3vw !important; margin-top: env(safe-area-inset-top, 0px) !important; }
-#screenGame .game-top-bar .current-player-header { margin: 0 !important; flex: 1 !important; display: flex !important; align-items: center !important; gap: 2vw !important; justify-content: flex-end !important; }
-#screenGame .game-top-bar .cph-avatar { font-size: 9vw !important; }
-#screenGame .game-top-bar .cph-name { font-size: 5.5vw !important; color: var(--primary) !important; }
-#screenGame .game-top-bar .cph-score { font-size: 5vw !important; color: rgba(255,255,255,.8) !important; }
-#screenGame .game-top-bar .round-indicator { font-size: 4vw !important; color: rgba(255,255,255,.5) !important; white-space: nowrap !important; }
-#screenGame .game-top-bar .timer-ring { width: 16vw !important; height: 16vw !important; min-width: 16vw !important; flex-shrink: 0 !important; }
-#screenGame .game-top-bar .time-text { font-size: 6.5vw !important; font-weight: 900 !important; }
+#screenGame .game-top-bar { height: 16vw !important; padding: 0 3vw !important; flex-shrink: 0 !important; background: rgba(255,255,255,.06) !important; gap: 2vw !important; overflow: hidden !important; }
+#screenGame .game-top-bar .current-player-header { margin: 0 !important; flex: 1 !important; display: flex !important; align-items: center !important; gap: 2vw !important; justify-content: flex-end !important; overflow: hidden !important; min-width: 0 !important; }
+#screenGame .game-top-bar .cph-avatar { font-size: 8vw !important; flex-shrink: 0 !important; }
+#screenGame .game-top-bar .cph-name { font-size: 4.5vw !important; color: var(--primary) !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; max-width: 35vw !important; }
+#screenGame .game-top-bar .cph-score { font-size: 4vw !important; color: rgba(255,255,255,.7) !important; white-space: nowrap !important; flex-shrink: 0 !important; }
+#screenGame .game-top-bar .round-indicator { font-size: 3.5vw !important; color: rgba(255,255,255,.5) !important; white-space: nowrap !important; flex-shrink: 0 !important; }
+#screenGame .game-top-bar .timer-ring { width: 15vw !important; height: 15vw !important; min-width: 15vw !important; flex-shrink: 0 !important; }
+#screenGame .game-top-bar .time-text { font-size: 6vw !important; font-weight: 900 !important; }
 
 /* Funny msg and skip counter compact at bottom */
 #screenGame .game-feedback { font-size: 6vw !important; min-height: 0 !important; height: auto !important; flex-shrink: 0 !important; padding: 1vw 4vw !important; }
