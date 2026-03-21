@@ -442,7 +442,7 @@ h1,h2{font-size:1.6rem}
     <p class="screen-subtitle">משחק מסיבה בעברית לכל המשפחה</p>
   </div>
   <div class="welcome-bottom">
-    <button class="btn btn-primary btn-start" onclick="showScreen('screenMode')">התחילו משחק 🎮</button>
+    <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">התחילו משחק 🎮</button>
     <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
     <div class="welcome-version">v13.0</div>
   </div>
@@ -471,6 +471,16 @@ h1,h2{font-size:1.6rem}
 <div class="screen" id="screenSetup">
   <h2 style="font-size:1.8rem;font-weight:800;margin-bottom:2px">מי משחק? 🎭</h2>
   <p class="screen-subtitle">הוסיפו שחקנים ובחרו רמה</p>
+  <div class="mode-toggle" style="margin-bottom:8px">
+    <button class="mode-btn active" id="modeFree" onclick="setGameMode('free')">🎭 חופשי</button>
+    <button class="mode-btn" id="modeTeam" onclick="setGameMode('team')">⚔️ קבוצות</button>
+  </div>
+  <div id="teamNamesSection" style="display:none;width:100%;margin-bottom:6px">
+    <div class="team-names-row">
+      <input type="text" class="team-a-input" id="teamAName" placeholder="קבוצה א׳" maxlength="15" style="border:2px solid rgba(68,138,255,.4);background:rgba(68,138,255,.1)">
+      <input type="text" class="team-b-input" id="teamBName" placeholder="קבוצה ב׳" maxlength="15" style="border:2px solid rgba(255,64,129,.4);background:rgba(255,64,129,.1)">
+    </div>
+  </div>
   <p style="font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:6px;line-height:1.4" id="setupSubtitle">הוסיפו לפחות 2 שחקנים • שם אופציונלי — דלגו וקבלו כינוי מצחיק!</p>
   <div class="player-list" id="playerList"></div>
   <div class="player-input-row">
@@ -482,7 +492,7 @@ h1,h2{font-size:1.6rem}
   <p style="font-size:.85rem;color:rgba(255,255,255,.6);margin-top:4px" id="playerCount">0/8 שחקנים</p>
   <p id="playerStatus" style="font-size:.85rem;margin-top:4px;min-height:1.3em;transition:opacity .3s;color:rgba(255,255,255,.4)">צריך לפחות 2 שחקנים כדי להתחיל</p>
   <button class="btn btn-primary" id="btnToLevel" onclick="showScreen('screenRounds')" disabled style="width:100%;min-height:64px;font-size:1.3rem;opacity:.4;cursor:not-allowed;filter:grayscale(.5);transition:all .3s;margin-top:auto">המשיכו ▸</button>
-  <button class="btn btn-small btn-action mt-8" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:1rem" onclick="showScreen('screenMode')">חזרה</button>
+  <button class="btn btn-small btn-action mt-8" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:1rem" onclick="showScreen('screenWelcome')">חזרה</button>
 </div>
 
 <!-- ROUNDS SELECT -->
