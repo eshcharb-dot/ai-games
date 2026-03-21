@@ -1472,16 +1472,12 @@ function showTurnTransition() {
 
   const screen = document.getElementById('screenPass');
   screen.innerHTML = `
-    <div class="turn-transition ${teamClass}">
-      <div class="pass-label">📱 תעבירו את הטלפון!</div>
-      <p class="screen-subtitle" style="color:rgba(255,255,255,.7)">העבירו את הטלפון ל${p.name}</p>
+    <div class="turn-transition ${teamClass}" style="justify-content:center;gap:6vw;padding:10vw">
+      <div style="font-size:8vw;font-weight:900;color:#fff;text-align:center">📱 תעבירו את הטלפון!</div>
       ${teamInfo}
-      <div style="font-size:.8rem;color:rgba(255,255,255,.6);margin-bottom:4px">תור ${turnNum} מתוך ${maxTurns}</div>
-      <div class="label">עכשיו התור של</div>
-      <div class="emoji">${p.avatar}</div>
-      <div class="player-name">${p.name}</div>
-      <div class="arrow">👇</div>
-      <button class="btn btn-primary mt-16" id="passSkipBtn" onclick="startTurn()" style="font-size:1.3rem;padding:18px 40px;width:80%;max-width:320px">!יאללה 🚀</button>
+      <div style="font-size:28vw;line-height:1">${p.avatar}</div>
+      <div style="font-size:10vw;font-weight:900;color:#fff;text-align:center">${p.name}</div>
+      <button id="passSkipBtn" onclick="startTurn()" style="font-size:7vw;font-weight:900;min-height:18vw;width:80%;border-radius:4vw;background:linear-gradient(135deg,#ffcc00,#ffa000);color:#1a1a00;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent">!יאללה 🚀</button>
     </div>
   `;
   showScreen('screenPass');
