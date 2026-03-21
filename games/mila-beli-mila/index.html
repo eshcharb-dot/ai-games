@@ -23,10 +23,10 @@ body{display:flex;flex-direction:column;align-items:stretch;justify-content:flex
 background:#1a1a2e}
 
 /* Screens */
-.screen{display:none;flex-direction:column;align-items:center;justify-content:space-evenly;
-min-height:100vh;width:100%;max-width:100%;margin:0 auto;padding:16px 12px;box-sizing:border-box;
+.screen{display:none;flex-direction:column;align-items:center;justify-content:space-between;
+height:100svh;min-height:100svh;width:100%;max-width:100%;margin:0;padding:20px 16px 32px;box-sizing:border-box;
 position:relative;text-align:center;overflow-y:auto;overflow-x:hidden}
-@media(min-width:600px){.screen{max-width:480px}}
+@media(min-width:600px){.screen{max-width:480px;margin:0 auto}}
 .screen.active{display:flex;animation:screenSlideIn .35s cubic-bezier(.4,0,.2,1)}
 
 @keyframes screenSlideIn{
@@ -143,9 +143,9 @@ background:var(--primary);border:2px solid #1a1a2e;display:none}
 .kids-btn.active .kids-dot{display:block}
 
 /* Level select */
-.level-grid{display:flex;flex-direction:column;gap:10px;width:100%;margin:12px 0}
-.level-btn{display:flex;align-items:center;gap:14px;padding:18px 16px;border-radius:var(--radius);border:2px solid rgba(255,255,255,.1);
-background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:80px}
+.level-grid{display:flex;flex-direction:column;gap:10px;width:100%;margin:12px 0;flex:1;justify-content:center}
+.level-btn{display:flex;align-items:center;gap:14px;padding:20px 16px;border-radius:var(--radius);border:2px solid rgba(255,255,255,.1);
+background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:100px;flex:1}
 .level-btn:hover,.level-btn:active{border-color:var(--primary);background:rgba(255,204,0,.08);transform:scale(1.02)}
 .level-btn .icon{font-size:2.5rem}
 .level-btn .info{text-align:right}
