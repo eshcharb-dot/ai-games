@@ -620,7 +620,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 #screenGame .skip-counter, #screenGame [id="skipCounter"] { font-size: 5vw !important; color: rgba(255,255,255,.7) !important; }
 
 /* Word centered vertically */
-#screenGame.active { flex-direction: column !important; height: 100dvh !important; overflow: hidden !important; padding-top: env(safe-area-inset-top, 8px) !important; }
+#screenGame.active { flex-direction: column !important; height: 100dvh !important; overflow: hidden !important; padding: 0 !important; }
 #screenGame .game-word-area { 
   flex: 1 !important; 
   display: flex !important; 
@@ -1693,9 +1693,18 @@ function nextWord() {
     else if (len <= 11) wd.style.fontSize = '7.5vw';
     else wd.style.fontSize = '6vw';
     wd.style.whiteSpace = 'nowrap';
-    wd.style.overflow = 'hidden';
-    wd.style.textOverflow = 'ellipsis';
-    wd.style.maxWidth = '92vw';
+    wd.style.overflow = 'visible';
+    wd.style.textOverflow = 'clip';
+    wd.style.maxWidth = '100%';
+    wd.style.textAlign = 'center';
+    wd.style.direction = 'rtl';
+    // Shrink font if word still too wide
+    const testEl = wd;
+    setTimeout(() => {
+      while (testEl.scrollWidth > testEl.clientWidth && parseFloat(testEl.style.fontSize) > 5) {
+        testEl.style.fontSize = (parseFloat(testEl.style.fontSize) - 0.5) + 'vw';
+      }
+    }, 10);
   }
 
   wd.className = 'word-display game-word-area word-pop';
