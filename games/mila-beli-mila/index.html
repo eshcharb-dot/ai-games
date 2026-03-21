@@ -25,10 +25,10 @@ display:flex;flex-direction:column;align-items:center;justify-content:flex-start
 overscroll-behavior:none;-webkit-user-select:none;user-select:none}
 
 /* Screens */
-.screen{display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;
-height:100dvh;min-height:100dvh;width:100%;padding:12px 20px calc(16px + env(safe-area-inset-bottom));box-sizing:border-box;
+.screen{display:none;flex-direction:column;align-items:stretch;justify-content:space-evenly;gap:0;
+height:100dvh;min-height:100dvh;width:100%;padding:20px 24px 32px;box-sizing:border-box;
 position:relative;text-align:center;overflow:hidden}
-@media(min-width:768px){.screen{max-width:600px;margin:0 auto}}
+@media(min-width:600px){.screen{max-width:480px;margin:0 auto}}
 .screen.active{display:flex;animation:screenSlideIn .35s cubic-bezier(.4,0,.2,1)}
 
 @keyframes screenSlideIn{
@@ -148,9 +148,9 @@ background:var(--primary);border:2px solid #1a1a2e;display:none}
 .kids-btn.active .kids-dot{display:block}
 
 /* Level select */
-.level-grid{display:flex;flex-direction:column;gap:8px;width:100%;margin:6px 0}
-.level-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;border:2px solid rgba(255,255,255,.1);
-background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:56px}
+.level-grid{display:flex;flex-direction:column;gap:12px;width:100%;flex:1}
+.level-btn{display:flex;align-items:center;gap:16px;padding:20px 18px;border-radius:20px;border:2px solid rgba(255,255,255,.15);
+background:rgba(255,255,255,.07);cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;flex:1}
 .level-btn:hover,.level-btn:active{border-color:var(--primary);background:rgba(255,204,0,.08);transform:scale(1.02)}
 .level-btn .icon{font-size:2.5rem}
 .level-btn .info{text-align:right}
@@ -169,10 +169,10 @@ font-size:2.2rem;font-weight:900;text-align:center}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
 
 /* Word display */
-.word-display{font-size:clamp(1.6rem,8vw,3.5rem);font-weight:900;text-align:center;padding:6px 12px;
-margin:0;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+.word-display{font-size:clamp(1.6rem,8vw,3.5rem);font-weight:900;text-align:center;padding:10px 12px;
+margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
 text-shadow:0 0 30px rgba(255,204,0,.3);width:100%;word-break:keep-all;overflow-wrap:normal;
-line-height:1.2;color:#fff;min-height:0}
+line-height:1.2;color:#fff}
 
 /* Emoji word for kids mode */
 .emoji-word{font-size:7rem;animation:emojiBounce 1.5s ease-in-out infinite;line-height:1}
@@ -319,8 +319,8 @@ text-shadow:0 0 60px rgba(255,204,0,.4),0 0 120px rgba(255,64,129,.2);line-heigh
 @keyframes scoPop{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
 
 /* Rounds select */
-.rounds-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin:8px 0}
-.round-btn{height:auto;min-height:64px;width:100%;border-radius:var(--radius);border:2px solid rgba(255,255,255,.1);
+.rounds-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;flex:1}
+.round-btn{height:100%;min-height:100px;width:100%;border-radius:var(--radius);border:2px solid rgba(255,255,255,.1);
 background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;
 -webkit-tap-highlight-color:transparent;font-family:inherit;color:#fff;display:flex;flex-direction:column;
 align-items:center;justify-content:center;gap:2px;padding:10px 8px}
@@ -623,12 +623,12 @@ h1,h2{font-size:1.3rem}
 <script>
 // ============ FORCE CACHE CLEAR ============
 if ('caches' in window) {
-  caches.keys().then(keys => keys.forEach(k => { if (k !== 'mila-beli-mila-v22') caches.delete(k); }));
+  caches.keys().then(keys => keys.forEach(k => { if (k !== 'mila-beli-mila-v23') caches.delete(k); }));
 }
 // ============ SERVICE WORKER (Offline PWA) ============
 if ('serviceWorker' in navigator) {
   const swCode = `
-    const CACHE_NAME = 'mila-beli-mila-v22';
+    const CACHE_NAME = 'mila-beli-mila-v23';
     self.addEventListener('install', e => {
       e.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
@@ -671,7 +671,7 @@ if ('serviceWorker' in navigator) {
   }).catch(err => console.log('SW failed:', err));
 
   if ('caches' in window) {
-    caches.open('mila-beli-mila-v22').then(cache => {
+    caches.open('mila-beli-mila-v23').then(cache => {
       cache.add(window.location.href).catch(() => {});
     });
   }
