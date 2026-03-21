@@ -1318,8 +1318,8 @@ function renderPlayerList() {
       <span style="font-size:7vw;flex-shrink:0">${p.avatar}</span>
       <span style="flex:1;font-size:5vw;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">${p.name}</span>
       ${isTeam ? `<span onclick="event.stopPropagation();togglePlayerTeam(${i})" style="font-size:4vw;padding:1.5vw 2.5vw;border-radius:2vw;background:${p.team==='a'?'rgba(68,138,255,.2)':'rgba(255,64,129,.2)'};color:#fff;cursor:pointer;flex-shrink:0">${p.team==='a'?'🔵 א׳':'🔴 ב׳'}</span>` : ''}
-      <button onclick="event.stopPropagation();toggleCannotRead(${i})" style="font-size:4.5vw;padding:1.5vw 3vw;border-radius:2.5vw;min-height:9vw;flex-shrink:0;background:${p.cannotRead?'rgba(255,204,0,.2)':'rgba(255,255,255,.08)'};border:2px solid ${p.cannotRead?'rgba(255,204,0,.5)':'rgba(255,255,255,.1)'};color:${p.cannotRead?'#ffcc00':'rgba(255,255,255,.6)'};font-family:inherit;cursor:pointer">🌟${p.cannotRead?' ✓':''}</button>
-      <button onclick="removePlayer(${i})" style="font-size:5vw;min-width:9vw;min-height:9vw;background:none;border:none;color:#ff4444;cursor:pointer;flex-shrink:0;padding:0">✕</button>
+      <button onclick="event.stopPropagation();toggleCannotRead(${i})" style="font-size:6vw;width:11vw;height:11vw;border-radius:2.5vw;flex-shrink:0;background:${p.cannotRead?'rgba(255,204,0,.25)':'rgba(255,255,255,.08)'};border:2px solid ${p.cannotRead?'rgba(255,204,0,.6)':'rgba(255,255,255,.12)'};cursor:pointer;display:flex;align-items:center;justify-content:center">${p.cannotRead?'⭐':'🌟'}</button>
+      <button onclick="removePlayer(${i})" style="font-size:5vw;width:9vw;height:9vw;background:none;border:none;color:#ff4444;cursor:pointer;flex-shrink:0;padding:0;display:flex;align-items:center;justify-content:center">✕</button>
     </div>`;
   }).join('');
 
