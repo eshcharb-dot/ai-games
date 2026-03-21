@@ -647,7 +647,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 </head>
 <body>
 
-<div style="position:fixed;top:10px;left:10px;z-index:99999;background:#ff1744;color:#fff;font-size:4vw;font-weight:900;padding:1.5vw 3vw;border-radius:2vw;letter-spacing:1px">TEST</div>
+<div style="position:fixed;bottom:10px;left:10px;z-index:99999;background:#ff1744;color:#fff;font-size:3.5vw;font-weight:900;padding:1.5vw 3vw;border-radius:2vw;letter-spacing:1px;opacity:0.7">TEST</div>
 <div class="bg-spots"><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>
 <canvas id="confetti"></canvas>
 <button id="soundToggle" onclick="toggleSound()">🔊</button>
@@ -1683,13 +1683,18 @@ function nextWord() {
     } while (usedWords.has(currentWord));
     usedWords.add(currentWord);
     wd.innerHTML = currentWord;
-    // Scale font size based on word length
+    // Scale font size based on word length — never overflow
     const len = currentWord.length;
-    if (len <= 4) wd.style.fontSize = '16vw';
-    else if (len <= 6) wd.style.fontSize = '13vw';
-    else if (len <= 8) wd.style.fontSize = '11vw';
-    else if (len <= 10) wd.style.fontSize = '9vw';
-    else wd.style.fontSize = '7vw';
+    if (len <= 3) wd.style.fontSize = '18vw';
+    else if (len <= 5) wd.style.fontSize = '15vw';
+    else if (len <= 7) wd.style.fontSize = '12vw';
+    else if (len <= 9) wd.style.fontSize = '9vw';
+    else if (len <= 11) wd.style.fontSize = '7.5vw';
+    else wd.style.fontSize = '6vw';
+    wd.style.whiteSpace = 'nowrap';
+    wd.style.overflow = 'hidden';
+    wd.style.textOverflow = 'ellipsis';
+    wd.style.maxWidth = '92vw';
   }
 
   wd.className = 'word-display game-word-area word-pop';
