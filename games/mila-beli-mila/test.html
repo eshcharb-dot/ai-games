@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>???? ??? ???? � TEST</title>
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#1a1a2e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800;900&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+:root{
+--bg:#0a0a2e;--bg2:#141452;--primary:#ffcc00;--accent:#ff4081;--green:#00e676;--blue:#448aff;
+--orange:#ff9100;--red:#ff1744;--purple:#d500f9;--white:#fff;--dark:#1a1a3e;
+--radius:16px;--shadow:0 8px 32px rgba(0,0,0,.4);
+--teamA:#448aff;--teamB:#ff4081;
+--safe-bottom:env(safe-area-inset-bottom,0px);
+}
+html{font-size:clamp(16px,2.5vw,22px);margin:0;padding:0;width:100%;height:100%;overflow:hidden;box-sizing:border-box;background:#1a1a2e}
+body{margin:0;padding:0;width:100%;height:100dvh;overflow:hidden;box-sizing:border-box;
+font-family:'Rubik',system-ui,sans-serif;background:#1a1a2e;color:#fff;
+display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+overscroll-behavior:none;-webkit-user-select:none;user-select:none}
+
+/* ===== SCREENS ===== */
+.screen{display:none;flex-direction:column;align-items:stretch;
+height:100dvh;width:100%;padding:clamp(10px,2vh,20px) clamp(12px,3vw,24px) calc(clamp(10px,2vh,20px) + var(--safe-bottom));
+box-sizing:border-box;position:relative;text-align:center;overflow:hidden;gap:clamp(4px,1vh,10px)}
+.screen.active{display:flex;animation:screenSlideIn .35s cubic-bezier(.4,0,.2,1)}
+@media(min-width:480px){.screen{max-width:480px;margin:0 auto}}
+
+@keyframes screenSlideIn{
+0%{opacity:0;transform:translateY(30px)}
+100%{opacity:1;transform:translateY(0)}
+}
+
+/* Subtitle line on every screen */
+.screen-subtitle{font-size:clamp(.7rem,.85rem,1rem);color:rgba(255,255,255,.5);font-weight:400;text-align:center;line-height:1.4;flex-shrink:0}
+
+/* Full-viewport background fill */
+body::after{content:'';position:fixed;inset:0;background:#1a1a2e;z-index:-1;pointer-events:none}
+
+/* Noise overlay */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+opacity:.4}
+
+/* Animated background spots */
+.bg-spots{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.bg-spots .spot{position:absolute;border-radius:50%;filter:blur(80px);opacity:.15;animation:float 8s ease-in-out infinite}
+.bg-spots .spot:nth-child(1){width:40vw;height:40vw;max-width:300px;max-height:300px;background:var(--accent);top:-5vh;right:-5vw;animation-delay:0s}
+.bg-spots .spot:nth-child(2){width:35vw;height:35vw;max-width:250px;max-height:250px;background:var(--blue);bottom:-3vh;left:-3vw;animation-delay:2s}
+.bg-spots .spot:nth-child(3){width:28vw;height:28vw;max-width:200px;max-height:200px;background:var(--purple);top:40%;left:50%;animation-delay:4s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-20px) scale(1.1)}}
+
+.container{position:relative;z-index:1;width:100%;height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+
+/* ===== ALL BUTTONS BASE ===== */
+.btn{min-height:48px;border-radius:18px;font-size:clamp(1rem,1.2rem,1.4rem);width:100%;cursor:pointer;border:none;font-family:inherit;
+font-weight:700;transition:transform .1s;position:relative;overflow:hidden;
+touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.95)!important}
+.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.2) 0%,transparent 50%);pointer-events:none;border-radius:inherit}
+
+.btn-primary{background:linear-gradient(135deg,var(--primary),#ffa000);color:#1a1a00;font-size:clamp(1.1rem,1.35rem,1.5rem);padding:14px 24px;
+box-shadow:0 6px 20px rgba(255,204,0,.3)}
+.btn-primary:hover{transform:scale(1.03);box-shadow:0 8px 28px rgba(255,204,0,.5)}
+
+.btn-action{font-size:clamp(1rem,1.2rem,1.3rem);padding:12px 20px;box-shadow:var(--shadow)}
+.btn-green{background:linear-gradient(135deg,var(--green),#00c853);color:#003300}
+.btn-red{background:linear-gradient(135deg,var(--red),#d50000);color:#fff}
+.btn-blue{background:linear-gradient(135deg,var(--blue),#2962ff);color:#fff}
+.btn-accent{background:linear-gradient(135deg,var(--accent),#c51162);color:#fff}
+.btn-purple{background:linear-gradient(135deg,var(--purple),#aa00ff);color:#fff}
+.btn-orange{background:linear-gradient(135deg,var(--orange),#ff6d00);color:#fff}
+.btn-small{font-size:clamp(.9rem,1.05rem,1.1rem);padding:10px 16px;border-radius:14px;min-height:48px}
+
+.btn-icon{width:72px;height:72px;border-radius:50%;font-size:2rem;display:flex;align-items:center;justify-content:center;padding:0;min-height:auto}
+
+/* Sound toggle */
+#soundToggle{position:fixed;top:10px;left:10px;z-index:100;width:44px;height:44px;border-radius:50%;
+background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);
+font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;
+transition:background .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:auto}
+#soundToggle:hover{background:rgba(255,255,255,.2)}
+
+/* Offline badge */
+.offline-badge{position:fixed;top:10px;right:10px;z-index:100;padding:4px 10px;border-radius:10px;
+background:rgba(0,230,118,.15);border:1px solid rgba(0,230,118,.3);color:var(--green);
+font-size:.7rem;font-weight:600;display:none;align-items:center;gap:4px}
+.offline-badge.visible{display:flex}
+
+/* Title */
+.game-title{font-size:clamp(1.3rem,1.7rem,2rem);font-weight:900;background:linear-gradient(135deg,var(--primary),var(--accent));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;line-height:1.2;text-align:center}
+.game-subtitle{font-size:clamp(.85rem,1.05rem,1.2rem);color:rgba(255,255,255,.7);font-weight:400;text-align:center}
+
+/* ===== WELCOME SCREEN ===== */
+#screenWelcome{justify-content:center;gap:0;padding:20px clamp(16px,3vw,24px) calc(24px + var(--safe-bottom))}
+.welcome-center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(4px,1vh,8px)}
+.welcome-center .welcome-logo{margin-bottom:clamp(4px,1vh,8px);max-width:200px;max-height:100px;width:50vw;height:25vw}
+.welcome-center .game-title{font-size:clamp(2rem,8vw,3rem);margin-bottom:clamp(4px,.5vh,8px);line-height:1.1}
+.welcome-tagline{font-size:clamp(1rem,3.5vw,1.4rem);color:rgba(255,255,255,.9);font-weight:700}
+.welcome-tagline-small{font-size:clamp(.75rem,2vw,.9rem);color:rgba(255,255,255,.4)}
+.welcome-buttons{width:100%;display:flex;flex-direction:column;gap:clamp(8px,1.5vh,12px);margin-top:clamp(12px,3vh,24px)}
+.welcome-buttons .btn-start{min-height:clamp(56px,8vh,72px);font-size:clamp(1.1rem,3.5vw,1.4rem);width:100%;border-radius:18px}
+.welcome-buttons .btn-leaderboard{min-height:clamp(48px,6vh,64px);font-size:clamp(.95rem,3vw,1.2rem);width:100%;border-radius:16px;
+background:transparent;border:2px solid rgba(255,255,255,.25);color:var(--white);font-family:inherit;font-weight:700;
+cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;display:flex;align-items:center;justify-content:center}
+.welcome-buttons .btn-leaderboard:active{transform:scale(.95);background:rgba(255,255,255,.08)}
+.welcome-version{font-size:.7rem;font-weight:700;color:rgba(255,204,0,.35);letter-spacing:2px;text-align:center}
+
+/* Cards */
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);
+padding:16px;width:100%;backdrop-filter:blur(8px)}
+
+/* All inputs */
+input[type="text"],input[type="number"],input[type="email"],input[type="search"]{
+height:48px;font-size:clamp(1rem,1.15rem,1.25rem);width:100%;border-radius:14px;padding:0 14px;box-sizing:border-box;
+background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.15);color:#fff;font-family:inherit;outline:none;transition:border-color .2s}
+input[type="text"],input[type="number"],input[type="email"],input[type="search"]{-webkit-user-select:text;user-select:text}
+input:focus{border-color:var(--primary)}
+input::placeholder{color:rgba(255,255,255,.4)}
+
+/* ===== SETUP SCREEN ===== */
+#screenSetup{justify-content:flex-start;padding:clamp(8px,1.5vh,12px) clamp(12px,3vw,16px) calc(clamp(8px,1.5vh,12px) + var(--safe-bottom));gap:clamp(4px,.8vh,6px);overflow:hidden}
+.setup-title{font-size:clamp(1.2rem,4vw,1.6rem);font-weight:900;width:100%;text-align:right;flex-shrink:0}
+.setup-subtitle{margin:0;flex-shrink:0;font-size:clamp(.7rem,2vw,.8rem)}
+
+/* Player setup */
+.player-list{width:100%;flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:6px;
+scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
+.player-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border-radius:14px;padding:10px 12px;
+border:1px solid rgba(255,255,255,.1);min-height:56px}
+.player-item .avatar{font-size:clamp(1.8rem,5vw,2.4rem);min-width:40px;text-align:center}
+.player-item .name{flex:1;font-size:clamp(1rem,3vw,1.2rem);font-weight:700}
+.player-item .remove{background:none;border:none;color:var(--red);font-size:1.2rem;cursor:pointer;padding:6px 8px;
+-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
+.player-input-row{display:flex;flex-direction:row;gap:8px;width:100%;flex-shrink:0}
+.player-input-row input{flex:1;height:48px;font-size:clamp(1rem,3vw,1.15rem);min-width:0}
+.player-input-row .btn{min-height:48px;font-size:clamp(.95rem,2.5vw,1.15rem);padding:10px 16px;width:auto;white-space:nowrap;flex-shrink:0}
+
+/* Kids toggle in player item */
+.kids-btn{width:44px;height:44px;border-radius:12px;border:2px solid rgba(255,255,255,.15);
+background:rgba(255,255,255,.06);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;
+justify-content:center;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+flex-shrink:0;position:relative}
+.kids-btn.active{background:rgba(255,204,0,.15);border-color:rgba(255,204,0,.5);
+box-shadow:0 0 12px rgba(255,204,0,.3)}
+.kids-btn .kids-dot{position:absolute;top:-4px;right:-4px;width:12px;height:12px;border-radius:50%;
+background:var(--primary);border:2px solid #1a1a2e;display:none}
+.kids-btn.active .kids-dot{display:block}
+
+.setup-buttons{width:100%;flex-shrink:0;display:flex;flex-direction:column;gap:clamp(4px,.6vh,6px)}
+.setup-continue-btn{font-size:clamp(1rem,3vw,1.2rem);min-height:48px;transition:all .3s}
+.setup-back-btn{background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);border:none;padding:10px;border-radius:12px;
+font-family:inherit;font-size:clamp(.75rem,2vw,.85rem);font-weight:600;cursor:pointer;width:100%;touch-action:manipulation;min-height:44px}
+.player-status{margin:0;text-align:center;color:rgba(255,255,255,.5);flex-shrink:0;font-size:clamp(.75rem,2vw,.85rem)}
+
+/* ===== LEVEL SELECT ===== */
+#screenLevel{justify-content:center;gap:clamp(8px,1.5vh,14px)}
+.level-grid{display:flex;flex-direction:column;gap:clamp(8px,1.2vh,12px);width:100%}
+.level-btn{display:flex;align-items:center;gap:12px;padding:clamp(12px,2vh,20px) 14px;border-radius:18px;border:2px solid rgba(255,255,255,.15);
+background:rgba(255,255,255,.07);cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+min-height:clamp(52px,8vh,70px)}
+.level-btn:hover,.level-btn:active{border-color:var(--primary);background:rgba(255,204,0,.08);transform:scale(1.02)}
+.level-btn .icon{font-size:clamp(1.8rem,5vw,2.5rem)}
+.level-btn .info{text-align:right}
+.level-btn .info h3{font-size:clamp(1rem,3vw,1.2rem);font-weight:700;margin-bottom:2px}
+.level-btn .info p{font-size:clamp(.75rem,2vw,.9rem);color:rgba(255,255,255,.6);font-weight:400}
+.level-back-btn{flex-shrink:0}
+.screen-back-btn{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:clamp(.8rem,2vw,.9rem);width:100%;flex-shrink:0}
+
+/* Timer */
+.timer-ring{position:relative;width:clamp(48px,8vw,64px);height:clamp(48px,8vw,64px);flex-shrink:0}
+.timer-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.timer-ring .track{fill:none;stroke:rgba(255,255,255,.08);stroke-width:8}
+.timer-ring .progress{fill:none;stroke-width:8;stroke-linecap:round;
+transition:stroke-dashoffset .3s linear,stroke .3s}
+.timer-ring .time-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+font-size:clamp(1.2rem,3.5vw,1.6rem);font-weight:900;text-align:center}
+.timer-ring.urgent .time-text{color:var(--red);animation:pulse .5s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+
+/* Word display */
+.word-display{font-size:clamp(1.6rem,8vw,3.5rem);font-weight:900;text-align:center;padding:10px 12px;
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+text-shadow:0 0 30px rgba(255,204,0,.3);width:100%;word-break:keep-all;overflow-wrap:normal;
+line-height:1.2;color:#fff}
+
+/* Emoji word for kids mode */
+.emoji-word{font-size:clamp(4rem,15vw,7rem);animation:emojiBounce 1.5s ease-in-out infinite;line-height:1}
+@keyframes emojiBounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-12px) scale(1.08)}}
+
+/* Word pop animation */
+@keyframes wordPop{
+0%{transform:scale(0) rotateY(90deg);opacity:0}
+60%{transform:scale(1.1) rotateY(-5deg);opacity:1}
+100%{transform:scale(1) rotateY(0);opacity:1}
+}
+.word-pop{animation:wordPop .4s cubic-bezier(.17,.67,.21,1.3)}
+
+/* ===== GAME SCREEN ===== */
+#screenGame{justify-content:flex-start;gap:0;padding:0;overflow:hidden}
+.game-top-bar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:clamp(6px,1.2vh,12px) clamp(12px,3vw,20px);flex-shrink:0;background:rgba(255,255,255,.05);height:clamp(40px,6vh,52px)}
+.game-top-bar .current-player-header{margin:0}
+.game-top-bar .round-indicator{font-size:clamp(11px,2vw,14px);color:rgba(255,255,255,.5)}
+.game-top-bar .timer-ring{width:clamp(40px,6vw,52px);height:clamp(40px,6vw,52px)}
+.game-top-bar .timer-ring .time-text{font-size:clamp(1rem,3vw,1.4rem)}
+.game-word-area{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;width:100%;padding:clamp(8px,2vw,20px);font-size:clamp(2rem,12vw,4rem);font-weight:900;text-align:center;word-break:break-word;color:#fff}
+.game-feedback{flex-shrink:0;min-height:clamp(24px,4vh,36px);font-size:clamp(14px,2.5vw,18px);padding:0 20px}
+.game-skip-counter{flex-shrink:0;font-size:clamp(11px,2vw,14px);color:rgba(255,255,255,.5);margin:0;padding:0 20px clamp(4px,.8vh,8px)}
+.game-action-row{display:flex;gap:clamp(8px,2vw,12px);padding:clamp(8px,1.5vh,12px) clamp(12px,3vw,20px) calc(clamp(12px,2vh,28px) + var(--safe-bottom));width:100%;flex-shrink:0}
+.game-action-btn{flex:1;height:clamp(80px,20vh,140px);border-radius:clamp(18px,3vw,24px);border:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(2px,.5vh,6px);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:80px}
+.game-action-btn.correct-btn{background:#22c55e;box-shadow:0 6px 24px rgba(0,230,118,.3)}
+.game-action-btn.skip-btn{background:#f97316;box-shadow:0 6px 24px rgba(255,145,0,.3)}
+.game-action-btn .action-icon{font-size:clamp(2rem,6vw,3rem)}
+.game-action-btn .action-label{font-size:clamp(14px,2.5vw,18px);font-weight:800;color:#fff}
+
+/* Action buttons for gameplay — correct + skip (legacy classes for JS-generated content) */
+.action-row{display:flex;gap:10px;width:100%;padding:0;flex-shrink:0}
+.action-row .btn-game-action{flex:1;width:48%;height:80px;border-radius:18px;font-weight:800;
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0}
+.action-row .btn-game-action.btn-green{font-size:1.8rem;background:#22c55e}
+.action-row .btn-game-action.btn-green .action-label{font-size:.85rem}
+.action-row .btn-game-action.btn-orange{font-size:1.8rem;background:#f97316}
+.action-row .btn-game-action.btn-orange .action-label{font-size:.8rem}
+.skip-counter{font-size:clamp(.65rem,1.8vw,.75rem);color:rgba(255,255,255,.6);flex-shrink:0}
+
+/* Score popup */
+.score-popup{position:fixed;pointer-events:none;z-index:200;font-size:2.5rem;font-weight:900;
+color:var(--green);animation:scoreUp 1s ease-out forwards}
+@keyframes scoreUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-120px) scale(1.5)}}
+
+/* Score count-up animation */
+@keyframes countBounce{
+0%{transform:scale(1)}
+50%{transform:scale(1.4)}
+100%{transform:scale(1)}
+}
+.score-bounce{animation:countBounce .3s ease-out}
+
+/* Player turn transition */
+.turn-transition{position:fixed;inset:0;z-index:150;display:flex;flex-direction:column;align-items:center;
+justify-content:center;background:linear-gradient(135deg,#ff4081,#d500f9);animation:fadeIn .3s}
+.turn-transition .pass-label{font-size:clamp(1.3rem,4vw,1.8rem);font-weight:900;color:#fff;margin-bottom:12px;
+text-shadow:0 2px 20px rgba(0,0,0,.3);letter-spacing:1px;text-align:center}
+.turn-transition .emoji{font-size:clamp(3rem,12vw,5rem);margin-bottom:12px;animation:bounce 1s ease infinite}
+.turn-transition .label{font-size:clamp(.9rem,2.5vw,1.1rem);color:rgba(255,255,255,.8);margin-bottom:8px;text-align:center}
+.turn-transition .player-name{font-size:clamp(1.5rem,5vw,2rem);font-weight:900;color:#fff;margin-bottom:16px;
+text-shadow:0 2px 20px rgba(0,0,0,.3);text-align:center}
+.turn-transition .arrow{font-size:clamp(2rem,6vw,3rem);animation:bounce 1s ease infinite}
+.turn-transition .countdown{font-size:clamp(1.1rem,3vw,1.5rem);font-weight:bold;color:#fff;margin-top:14px;text-shadow:0 2px 20px rgba(0,0,0,.3);text-align:center}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Team transition colors */
+.turn-transition.team-a{background:linear-gradient(135deg,#1a47a0,#2962ff)}
+.turn-transition.team-b{background:linear-gradient(135deg,#a01a5c,#ff4081)}
+
+/* ===== LEADERBOARD ===== */
+#screenLeaderboard{justify-content:flex-start;padding-top:clamp(10px,2vh,16px);padding-bottom:calc(clamp(10px,2vh,14px) + var(--safe-bottom))}
+.leaderboard{width:100%;flex:1;overflow-y:auto;min-height:0}
+.lb-title{font-size:clamp(1.3rem,4vw,1.8rem);font-weight:900;flex-shrink:0}
+.lb-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:14px;margin-bottom:6px;
+background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);min-height:48px;
+opacity:0;animation:lbReveal .4s ease forwards}
+.lb-item.gold{background:linear-gradient(135deg,rgba(255,204,0,.15),rgba(255,204,0,.05));border-color:rgba(255,204,0,.3)}
+.lb-item.silver{background:linear-gradient(135deg,rgba(192,192,192,.1),rgba(192,192,192,.04));border-color:rgba(192,192,192,.2)}
+.lb-item.bronze{background:linear-gradient(135deg,rgba(205,127,50,.1),rgba(205,127,50,.04));border-color:rgba(205,127,50,.2)}
+.lb-item .rank{font-size:clamp(1rem,3vw,1.3rem);min-width:28px;text-align:center;font-weight:800}
+.lb-item .lb-avatar{font-size:clamp(1.1rem,3vw,1.5rem);min-width:28px;text-align:center}
+.lb-item .lb-name{flex:1;font-weight:600;font-size:clamp(.85rem,2.5vw,1.05rem)}
+.lb-item .lb-score{font-size:clamp(.95rem,2.5vw,1.15rem);font-weight:800;color:var(--primary)}
+.lb-item .lb-best{font-size:clamp(.6rem,1.5vw,.75rem);color:rgba(255,255,255,.4);font-weight:400}
+.lb-item .crown{position:absolute;top:-8px;right:-4px;font-size:1.1rem}
+.lb-empty{font-size:clamp(.85rem,2.5vw,1rem);color:rgba(255,255,255,.6);display:none}
+.lb-bottom-buttons{display:flex;flex-direction:column;gap:8px;padding-top:8px;width:100%;flex-shrink:0}
+.lb-back-btn{min-height:48px;font-size:clamp(.85rem,2.5vw,1rem);width:100%}
+.lb-reset-btn{min-height:44px;font-size:clamp(.85rem,2vw,1rem);width:100%}
+
+@keyframes lbReveal{
+0%{opacity:0;transform:translateY(12px) scale(.95)}
+100%{opacity:1;transform:translateY(0) scale(1)}
+}
+
+/* Confetti canvas */
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:180}
+
+/* ===== ROUND END / GRAND FINAL ===== */
+#screenRoundEnd,#screenGrandFinal{justify-content:flex-start;gap:clamp(2px,.5vh,6px)}
+.round-end-icon{font-size:clamp(1.8rem,6vw,2.5rem);flex-shrink:0}
+.round-end-title{font-size:clamp(1.3rem,4vw,1.8rem);font-weight:900;flex-shrink:0}
+.round-end-subtitle{font-size:clamp(.8rem,2vw,.95rem);color:rgba(255,255,255,.6);flex-shrink:0}
+.round-scores{width:100%;display:flex;flex-direction:column;gap:6px;flex:1;min-height:0;overflow-y:auto;
+scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
+.round-score-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:14px;
+background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);min-height:48px;
+opacity:0;animation:lbReveal .4s ease forwards}
+.round-score-item .rs-avatar{font-size:clamp(1.1rem,3vw,1.5rem)}
+.round-score-item .rs-name{flex:1;font-weight:600;font-size:clamp(.9rem,2.5vw,1.1rem)}
+.round-score-item .rs-score{font-size:clamp(1rem,2.5vw,1.2rem);font-weight:800;color:var(--primary)}
+.round-score-item .rs-best{font-size:clamp(.6rem,1.5vw,.75rem);color:rgba(255,255,255,.4)}
+.round-score-item .rs-crown{font-size:1.1rem}
+.round-end-buttons{display:flex;flex-direction:column;gap:8px;width:100%;flex-shrink:0}
+.round-end-buttons .btn{min-height:48px;font-size:clamp(.9rem,2.5vw,1.1rem)}
+.grand-final-buttons{display:flex;flex-direction:column;gap:8px;width:100%;flex-shrink:0}
+.grand-final-buttons .btn{min-height:48px;font-size:clamp(.9rem,2.5vw,1.1rem)}
+.gf-main-btn{min-height:clamp(48px,6vh,64px);font-size:clamp(.9rem,2.5vw,1.1rem)}
+.gf-small-btn{min-height:clamp(40px,5vh,56px);font-size:clamp(.85rem,2vw,1rem)}
+
+/* Tabs */
+.tabs{display:flex;gap:6px;width:100%;flex-shrink:0}
+.tab{flex:1;padding:8px;border-radius:12px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);
+cursor:pointer;font-family:inherit;font-weight:600;font-size:clamp(.85rem,2.5vw,1rem);color:rgba(255,255,255,.7);
+transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:44px}
+.tab.active{background:rgba(255,204,0,.1);border-color:var(--primary);color:var(--primary)}
+
+/* Misc */
+.spacer{flex:1}
+.text-muted{color:rgba(255,255,255,.6);font-size:clamp(.7rem,2vw,.85rem)}
+.text-center{text-align:center}
+.w-full{width:100%}
+.flex-row{display:flex;flex-direction:row;align-items:center}
+.flex-col{display:flex;flex-direction:column;align-items:center}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
+
+/* ===== READY SCREEN ===== */
+#screenReady{justify-content:center;gap:clamp(6px,1vh,12px)}
+.ready-title{font-size:clamp(1.2rem,4vw,1.6rem);font-weight:900;flex-shrink:0}
+.players-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%;max-height:25vh;overflow-y:auto}
+.pg-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 10px;
+border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);min-width:64px}
+.pg-item .pg-emoji{font-size:clamp(1.3rem,4vw,1.8rem)}
+.pg-item .pg-name{font-size:clamp(.6rem,1.8vw,.75rem);font-weight:600;max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ready-start-btn{font-size:clamp(1.1rem,3.5vw,1.4rem);padding:14px;width:100%;min-height:clamp(56px,8vh,72px);flex-shrink:0}
+.ready-back-btn{flex-shrink:0}
+.ready-describer-note{margin:0;flex-shrink:0}
+
+/* Current player header in game */
+.current-player-header{display:flex;align-items:center;gap:6px}
+.current-player-header .cph-emoji{font-size:clamp(1.1rem,3vw,1.6rem)}
+.current-player-header .cph-name{font-size:clamp(.9rem,2.5vw,1.15rem);font-weight:800;color:var(--primary)}
+.current-player-header .cph-score{font-size:clamp(.7rem,2vw,.85rem);color:rgba(255,255,255,.6);font-weight:600}
+
+/* Score bar */
+.score-bar{display:none;gap:4px;flex-wrap:wrap;justify-content:center;padding:4px clamp(8px,2vw,20px);width:100%;flex-shrink:0}
+.sb-item{display:flex;align-items:center;gap:3px;padding:2px 6px;border-radius:8px;
+background:rgba(255,255,255,.06);font-size:clamp(.65rem,1.8vw,.75rem);position:relative}
+.sb-item.active{background:rgba(255,204,0,.15);border:1px solid rgba(255,204,0,.3)}
+.sb-item .sb-emoji{font-size:clamp(.8rem,2vw,1rem)}
+.sb-item .sb-score{font-weight:700;color:var(--primary)}
+.sb-item .sb-crown{font-size:.65rem;position:absolute;top:-5px;right:-2px}
+
+/* Start countdown overlay */
+.start-countdown-overlay{position:fixed;inset:0;z-index:160;display:flex;flex-direction:column;align-items:center;
+justify-content:center;background:linear-gradient(135deg,#1a1052,#2a1060,#0a0a2e);gap:10px}
+.start-countdown-overlay .sco-label{font-size:clamp(1rem,3vw,1.3rem);font-weight:700;color:rgba(255,255,255,.8);text-align:center}
+.start-countdown-overlay .sco-avatar{font-size:clamp(2.5rem,8vw,3.5rem);margin-bottom:6px}
+.start-countdown-overlay .sco-name{font-size:clamp(1.3rem,4vw,1.8rem);font-weight:900;color:var(--primary);margin-bottom:20px;text-align:center}
+.start-countdown-overlay .sco-number{font-size:clamp(4rem,15vw,6rem);font-weight:900;color:#fff;
+text-shadow:0 0 60px rgba(255,204,0,.4),0 0 120px rgba(255,64,129,.2);line-height:1;text-align:center}
+.start-countdown-overlay .sco-number.sco-go{font-size:clamp(3rem,10vw,4.5rem);color:gold}
+.sco-pop{animation:scoPop .7s cubic-bezier(.17,.67,.21,1.2)}
+@keyframes scoPop{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
+
+/* ===== ROUNDS SELECT ===== */
+#screenRounds{justify-content:center;gap:clamp(6px,1vh,12px)}
+.rounds-title{font-size:clamp(1.2rem,4vw,1.5rem);font-weight:900;flex-shrink:0}
+.rounds-explain{font-size:clamp(.7rem,2vw,.8rem);color:rgba(255,255,255,.6);flex-shrink:0}
+.rounds-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,1.5vh,14px);width:100%}
+.round-btn{min-height:clamp(60px,10vh,100px);width:100%;border-radius:var(--radius);border:2px solid rgba(255,255,255,.1);
+background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;
+-webkit-tap-highlight-color:transparent;font-family:inherit;color:#fff;display:flex;flex-direction:column;
+align-items:center;justify-content:center;gap:2px;padding:8px 6px}
+.round-btn:hover,.round-btn:active{border-color:var(--primary);background:rgba(255,204,0,.08);transform:scale(1.02)}
+.round-btn.selected{border-color:var(--primary);background:rgba(255,204,0,.15);box-shadow:0 0 20px rgba(255,204,0,.2)}
+.round-btn .rb-title{font-size:clamp(.9rem,2.5vw,1.15rem);font-weight:700}
+.round-btn .rb-time{font-size:clamp(.65rem,1.8vw,.8rem);color:rgba(255,255,255,.5);font-weight:400}
+.rounds-back-btn{flex-shrink:0}
+
+/* Round indicator */
+.round-indicator{font-size:clamp(.7rem,2vw,.85rem);color:rgba(255,255,255,.5);font-weight:600;text-align:center;flex-shrink:0}
+
+/* Grand final */
+.grand-title{font-size:clamp(1.3rem,4vw,1.8rem);font-weight:900;background:linear-gradient(135deg,var(--primary),var(--accent));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;flex-shrink:0}
+
+/* Headings */
+h1,h2,h3{text-align:center}
+h1,h2{font-size:clamp(1.2rem,4vw,1.6rem);margin:0}
+p,small{font-size:clamp(.85rem,2.5vw,1rem);text-align:center}
+
+/* ===== TEAM MODE STYLES ===== */
+.mode-toggle{display:flex;gap:8px;width:100%;flex-shrink:0}
+.mode-btn{flex:1;padding:10px 8px;border-radius:14px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);
+cursor:pointer;font-family:inherit;font-weight:700;font-size:clamp(.95rem,2.5vw,1.2rem);color:rgba(255,255,255,.7);
+transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:48px;
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.mode-btn.active{background:rgba(255,204,0,.12);border-color:var(--primary);color:var(--primary)}
+
+/* Team name inputs */
+.team-names-section{width:100%;flex-shrink:0}
+.team-names-row{display:flex;gap:8px;width:100%}
+.team-names-row input{flex:1;height:44px;font-size:clamp(.85rem,2.5vw,1rem);text-align:center;border-radius:12px}
+.team-names-row .team-a-input{border-color:var(--teamA);background:rgba(68,138,255,.1)}
+.team-names-row .team-b-input{border-color:var(--teamB);background:rgba(255,64,129,.1)}
+
+/* Team scoreboard in game */
+.team-scoreboard-wrap{display:none;width:100%;padding:6px clamp(12px,3vw,20px);flex-shrink:0}
+.team-scoreboard{display:flex;gap:8px;width:100%}
+.team-score-card{flex:1;padding:8px 4px;border-radius:12px;text-align:center;position:relative;transition:all .3s}
+.team-score-card.team-a{background:rgba(68,138,255,.12);border:2px solid rgba(68,138,255,.3)}
+.team-score-card.team-b{background:rgba(255,64,129,.12);border:2px solid rgba(255,64,129,.3)}
+.team-score-card.active-team{box-shadow:0 0 20px rgba(255,204,0,.3);border-color:var(--primary)}
+.team-score-card .team-label{font-size:clamp(.6rem,1.8vw,.75rem);font-weight:600;color:rgba(255,255,255,.7);margin-bottom:2px}
+.team-score-card .team-score-num{font-size:clamp(1.3rem,4vw,1.8rem);font-weight:900;transition:all .2s}
+.team-score-card.team-a .team-score-num{color:var(--teamA)}
+.team-score-card.team-b .team-score-num{color:var(--teamB)}
+
+/* Team score bar (visual fill) */
+.team-bar-wrap{width:100%;height:16px;border-radius:8px;background:rgba(255,255,255,.08);overflow:hidden;
+display:flex;margin:4px 0;position:relative}
+.team-bar-a,.team-bar-b{height:100%;transition:width .5s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center;
+font-size:.6rem;font-weight:700;color:#fff;min-width:0}
+.team-bar-a{background:linear-gradient(90deg,var(--teamA),#6aa0ff);border-radius:8px 0 0 8px}
+.team-bar-b{background:linear-gradient(90deg,#ff6a9e,var(--teamB));border-radius:0 8px 8px 0}
+
+/* Team winner celebration */
+.winner-crown{font-size:clamp(3rem,10vw,4.5rem);animation:winnerBounce 1s ease infinite}
+@keyframes winnerBounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-15px) scale(1.1)}}
+.winner-team-name{font-size:clamp(1.5rem,5vw,2rem);font-weight:900}
+.winner-team-a{color:var(--teamA);text-shadow:0 0 30px rgba(68,138,255,.4)}
+.winner-team-b{color:var(--teamB);text-shadow:0 0 30px rgba(255,64,129,.4)}
+
+/* Team assignment in setup */
+.team-assignment{display:flex;gap:6px;margin-top:4px}
+.team-tag{padding:2px 8px;border-radius:8px;font-size:.7rem;font-weight:600;cursor:pointer;transition:all .2s;
+touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.team-tag.tag-a{background:rgba(68,138,255,.2);border:1px solid rgba(68,138,255,.4);color:var(--teamA)}
+.team-tag.tag-b{background:rgba(255,64,129,.2);border:1px solid rgba(255,64,129,.4);color:var(--teamB)}
+.team-tag.tag-active{transform:scale(1.1)}
+
+/* Funny messages */
+.funny-msg{font-size:clamp(.7rem,2vw,.85rem);color:rgba(255,255,255,.7);font-style:italic;min-height:1em;
+animation:fadeIn .5s;text-align:center;flex-shrink:0}
+
+/* Share button */
+.btn-share{background:linear-gradient(135deg,#25D366,#128C7E);color:#fff}
+
+/* ===== MEDIA QUERIES ===== */
+@media(max-width:380px){
+.game-action-btn{height:clamp(70px,18vh,120px)}
+}
+@media(min-width:480px){
+.screen{max-width:480px;margin:0 auto}
+}
+@media(min-width:768px){
+html{font-size:20px}
+}
+@media(min-width:1024px){
+html{font-size:22px}
+}
+@media(max-height:600px){
+.game-action-btn{height:clamp(64px,16vh,100px)}
+.game-word-area{font-size:clamp(1.4rem,6vw,2.5rem)}
+.emoji-word{font-size:clamp(3rem,10vw,4rem)}
+}
+</style>
+<style id="test-overrides">
+/* ===== TEST OVERRIDES: FORCE BIG UI ===== */
+html, body { font-size: 20px !important; }
+
+/* Screens - full viewport, no max-width on phone */
+.screen {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  padding: 4vw 5vw 6vw !important;
+  gap: 2.5vh !important;
+  justify-content: space-evenly !important;
+}
+@media(min-width:600px){ .screen { max-width: 600px !important; margin: 0 auto !important; } }
+
+/* Titles */
+h1, h2, .game-title { font-size: 9vw !important; }
+p, .screen-subtitle, .game-subtitle { font-size: 5vw !important; }
+
+/* Buttons */
+.btn { min-height: 16vw !important; font-size: 5.5vw !important; border-radius: 4vw !important; }
+.btn-primary { font-size: 6vw !important; min-height: 18vw !important; }
+
+/* Mode toggle */
+.mode-btn { min-height: 20vw !important; font-size: 5.5vw !important; border-radius: 4vw !important; }
+
+/* Level buttons */
+.level-btn { min-height: 20vw !important; padding: 4vw !important; border-radius: 4vw !important; }
+.level-btn .icon { font-size: 10vw !important; }
+.level-btn .info h3 { font-size: 5.5vw !important; }
+.level-btn .info p { font-size: 4vw !important; }
+
+/* Round buttons */
+.round-btn { min-height: 25vw !important; font-size: 5vw !important; border-radius: 4vw !important; }
+.round-btn .rb-title { font-size: 5.5vw !important; }
+.round-btn .rb-time { font-size: 3.5vw !important; }
+
+/* Player items */
+.player-item { min-height: 18vw !important; padding: 3vw 4vw !important; border-radius: 4vw !important; }
+.player-item .avatar { font-size: 10vw !important; }
+.player-item .name { font-size: 5.5vw !important; }
+.kids-btn { width: 14vw !important; height: 14vw !important; font-size: 7vw !important; }
+.remove { font-size: 6vw !important; min-width: 12vw !important; min-height: 12vw !important; }
+
+/* Input */
+input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; padding: 0 4vw !important; border-radius: 3vw !important; }
+
+/* Game screen word */
+.word-display { font-size: 16vw !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.emoji-word { font-size: 35vw !important; }
+
+/* Timer */
+.timer-ring { width: 14vw !important; height: 14vw !important; }
+.timer-ring .time-text { font-size: 5vw !important; }
+
+/* Action buttons */
+.action-row { gap: 3vw !important; }
+.action-row .btn-game-action { height: 30vw !important; border-radius: 5vw !important; }
+.action-row .btn-game-action.btn-green { font-size: 10vw !important; }
+.action-row .btn-game-action.btn-orange { font-size: 10vw !important; }
+.action-row .btn-game-action .action-label { font-size: 5vw !important; }
+
+/* Pass screen */
+.turn-transition .pass-label { font-size: 8vw !important; }
+.turn-transition .emoji { font-size: 25vw !important; }
+.turn-transition .player-name { font-size: 10vw !important; }
+.turn-transition .countdown { font-size: 20vw !important; }
+
+/* Score / leaderboard */
+.pg-emoji { font-size: 9vw !important; }
+.pg-name { font-size: 4.5vw !important; }
+</style>
+</head>
+<body>
+
+<div style="position:fixed;top:10px;left:10px;z-index:99999;background:#ff1744;color:#fff;font-size:4vw;font-weight:900;padding:1.5vw 3vw;border-radius:2vw;letter-spacing:1px">TEST</div>
+<div class="bg-spots"><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>
+<canvas id="confetti"></canvas>
+<button id="soundToggle" onclick="toggleSound()">🔊</button>
+<div class="offline-badge" id="offlineBadge">✓ עובד אופליין</div>
+
+<div class="container">
+
+<!-- WELCOME -->
+<div class="screen active" id="screenWelcome">
+  <div class="welcome-center">
+    <svg class="welcome-logo" viewBox="0 0 360 180">
+      <!-- Head 1 - left, pink -->
+      <ellipse cx="60" cy="70" rx="36" ry="42" fill="#ff4081"/>
+      <rect x="30" y="108" width="60" height="30" rx="15" fill="#ff4081"/>
+      <!-- Speech bubble 1 -->
+      <circle cx="105" cy="50" r="8" fill="rgba(255,255,255,0.9)"/>
+      <circle cx="118" cy="38" r="6" fill="rgba(255,255,255,0.9)"/>
+      <circle cx="128" cy="28" r="4" fill="rgba(255,255,255,0.9)"/>
+      <!-- Head 2 - center, yellow -->
+      <ellipse cx="180" cy="65" rx="40" ry="46" fill="#ffcc00"/>
+      <rect x="148" y="107" width="64" height="32" rx="16" fill="#ffcc00"/>
+      <!-- Head 3 - right, blue -->
+      <ellipse cx="300" cy="70" rx="36" ry="42" fill="#448aff"/>
+      <rect x="270" y="108" width="60" height="30" rx="15" fill="#448aff"/>
+      <!-- Speech bubble 3 -->
+      <circle cx="255" cy="50" r="8" fill="rgba(255,255,255,0.9)"/>
+      <circle cx="242" cy="38" r="6" fill="rgba(255,255,255,0.9)"/>
+      <circle cx="232" cy="28" r="4" fill="rgba(255,255,255,0.9)"/>
+    </svg>
+    <h1 class="game-title">מילה בלי מילה</h1>
+    <p class="welcome-tagline">תתארו, תנחשו, תצחקו!</p>
+    <p class="welcome-tagline-small">משחק מסיבה לכל המשפחה</p>
+  </div>
+  <div class="welcome-buttons">
+    <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">התחילו משחק 🎮</button>
+    <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
+    <div class="welcome-version">v25</div>
+  </div>
+</div>
+
+<!-- PLAYER SETUP -->
+<div class="screen" id="screenSetup">
+  <h2 class="setup-title">מי משחק? 👥</h2>
+  <p class="screen-subtitle setup-subtitle" id="setupSubtitle">הוסיפו לפחות 2 שחקנים — בלי שם? תקבלו כינוי מצחיק!</p>
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="modeFree" onclick="setGameMode('free')">🎭 חופשי</button>
+    <button class="mode-btn" id="modeTeam" onclick="setGameMode('team')">⚔️ קבוצות</button>
+  </div>
+
+  <div id="teamNamesSection" class="team-names-section" style="display:none">
+    <div class="team-names-row">
+      <input type="text" id="teamAName" class="team-a-input" placeholder="קבוצה א׳" maxlength="15">
+      <input type="text" id="teamBName" class="team-b-input" placeholder="קבוצה ב׳" maxlength="15">
+    </div>
+  </div>
+
+  <div class="player-input-row">
+    <input type="text" id="playerNameInput" placeholder="שם (או ריק לכינוי מצחיק)" maxlength="20" onkeydown="if(event.key==='Enter')addPlayer()">
+    <button class="btn btn-action btn-green" onclick="addPlayer()">+ הוסיפו</button>
+  </div>
+
+  <div class="player-list" id="playerList"></div>
+
+  <p id="playerStatus" class="player-status">צריך לפחות 2 שחקנים</p>
+
+  <div class="setup-buttons">
+    <button class="btn btn-primary setup-continue-btn" id="btnToLevel" onclick="showScreen('screenRounds')" disabled style="opacity:.35;cursor:not-allowed;filter:grayscale(.5)">המשיכו ▸</button>
+    <button class="setup-back-btn" onclick="showScreen('screenWelcome')">חזרה</button>
+  </div>
+</div>
+
+<!-- ROUNDS SELECT -->
+<div class="screen" id="screenRounds">
+  <h2 class="rounds-title">כמה סיבובים? 🔄</h2>
+  <p class="rounds-explain" id="roundsExplain">כל סיבוב = כולם משחקים פעם אחת</p>
+  <div class="rounds-grid" id="roundsGrid"></div>
+  <button class="btn btn-small btn-action screen-back-btn rounds-back-btn" onclick="showScreen('screenSetup')">חזרה</button>
+</div>
+
+<!-- LEVEL SELECT -->
+<div class="screen" id="screenLevel">
+  <h2 class="rounds-title">בחרו רמה 🎯</h2>
+  <div class="level-grid">
+    <div class="level-btn" onclick="selectLevel('kids')">
+      <div class="icon">🧒</div>
+      <div class="info"><h3>ילדים</h3><p>מילים פשוטות עם תמונות — מגיל 5+</p></div>
+    </div>
+    <div class="level-btn" onclick="selectLevel('family')">
+      <div class="icon">👨‍👩‍👧</div>
+      <div class="info"><h3>משפחה</h3><p>תרבות, אוכל, מקומות</p></div>
+    </div>
+    <div class="level-btn" onclick="selectLevel('pro')">
+      <div class="icon">🔥</div>
+      <div class="info"><h3>פרו</h3><p>מושגים מופשטים</p></div>
+    </div>
+  </div>
+  <button class="btn btn-small btn-action screen-back-btn" onclick="showScreen('screenRounds')">חזרה</button>
+</div>
+
+<!-- READY -->
+<div class="screen" id="screenReady">
+  <h2 class="ready-title">מוכנים? 🏁</h2>
+  <p class="screen-subtitle" id="readySubtitle">העבירו את הטלפון לשחקן הראשון</p>
+  <p class="text-muted" id="readyLevelLabel"></p>
+  <div class="players-grid" id="readyPlayers"></div>
+  <p class="text-muted ready-describer-note" id="readyDescriberNote"></p>
+  <button class="btn btn-primary ready-start-btn" onclick="startRound()">התחילו! 🚀</button>
+  <button class="btn btn-small btn-action screen-back-btn ready-back-btn" onclick="showScreen('screenLevel')">חזרה</button>
+</div>
+
+<!-- GAME PLAY -->
+<div class="screen" id="screenGame">
+
+  <!-- TOP BAR: player + timer -->
+  <div class="game-top-bar">
+    <div id="currentPlayerHeader" class="current-player-header"></div>
+    <div class="round-indicator" id="roundIndicator"></div>
+    <div class="timer-ring" id="timerRing">
+      <svg viewBox="0 0 120 120">
+        <circle class="track" cx="60" cy="60" r="52"/>
+        <circle class="progress" id="timerProgress" cx="60" cy="60" r="52" stroke-dasharray="326.73" stroke-dashoffset="0"/>
+      </svg>
+      <div class="time-text" id="timerText">60</div>
+    </div>
+  </div>
+
+  <!-- Team scoreboard (shown in team mode only) -->
+  <div id="teamScoreboard" class="team-scoreboard-wrap">
+    <div class="team-scoreboard">
+      <div class="team-score-card team-a" id="teamACard"><div class="team-label" id="teamALabel">א׳</div><div class="team-score-num" id="teamAScore">0</div></div>
+      <div class="team-score-card team-b" id="teamBCard"><div class="team-label" id="teamBLabel">ב׳</div><div class="team-score-num" id="teamBScore">0</div></div>
+    </div>
+    <div class="team-bar-wrap"><div class="team-bar-a" id="teamBarA" style="width:50%"></div><div class="team-bar-b" id="teamBarB" style="width:50%"></div></div>
+  </div>
+  <div class="score-bar" id="scoreBar"></div>
+
+  <!-- WORD — fills all remaining space -->
+  <div class="word-display game-word-area" id="wordDisplay"></div>
+
+  <!-- Feedback -->
+  <div class="funny-msg game-feedback" id="funnyMsg"></div>
+  <p class="skip-counter game-skip-counter" id="skipCounter"></p>
+
+  <!-- ACTION BUTTONS — fixed at bottom, big -->
+  <div class="game-action-row">
+    <button class="game-action-btn correct-btn" onclick="wordCorrect()">
+      <span class="action-icon">✅</span>
+      <span class="action-label">נכון!</span>
+    </button>
+    <button class="game-action-btn skip-btn" id="btnSkip" onclick="wordSkip()">
+      <span class="action-icon">⏭️</span>
+      <span class="action-label">דלג</span>
+    </button>
+  </div>
+</div>
+
+<!-- PASS PHONE -->
+<div class="screen" id="screenPass"></div>
+
+<!-- ROUND END -->
+<div class="screen" id="screenRoundEnd">
+  <div class="round-end-icon">🏆</div>
+  <h2 class="round-end-title" id="roundEndTitle">סיום סיבוב!</h2>
+  <p class="screen-subtitle">הניקוד של הסיבוב הזה</p>
+  <p class="round-end-subtitle" id="roundEndSubtitle"></p>
+  <div class="round-scores" id="roundScores"></div>
+  <div class="round-end-buttons" id="roundEndButtons"></div>
+</div>
+
+<!-- GRAND FINAL -->
+<div class="screen" id="screenGrandFinal">
+  <div class="round-end-icon" id="grandFinalIcon">🏆🎉🏆</div>
+  <h2 class="grand-title" id="grandFinalTitle">גמר גדול!</h2>
+  <p class="screen-subtitle">המשחק נגמר — הנה הניצחון!</p>
+  <p class="round-end-subtitle" id="grandFinalSubtitle"></p>
+  <div class="round-scores" id="grandFinalScores"></div>
+  <div class="grand-final-buttons">
+    <button class="btn btn-action btn-share gf-main-btn" onclick="shareResults(event)">📤 שתף תוצאות</button>
+    <button class="btn btn-action btn-primary gf-main-btn" onclick="playAgain()">שחקו שוב 🔄</button>
+    <button class="btn btn-action btn-purple gf-main-btn" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
+    <button class="btn btn-action gf-small-btn" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="backToWelcome()">תפריט ראשי</button>
+  </div>
+</div>
+
+<!-- LEADERBOARD -->
+<div class="screen" id="screenLeaderboard">
+  <h2 class="lb-title">🏆 טבלת אלופים</h2>
+  <div class="tabs" id="lbTabs">
+    <button class="tab active" onclick="showLbTab('alltime')">כל הזמנים</button>
+    <button class="tab" onclick="showLbTab('tournament')">טורניר</button>
+  </div>
+  <div class="leaderboard" id="leaderboardList"></div>
+  <p class="lb-empty" id="lbEmpty">אין תוצאות עדיין — שחקו משחק!</p>
+  <div class="lb-bottom-buttons">
+    <button class="btn btn-action lb-back-btn" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="backToWelcome()">חזרה</button>
+    <button class="btn btn-action btn-red lb-reset-btn" onclick="confirmResetLb()">🗑️ איפוס</button>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ============ FORCE CACHE CLEAR ============
+if ('caches' in window) {
+  caches.keys().then(keys => keys.forEach(k => { if (k !== 'mila-beli-mila-v25') caches.delete(k); }));
+}
+// ============ SERVICE WORKER (Offline PWA) ============
+if ('serviceWorker' in navigator) {
+  const swCode = `
+    const CACHE_NAME = 'mila-beli-mila-v25';
+    self.addEventListener('install', e => {
+      e.waitUntil(
+        caches.open(CACHE_NAME).then(cache => {
+          return cache.addAll([self.location.href.replace(/\\/sw\\.js.*/, '/index.html'), self.location.href.replace(/\\/sw\\.js.*/, '/')]);
+        }).catch(() => {})
+      );
+      self.skipWaiting();
+    });
+    self.addEventListener('activate', e => {
+      e.waitUntil(
+        caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))))
+      );
+      self.clients.claim();
+    });
+    self.addEventListener('fetch', e => {
+      if (e.request.method !== 'GET') return;
+      e.respondWith(
+        caches.match(e.request).then(cached => {
+          const fetchPromise = fetch(e.request).then(response => {
+            if (response && response.status === 200) {
+              const clone = response.clone();
+              caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+            }
+            return response;
+          }).catch(() => cached);
+          return cached || fetchPromise;
+        })
+      );
+    });
+  `;
+  const blob = new Blob([swCode], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl, { scope: '.' }).then(reg => {
+    console.log('SW registered');
+    if (reg.active || reg.installing || reg.waiting) {
+      setTimeout(() => {
+        document.getElementById('offlineBadge').classList.add('visible');
+      }, 2000);
+    }
+  }).catch(err => console.log('SW failed:', err));
+
+  if ('caches' in window) {
+    caches.open('mila-beli-mila-v25').then(cache => {
+      cache.add(window.location.href).catch(() => {});
+    });
+  }
+}
+
+// ============ WORD BANK ============
+const WORDS = {
+kids: [
+'כלב','חתול','ארנב','פיל','אריה','נמר','ג\'ירפה','קוף','דג','ציפור',
+'פרפר','צב','נחש','עכביש','דבורה','סוס','פרה','תרנגולת','ברווז','דולפין',
+'תפוח','בננה','תות','אבטיח','ענבים','גלידה','שוקולד','עוגה','פיצה','המבורגר',
+'אדום','כחול','ירוק','צהוב','כתום','סגול','ורוד','לבן','שחור','חום',
+'שמש','ירח','כוכב','ענן','גשם','שלג','קשת','רוח','ברק','ים',
+'כדור','בובה','מכונית','רכבת','מטוס','אופניים','מגלשה','נדנדה','בלון','עפיפון',
+'עץ','פרח','דשא','הר','נהר','יער','מדבר','חוף','אי','מערה',
+'בית','חלון','דלת','מיטה','כיסא','שולחן','מנורה','טלוויזיה','מקרר','תנור',
+'ספר','עיפרון','מספריים','דבק','צבעים','מחברת','תיק','מחק','סרגל','גיר',
+'רופא','שוטר','כבאי','מורה','טבח','נהג','ליצן','קוסם','אסטרונאוט','צייר',
+'כובע','נעליים','חולצה','מכנסיים','שמלה','משקפיים','שעון','צעיף','כפפות','מטריה',
+'תוף','גיטרה','חליל','פסנתר','כינור','חצוצרה','מצילתיים','תופים','אורגן','שופר',
+'כדורגל','כדורסל','שחייה','ריצה','קפיצה','גלישה','טיפוס','רכיבה','מחבואים','תופסת',
+'יום הולדת','חנוכה','פורים','פסח','סוכות','שבת','חתונה','גן חיות','קרקס','לונה פארק',
+'שיניים','אף','אוזניים','עיניים','ידיים','רגליים','בטן','ראש','אצבעות','ברכיים',
+'פינגווין','תנין','עקרב','חזיר','עז','כבש','יונה','תוכי','נמלה','חיפושית',
+'אגס','דובדבן','לימון','מנגו','קיווי','אפרסק','רימון','תמר','זית','תאנה',
+'סנדל','מגף','כיפה','חגורה','שרשרת','טבעת','ילקוט','ארנק','מחזיק מפתחות','סרט שיער',
+'רובוט','דינוזאור','חד קרן','סירה','מסוק','טרקטור','קורקינט','סקייטבורד','גלגיליות','עגלה',
+'גבינה','חלב','ביצה','לחם','דבש','ריבה','חמאה','קורנפלקס','נקניקייה','פופקורן',
+'מראה','מברשת','סבון','מגבת','כרית','שמיכה','מפתח','פנס','מדרגות','גדר',
+'תנור','מקרר','כיור','ברז','דלי','מטאטא','שואב אבק','מכונת כביסה','גרב','כפתור',
+'ערסל','מזרקה','מגדלור','גשר','מנהרה','אוהל','שק שינה','מצפן','משקפת','זכוכית מגדלת'
+],
+family: [
+'פלאפל','חומוס','שווארמה','שקשוקה','בורקס','סביח','ג\'חנון','מלבי','קנאפה','בבא גנוש',
+'תל אביב','ירושלים','חיפה','אילת','ים המלח','כנרת','מצדה','שוק הכרמל','נמל יפו','רמת הגולן',
+'חייל','מילואים','שירות לאומי','קיבוץ','מושב','אוטובוס','מונית שירות','רמזור','כיכר','מעבר חציה',
+'ביסלי','במבה','קרמבו','פסק זמן','שוקו','ארטיק','גרעינים','חמניות','קוטג\'','לבן',
+'ארז','דודו','יוסי בנאי','שלום חנוך','עידן רייכל','נועה קירל','אייל גולן','סטטיק','שירי מימון','עומר אדם',
+'כדורגל','מכבי','הפועל','בית"ר','ליגת העל','אופניים','כושר','יוגה','פילאטיס','ספורט',
+'סופרמרקט','קניון','דואר','בנק','קופת חולים','מספרה','בית מרקחת','חנות','שוק','מכולת',
+'מזגן','מאוורר','דוד שמש','תריס','מרפסת','גינה','חצר','מדרגות','מעלית','חניה',
+'וואטסאפ','טיקטוק','אינסטגרם','נטפליקס','וויז','גוגל','יוטיוב','זום','סלפי','סטורי',
+'פיתה','טחינה','זעתר','סחוג','חריף','מתוק','חמוץ','מלוח','מר','חמוצים',
+'הגדה','סדר','מצה','חרוסת','סופגניה','לביבה','משלוח מנות','תחפושת','מגילה','אפיקומן',
+'גלגל','נר','מטבע','דגל','מפתח','מעטפה','בול','חותמת','מכתב','חבילה',
+'רופא שיניים','עורך דין','מהנדס','אדריכל','רואה חשבון','שף','עיתונאי','צלם','מעצב','יזם',
+'חופשה','טיול','מלון','אוהל','מנגל','פיקניק','ג\'יפ','שמורת טבע','ספארי','צימר',
+'שכן','חבר','משפחה','סבא','סבתא','דוד','דודה','בן דוד','חתן','כלה',
+'ברכה','מחמאה','בדיחה','חידה','שיר','ריקוד','הופעה','סרט','הצגה','תחרות',
+'ראש השנה','יום כיפור','ט\'ו בשבט','יום העצמאות','יום הזיכרון','שבועות','סימחת תורה','ל"ג בעומר','מימונה','יום ירושלים',
+'חוצפה','יאללה','סבבה','אחלה','בלאגן','פרחה','מגניב','חפיף','דווקא','תכלס',
+'חריימה','מוסקה','מלווח','ג\'חנון','קובה','חציל','שניצל','קציצות','מרק','לאפה',
+'באר שבע','נתניה','הרצליה','פתח תקווה','ראשון לציון','רחובות','נהריה','עכו','צפת','טבריה',
+'שוק הפשפשים','קולנוע','תיאטרון','מוזיאון','פאב','בית קפה','מסעדה','מאפייה','פיצרייה','ספרייה',
+'ווייז','ספוטיפיי','סנאפצ\'ט','טוויטר','פייסבוק','פינטרסט','טלגרם','רדיט','טוויץ\'','דיסקורד',
+'חנוכייה','סביבון','מצות','קערת פסח','שופר','סוכה','לולב','אתרוג','משלוח מנות','אוזני המן',
+'רכבל','טלפריק','נחל','מפל','מצפור','שביל','טיילת','כביש','מנהרה','גשר',
+'תור','מדבקה','פקקים','חניון','רמקול','אוזניות','מטען','סוללה','שלט רחוק','ממתק',
+'גלשן','צלילה','פרשנות','שיפוט','אבוקדו','חומוס','סלט','תבלין','מחבת','סיר לחץ',
+'פזמון','להקה','פסטיבל','הפסקה','שיעורי בית','תעודה','מורה פרטי','תלמיד','כיתה','לוח'
+],
+pro: [
+'דמוקרטיה','קפיטליזם','סוציאליזם','אידיאולוגיה','בירוקרטיה','דיפלומטיה','פוליטיקה','אנרכיה','קואליציה','אופוזיציה',
+'פילוסופיה','פסיכולוגיה','סוציולוגיה','אנתרופולוגיה','כלכלה','משפטים','רפואה','הנדסה','ארכיטקטורה','אסטרונומיה',
+'נוסטלגיה','אמביוולנטיות','אמפתיה','אינטואיציה','סרקזם','אירוניה','פרדוקס','מטאפורה','אנלוגיה','דילמה',
+'אלגוריתם','בינה מלאכותית','מציאות מדומה','בלוקצ\'יין','סטארטאפ','אפליקציה','סייבר','האקר','ענן','מטא-נתונים',
+'גלובליזציה','אורבניזציה','דיגיטליזציה','מודרניזציה','פריוטיזציה','רגולציה','אינפלציה','רצסיה','סטגנציה','גנטריפיקציה',
+'קונספירציה','פרופגנדה','צנזורה','מניפולציה','דמגוגיה','פופוליזם','ניהיליזם','אקזיסטנציאליזם','הומניזם','פמיניזם',
+'אבולוציה','פוטוסינתזה','גרביטציה','אלקטרומגנטיות','תרמודינמיקה','קוונטים','יחסות','גנטיקה','אקולוגיה','ביולוגיה',
+'אימפרוביזציה','קומפוזיציה','כוריאוגרפיה','קינמטוגרפיה','טיפוגרפיה','קליגרפיה','ציור','פיסול','קרמיקה','ארכיטקטורה',
+'אינטרוורט','אקסטרוורט','נרקיסיזם','פרפקציוניזם','אופטימיות','פסימיות','פרנויה','קלאוסטרופוביה','אדרנלין','מדיטציה',
+'פרוטוקול','לוגיסטיקה','סינרגיה','אסטרטגיה','טקטיקה','היררכיה','מריטוקרטיה','אוטונומיה','סובלנות','אותנטיות',
+'רטרוספקטיבה','פרספקטיבה','אינטרוספקציה','רפלקציה','מדיטציה','ויזואליזציה','קונצפטואליזציה','אבסטרקציה','רדוקציה','דדוקציה',
+'מונופול','אוליגרכיה','תאוקרטיה','קלפטוקרטיה','אוטוקרטיה','פלוטוקרטיה','טכנוקרטיה','דמוגרפיה','ביוגרפיה','ביבליוגרפיה',
+'אנטיתזה','סינתזה','קטליזטור','מטמורפוזה','סימביוזה','אוסמוזה','הומאוסטזיס','מטבוליזם','אנבוליזם','קטבוליזם',
+'רנסנס','בארוק','רומנטיקה','ריאליזם','אימפרסיוניזם','סוריאליזם','קוביזם','מינימליזם','פוסט-מודרניזם','אקספרסיוניזם',
+'קריזמה','אמביציה','אינטגריטי','רזיליינס','אסרטיביות','דיסקרטיות','אלגנטיות','אקסטרווגנטיות','מלנכוליה','אופוריה',
+'סינכרוניזציה','אופטימיזציה','סטנדרטיזציה','דמוקרטיזציה','לגיטימציה','לגליזציה','נטרליזציה','הרמוניזציה','אימוניזציה','הומוגניזציה',
+'פרגמטיות','אידיאליזם','רלטיביזם','דטרמיניזם','הדוניזם','אלטרואיזם','אגואיזם','ציניקנות','סטואיציזם','אפיקוראיות',
+'רטוריקה','דיאלקטיקה','סילוגיזם','הרמנויטיקה','סמנטיקה','פרגמטיקה','לינגוויסטיקה','פונטיקה','מורפולוגיה','סינטקס',
+'אפיסטמולוגיה','אונטולוגיה','פנומנולוגיה','טלאולוגיה','דאונטולוגיה','אוטיליטריזם','ליברליזם','קונסרוטיביזם','אנארכו-קפיטליזם','קומוניזם',
+'ניאו-ליברליזם','מרקסיזם','פוסט-סטרוקטורליזם','דקונסטרוקציה','אינטרטקסטואליות','מטא-נרטיב','היפר-ריאליזם','טרנסצנדנטליזם','אמפיריציזם','רציונליזם',
+'סינכרוניות','דיאכרוניות','הגמוניה','סובלימציה','אינדוקציה','אקסיומה','תיאורמה','היפותזה','פרדיגמה','אפיפנומנון',
+'אמביגואליות','רדוקטיביזם','קונטקסטואליזם','אינסטרומנטליזם','פלורליזם','סקולסטיקה','אגנוסטיציזם','דואליזם','מוניזם','הוליזם',
+'טרנספרנטיות','אקאונטביליטי','סקלביליות','רטרוספקציה','פרוגנוזה','סינרגיה','אנומליה','אמביוולנציה','קוגניציה','רפלקסיביות',
+'אפוריזם','אירוניה דרמטית','מטונימיה','סינקדוכה','אוקסימורון','היפרבולה','ליטוטס','אנפורה','אפיפורה','כיאזמוס'
+]
+};
+
+// ============ EMOJI WORD BANK (for kids mode / cannotRead) ============
+const EMOJI_WORDS = [
+{emoji:'🐶',label:'כלב'},{emoji:'🐱',label:'חתול'},{emoji:'🐰',label:'ארנב'},{emoji:'🐘',label:'פיל'},
+{emoji:'🦁',label:'אריה'},{emoji:'🐵',label:'קוף'},{emoji:'🐟',label:'דג'},{emoji:'🐦',label:'ציפור'},
+{emoji:'🦋',label:'פרפר'},{emoji:'🐢',label:'צב'},{emoji:'🐍',label:'נחש'},{emoji:'🕷️',label:'עכביש'},
+{emoji:'🐝',label:'דבורה'},{emoji:'🐴',label:'סוס'},{emoji:'🐄',label:'פרה'},{emoji:'🐔',label:'תרנגולת'},
+{emoji:'🦆',label:'ברווז'},{emoji:'🐬',label:'דולפין'},{emoji:'🍎',label:'תפוח'},{emoji:'🍌',label:'בננה'},
+{emoji:'🍓',label:'תות'},{emoji:'🍉',label:'אבטיח'},{emoji:'🍇',label:'ענבים'},{emoji:'🍦',label:'גלידה'},
+{emoji:'🍫',label:'שוקולד'},{emoji:'🎂',label:'עוגה'},{emoji:'🍕',label:'פיצה'},{emoji:'🍔',label:'המבורגר'},
+{emoji:'☀️',label:'שמש'},{emoji:'🌙',label:'ירח'},{emoji:'⭐',label:'כוכב'},{emoji:'☁️',label:'ענן'},
+{emoji:'🌧️',label:'גשם'},{emoji:'❄️',label:'שלג'},{emoji:'🌈',label:'קשת'},{emoji:'🌊',label:'ים'},
+{emoji:'⚽',label:'כדורגל'},{emoji:'🏀',label:'כדורסל'},{emoji:'🎈',label:'בלון'},{emoji:'🪁',label:'עפיפון'},
+{emoji:'🚗',label:'מכונית'},{emoji:'🚂',label:'רכבת'},{emoji:'✈️',label:'מטוס'},{emoji:'🚲',label:'אופניים'},
+{emoji:'🏠',label:'בית'},{emoji:'🪟',label:'חלון'},{emoji:'🚪',label:'דלת'},{emoji:'🛏️',label:'מיטה'},
+{emoji:'💺',label:'כיסא'},{emoji:'📺',label:'טלוויזיה'},{emoji:'📖',label:'ספר'},{emoji:'✏️',label:'עיפרון'},
+{emoji:'👨‍⚕️',label:'רופא'},{emoji:'👮',label:'שוטר'},{emoji:'🧑‍🚒',label:'כבאי'},{emoji:'👩‍🏫',label:'מורה'},
+{emoji:'🤡',label:'ליצן'},{emoji:'🧙',label:'קוסם'},{emoji:'🧑‍🚀',label:'אסטרונאוט'},{emoji:'👒',label:'כובע'},
+{emoji:'👟',label:'נעליים'},{emoji:'👗',label:'שמלה'},{emoji:'👓',label:'משקפיים'},{emoji:'⌚',label:'שעון'},
+{emoji:'🎸',label:'גיטרה'},{emoji:'🎹',label:'פסנתר'},{emoji:'🥁',label:'תופים'},{emoji:'🎻',label:'כינור'},
+{emoji:'🎁',label:'מתנה'},{emoji:'🎄',label:'חג'},{emoji:'🐧',label:'פינגווין'},{emoji:'🐊',label:'תנין'},
+{emoji:'🐷',label:'חזיר'},{emoji:'🐑',label:'כבש'},{emoji:'🦜',label:'תוכי'},{emoji:'🐜',label:'נמלה'},
+{emoji:'🍋',label:'לימון'},{emoji:'🥭',label:'מנגו'},{emoji:'🍑',label:'אפרסק'},{emoji:'🧀',label:'גבינה'},
+{emoji:'🥛',label:'חלב'},{emoji:'🥚',label:'ביצה'},{emoji:'🍞',label:'לחם'},{emoji:'🍯',label:'דבש'},
+{emoji:'🤖',label:'רובוט'},{emoji:'🦕',label:'דינוזאור'},{emoji:'🦄',label:'חד קרן'},{emoji:'⛵',label:'סירה'},
+{emoji:'🚁',label:'מסוק'},{emoji:'🚜',label:'טרקטור'},{emoji:'🛴',label:'קורקינט'},{emoji:'🌺',label:'פרח'},
+{emoji:'🌳',label:'עץ'},{emoji:'⛰️',label:'הר'},{emoji:'🏝️',label:'אי'},{emoji:'🐻',label:'דוב'},
+{emoji:'🦈',label:'כריש'},{emoji:'🐸',label:'צפרדע'},{emoji:'🍿',label:'פופקורן'},{emoji:'☂️',label:'מטריה'}
+];
+
+// ============ FUNNY MESSAGES ============
+const FUNNY_CORRECT = [
+'אלוף!','גאון!','נכון מאוד!','וואו!','יופי!','מעולה!','בול!','כל הכבוד!',
+'איזה ראש!','לגמרי!','בום!','מלך!','אש!','קלעת!','מושלם!','סגרת!','חזק!','עוד אחד!','על הפנים!','יאללה!'
+];
+const FUNNY_SKIP = [
+'אוקיי...','הלאה!','הבא!','פספוס...','לא נורא...','יהיה בסדר...','קדימה!','חבל...','נו טוב...','בפעם הבאה...'
+];
+const FUNNY_TIMESUP = [
+'נגמר הזמן!','טיק טוק!','הזמן אזל!','סוף!','Game Over!','נגמר!'
+];
+
+// ============ AVATARS & NICKNAMES (paired — emoji matches name) ============
+const AVATAR_PAIRS = [
+  {emoji:'🦊', name:'השועל הערמומי'},
+  {emoji:'🐼', name:'הפנדה המסתורית'},
+  {emoji:'🦁', name:'האריה האמיץ'},
+  {emoji:'🐸', name:'הצפרדע הקופצת'},
+  {emoji:'🐙', name:'התמנון המתוחכם'},
+  {emoji:'🦄', name:'חד הקרן הקסום'},
+  {emoji:'🐯', name:'הנמר המהיר'},
+  {emoji:'🐨', name:'הקואלה החמודה'},
+  {emoji:'🦋', name:'הפרפר הצבעוני'},
+  {emoji:'🐺', name:'הזאב החכם'},
+  {emoji:'🦈', name:'הכריש המגניב'},
+  {emoji:'🐻', name:'הדוב הרוקד'},
+  {emoji:'🦉', name:'הינשוף החכם'},
+  {emoji:'🐹', name:'האוגר השובב'},
+  {emoji:'🐲', name:'הדרקון הקטן'},
+  {emoji:'🦖', name:'הדינוזאור הירוק'},
+  {emoji:'🐳', name:'הלווייתן הענק'},
+  {emoji:'🦜', name:'התוכי הצבעוני'},
+  {emoji:'🐧', name:'הפינגווין המגניב'},
+  {emoji:'🐬', name:'הדולפין הצוחק'}
+];
+
+// ============ STATE ============
+let players = [];
+let level = 'family';
+let describerOrder = [];
+let currentDescriberIdx = 0;
+let currentWord = '';
+let usedWords = new Set();
+let usedEmojiWords = new Set();
+let skipsLeft = 3;
+let timeLeft = 60;
+let timerInterval = null;
+let roundScoresMap = {};
+let soundEnabled = true;
+let lbTab = 'alltime';
+let selectedRounds = 1;
+let currentRound = 1;
+let totalScores = {};
+let bestRoundScores = {};
+// Team mode state
+let gameMode = 'free';
+let teams = { a: { name: 'קבוצה א׳', score: 0, totalScore: 0, players: [] }, b: { name: 'קבוצה ב׳', score: 0, totalScore: 0, players: [] } };
+let currentTeam = 'a';
+let teamTurnOrder = [];
+
+// ============ HAPTIC ============
+function haptic(ms) {
+  if (navigator.vibrate) navigator.vibrate(ms || 15);
+}
+
+// ============ AUDIO ============
+let audioCtx = null;
+function getAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playTick() {
+  if (!soundEnabled) return;
+  const ctx = getAudio(); const o = ctx.createOscillator(); const g = ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.frequency.value = 800; o.type = 'sine';
+  g.gain.setValueAtTime(0.08, ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+  o.start(); o.stop(ctx.currentTime + 0.05);
+}
+function playUrgentBeep() {
+  if (!soundEnabled) return;
+  const ctx = getAudio(); const o = ctx.createOscillator(); const g = ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.frequency.value = 1200; o.type = 'square';
+  g.gain.setValueAtTime(0.15, ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+  o.start(); o.stop(ctx.currentTime + 0.12);
+}
+function playCorrect() {
+  if (!soundEnabled) return;
+  const ctx = getAudio();
+  [523, 659, 784].forEach((f, i) => {
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = f; o.type = 'sine';
+    g.gain.setValueAtTime(0.12, ctx.currentTime + i * 0.1);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.2);
+    o.start(ctx.currentTime + i * 0.1); o.stop(ctx.currentTime + i * 0.1 + 0.2);
+  });
+}
+function playBuzzer() {
+  if (!soundEnabled) return;
+  const ctx = getAudio(); const o = ctx.createOscillator(); const g = ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.frequency.value = 200; o.type = 'sawtooth';
+  g.gain.setValueAtTime(0.2, ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+  o.start(); o.stop(ctx.currentTime + 0.5);
+}
+function playCountdownTick() {
+  if (!soundEnabled) return;
+  const ctx = getAudio(); const o = ctx.createOscillator(); const g = ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.frequency.value = 600; o.type = 'sine';
+  g.gain.setValueAtTime(0.18, ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+  o.start(); o.stop(ctx.currentTime + 0.15);
+}
+function playGoSound() {
+  if (!soundEnabled) return;
+  const ctx = getAudio();
+  [440, 554, 659, 880].forEach((f, i) => {
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = f; o.type = 'triangle';
+    const t = ctx.currentTime + i * 0.06;
+    g.gain.setValueAtTime(0.2, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+    o.start(t); o.stop(t + 0.3);
+  });
+}
+function playFanfare() {
+  if (!soundEnabled) return;
+  const ctx = getAudio();
+  const notes = [523, 659, 784, 1047];
+  notes.forEach((f, i) => {
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = f; o.type = 'triangle';
+    g.gain.setValueAtTime(0.15, ctx.currentTime + i * 0.15);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.15 + 0.4);
+    o.start(ctx.currentTime + i * 0.15); o.stop(ctx.currentTime + i * 0.15 + 0.4);
+  });
+}
+function playTeamWin() {
+  if (!soundEnabled) return;
+  const ctx = getAudio();
+  const notes = [392, 523, 659, 784, 1047, 1319];
+  notes.forEach((f, i) => {
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = f; o.type = 'triangle';
+    const t = ctx.currentTime + i * 0.12;
+    g.gain.setValueAtTime(0.18, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+    o.start(t); o.stop(t + 0.5);
+  });
+}
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  document.getElementById('soundToggle').textContent = soundEnabled ? '🔊' : '🔇';
+}
+
+// ============ SCREEN NAV ============
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById(id);
+  target.classList.add('active');
+  if (id === 'screenRounds') updateRoundsGrid();
+}
+function backToWelcome() { showScreen('screenWelcome'); }
+
+// ============ GAME MODE ============
+function setGameMode(mode) {
+  gameMode = mode;
+  document.getElementById('modeFree').classList.toggle('active', mode === 'free');
+  document.getElementById('modeTeam').classList.toggle('active', mode === 'team');
+  document.getElementById('teamNamesSection').style.display = mode === 'team' ? '' : 'none';
+  haptic(10);
+}
+
+// ============ ROUNDS GRID ============
+function getPlayerCountForRounds() {
+  return players.length || 2;
+}
+
+function formatDuration(totalSeconds) {
+  const mins = Math.round(totalSeconds / 60);
+  if (mins < 1) return '< דקה';
+  return `~${mins} דק'`;
+}
+
+function updateRoundsGrid() {
+  const n = getPlayerCountForRounds();
+  const grid = document.getElementById('roundsGrid');
+  const explain = document.getElementById('roundsExplain');
+  explain.textContent = `כל סיבוב = כולם משחקים פעם אחת (60 שניות × ${n} שחקנים)`;
+
+  const roundOptions = [1, 2, 3, 4];
+  grid.innerHTML = roundOptions.map(r => {
+    const totalSec = n * r * 60;
+    const duration = formatDuration(totalSec);
+    const titles = ['סיבוב אחד', 'שני סיבובים', 'שלושה סיבובים', 'ארבעה סיבובים'];
+    return `<button class="round-btn ${r === selectedRounds ? 'selected' : ''}" onclick="selectRounds(${r},this)">
+      <span class="rb-title">${titles[r-1]}</span><span class="rb-time">(${duration})</span>
+    </button>`;
+  }).join('');
+}
+
+// ============ PLAYER SETUP ============
+let usedPairIdx = 0;
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+let shuffledPairs = shuffleArray(AVATAR_PAIRS);
+
+function addPlayer() {
+  if (players.length >= 8) return;
+  const input = document.getElementById('playerNameInput');
+  let name = input.value.trim();
+  const pair = shuffledPairs[usedPairIdx % shuffledPairs.length];
+  usedPairIdx++;
+  const avatar = pair.emoji;
+  if (!name) {
+    name = pair.name;
+  }
+  const team = gameMode === 'team' ? (players.length % 2 === 0 ? 'a' : 'b') : null;
+  players.push({ name, avatar, score: 0, team, cannotRead: false });
+  input.value = '';
+  input.focus();
+  haptic(15);
+  renderPlayerList();
+}
+
+function removePlayer(i) {
+  players.splice(i, 1);
+  if (gameMode === 'team') {
+    players.forEach((p, idx) => p.team = idx % 2 === 0 ? 'a' : 'b');
+  }
+  renderPlayerList();
+}
+
+function togglePlayerTeam(i) {
+  if (gameMode !== 'team') return;
+  players[i].team = players[i].team === 'a' ? 'b' : 'a';
+  haptic(10);
+  renderPlayerList();
+}
+
+function toggleCannotRead(i) {
+  players[i].cannotRead = !players[i].cannotRead;
+  haptic(10);
+  renderPlayerList();
+}
+
+function renderPlayerList() {
+  const list = document.getElementById('playerList');
+  const isTeam = gameMode === 'team';
+
+  const sub = document.getElementById('setupSubtitle');
+  if (isTeam) {
+    sub.innerHTML = 'הוסיפו שחקנים • לחצו על צבע הקבוצה כדי להחליף';
+  } else {
+    sub.innerHTML = 'הוסיפו לפחות 2 שחקנים • שם אופציונלי — דלגו וקבלו כינוי מצחיק!';
+  }
+
+  list.innerHTML = players.map((p, i) => {
+    const teamBadge = isTeam ? `
+      <div class="team-assignment">
+        <span class="team-tag ${p.team === 'a' ? 'tag-a tag-active' : 'tag-b tag-active'}" onclick="event.stopPropagation();togglePlayerTeam(${i})">
+          ${p.team === 'a' ? '🔵 א׳' : '🔴 ב׳'}
+        </span>
+      </div>` : '';
+    return `
+    <div class="player-item" style="${isTeam ? (p.team === 'a' ? 'border-color:rgba(68,138,255,.3)' : 'border-color:rgba(255,64,129,.3)') : ''}">
+      <div class="avatar">${p.avatar}</div>
+      <div style="flex:1">
+        <div class="name">${p.name}</div>
+        ${teamBadge}
+      </div>
+      <button class="kids-btn ${p.cannotRead ? 'active' : ''}" onclick="event.stopPropagation();toggleCannotRead(${i})" title="${p.cannotRead ? 'יראה אמוג\'י במקום מילה' : 'לחצו אם לא יודע לקרוא'}">
+        🍼<span class="kids-dot"></span>
+        <span style="font-size:.45rem;font-weight:600;display:block;margin-top:2px;line-height:1;opacity:${p.cannotRead ? '1' : '0.5'}">${p.cannotRead ? 'פעיל' : 'לחץ'}</span>
+      </button>
+      <button class="remove" onclick="removePlayer(${i})">✕</button>
+    </div>`;
+  }).join('');
+
+  const btn = document.getElementById('btnToLevel');
+  const status = document.getElementById('playerStatus');
+  const minPlayers = isTeam ? 4 : 2;
+  const enough = players.length >= minPlayers;
+  console.log('renderPlayerList:', players.length, 'players, enough:', enough);
+  btn.disabled = !enough;
+  btn.style.opacity = enough ? '1' : '.4';
+  btn.style.cursor = enough ? 'pointer' : 'not-allowed';
+  btn.style.filter = enough ? 'none' : 'grayscale(.5)';
+  btn.style.pointerEvents = enough ? 'auto' : 'none';
+
+  if (isTeam) {
+    const teamACount = players.filter(p => p.team === 'a').length;
+    const teamBCount = players.filter(p => p.team === 'b').length;
+    if (players.length < 4) {
+      status.textContent = `צריך לפחות 4 שחקנים למצב קבוצות (${players.length}/4)`;
+      status.style.color = 'rgba(255,255,255,.4)';
+    } else if (teamACount === 0 || teamBCount === 0) {
+      status.textContent = 'צריך לפחות שחקן אחד בכל קבוצה';
+      status.style.color = 'var(--red)';
+      btn.disabled = true;
+      btn.style.opacity = '.4';
+      btn.style.filter = 'grayscale(.5)';
+    } else {
+      status.textContent = `🔵 ${teamACount} נגד 🔴 ${teamBCount} — יאללה!`;
+      status.style.color = 'var(--primary)';
+    }
+  } else {
+    if (players.length === 0) {
+      status.textContent = 'צריך לפחות 2 שחקנים כדי להתחיל';
+      status.style.color = 'rgba(255,255,255,.4)';
+    } else if (players.length === 1) {
+      status.textContent = 'עוד אחד ואפשר להתחיל! 🤞';
+      status.style.color = 'rgba(255,255,255,.5)';
+    } else if (players.length === 2) {
+      status.textContent = 'מוכנים! אפשר להוסיף עוד או להתחיל 🎉';
+      status.style.color = 'var(--green)';
+    } else if (players.length < 8) {
+      status.textContent = `${players.length} שחקנים — יאללה! 🔥`;
+      status.style.color = 'var(--primary)';
+    } else {
+      status.textContent = 'מקסימום שחקנים! אפשר להתחיל 💪';
+      status.style.color = 'var(--primary)';
+    }
+  }
+}
+
+// ============ ROUNDS SELECT ============
+function selectRounds(n, btn) {
+  selectedRounds = n;
+  document.querySelectorAll('.round-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  haptic(10);
+  setTimeout(() => showScreen('screenLevel'), 500);
+}
+
+// ============ LEVEL SELECT ============
+function selectLevel(lv) {
+  level = lv;
+  currentRound = 1;
+  totalScores = {};
+  bestRoundScores = {};
+  players.forEach(p => { totalScores[p.name] = 0; bestRoundScores[p.name] = 0; });
+
+  if (gameMode === 'team') {
+    const nameA = document.getElementById('teamAName').value.trim() || 'קבוצה א׳';
+    const nameB = document.getElementById('teamBName').value.trim() || 'קבוצה ב׳';
+    teams.a = { name: nameA, score: 0, totalScore: 0, players: players.filter(p => p.team === 'a') };
+    teams.b = { name: nameB, score: 0, totalScore: 0, players: players.filter(p => p.team === 'b') };
+  }
+
+  haptic(15);
+  prepareRound();
+  showScreen('screenReady');
+}
+
+// ============ PREPARE ROUND ============
+function prepareRound() {
+  players.forEach(p => p.score = 0);
+  roundScoresMap = {};
+
+  if (gameMode === 'team') {
+    teams.a.score = 0;
+    teams.b.score = 0;
+    const teamAPlayers = players.map((p, i) => i).filter(i => players[i].team === 'a');
+    const teamBPlayers = players.map((p, i) => i).filter(i => players[i].team === 'b');
+    const shuffA = shuffleArray(teamAPlayers);
+    const shuffB = shuffleArray(teamBPlayers);
+    teamTurnOrder = [];
+    const maxLen = Math.max(shuffA.length, shuffB.length);
+    for (let i = 0; i < maxLen; i++) {
+      if (i < shuffA.length) teamTurnOrder.push({ playerIdx: shuffA[i], team: 'a' });
+      if (i < shuffB.length) teamTurnOrder.push({ playerIdx: shuffB[i], team: 'b' });
+    }
+    currentDescriberIdx = 0;
+    currentTeam = teamTurnOrder[0]?.team || 'a';
+  } else {
+    describerOrder = shuffleArray(players.map((_, i) => i));
+    currentDescriberIdx = 0;
+  }
+
+  usedWords.clear();
+  usedEmojiWords.clear();
+
+  const labels = { kids: '👶 ילדים', family: '👨‍👩‍👧 משפחה', pro: '🔥 פרו' };
+  let readyLabel = `רמה: ${labels[level]}`;
+  if (selectedRounds > 1) readyLabel += ` • סיבוב ${currentRound} מתוך ${selectedRounds}`;
+  if (gameMode === 'team') readyLabel += ' • ⚔️ מצב קבוצות';
+
+  document.getElementById('readyLevelLabel').textContent = readyLabel;
+
+  // Update ready subtitle with first player name
+  const firstIdx = gameMode === 'team' ? teamTurnOrder[0]?.playerIdx : describerOrder[0];
+  const firstName = players[firstIdx]?.name || '';
+  document.getElementById('readySubtitle').textContent = `העבירו את הטלפון ל${firstName}`;
+
+  const grid = document.getElementById('readyPlayers');
+  if (gameMode === 'team') {
+    const teamAPlayers = players.filter(p => p.team === 'a');
+    const teamBPlayers = players.filter(p => p.team === 'b');
+    grid.innerHTML = `
+      <div style="width:100%;text-align:center;margin-bottom:4px">
+        <span style="color:var(--teamA);font-weight:700;font-size:1.05rem">🔵 ${teams.a.name}</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%;margin-bottom:12px">
+        ${teamAPlayers.map(p => `<div class="pg-item" style="border-color:rgba(68,138,255,.4)"><div class="pg-emoji">${p.avatar}</div><div class="pg-name">${p.name}</div></div>`).join('')}
+      </div>
+      <div style="font-size:1.8rem;margin:4px 0">⚔️</div>
+      <div style="width:100%;text-align:center;margin-bottom:4px">
+        <span style="color:var(--teamB);font-weight:700;font-size:1.05rem">🔴 ${teams.b.name}</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%">
+        ${teamBPlayers.map(p => `<div class="pg-item" style="border-color:rgba(255,64,129,.4)"><div class="pg-emoji">${p.avatar}</div><div class="pg-name">${p.name}</div></div>`).join('')}
+      </div>`;
+    document.getElementById('readyDescriberNote').textContent = 'כל שחקן מתאר בתורו — הקבוצות מתחלפות';
+  } else {
+    grid.innerHTML = players.map((p, i) => {
+      return `<div class="pg-item" style="border-color:var(--primary)">
+        <div class="pg-emoji">${p.avatar}</div>
+        <div class="pg-name">${p.name}</div>
+      </div>`;
+    }).join('');
+    document.getElementById('readyDescriberNote').textContent = `כולם מתארים — ${players.length} × 60 שניות`;
+  }
+}
+
+// ============ START ROUND ============
+function startRound() {
+  showTurnTransition();
+}
+
+// ============ TURN TRANSITION ============
+function showTurnTransition() {
+  let pIdx, teamClass = '';
+  if (gameMode === 'team') {
+    const turn = teamTurnOrder[currentDescriberIdx];
+    pIdx = turn.playerIdx;
+    currentTeam = turn.team;
+    teamClass = currentTeam === 'a' ? 'team-a' : 'team-b';
+  } else {
+    pIdx = describerOrder[currentDescriberIdx];
+  }
+  const p = players[pIdx];
+  const maxTurns = gameMode === 'team' ? teamTurnOrder.length : describerOrder.length;
+  const turnNum = currentDescriberIdx + 1;
+
+  const teamInfo = gameMode === 'team' ?
+    `<div style="font-size:1rem;font-weight:700;color:rgba(255,255,255,.9);margin-bottom:6px;padding:5px 14px;border-radius:10px;background:rgba(255,255,255,.15)">${currentTeam === 'a' ? '🔵 ' + teams.a.name : '🔴 ' + teams.b.name}</div>` : '';
+
+  const screen = document.getElementById('screenPass');
+  screen.innerHTML = `
+    <div class="turn-transition ${teamClass}">
+      <div class="pass-label">📱 תעבירו את הטלפון!</div>
+      <p class="screen-subtitle" style="color:rgba(255,255,255,.7)">העבירו את הטלפון ל${p.name}</p>
+      ${teamInfo}
+      <div style="font-size:.8rem;color:rgba(255,255,255,.6);margin-bottom:4px">תור ${turnNum} מתוך ${maxTurns}</div>
+      <div class="label">עכשיו התור של</div>
+      <div class="emoji">${p.avatar}</div>
+      <div class="player-name">${p.name}</div>
+      <div class="arrow">👇</div>
+      <button class="btn btn-primary mt-16" id="passSkipBtn" onclick="startTurn()" style="font-size:1.3rem;padding:18px 40px;width:80%;max-width:320px">!יאללה 🚀</button>
+    </div>
+  `;
+  showScreen('screenPass');
+  haptic(30);
+}
+
+// ============ START TURN ============
+function startTurn() {
+  showStartCountdown();
+}
+
+function beginTurnAfterCountdown() {
+  skipsLeft = 3;
+  timeLeft = 60;
+  showScreen('screenGame');
+
+  const ri = document.getElementById('roundIndicator');
+  if (selectedRounds > 1) {
+    ri.textContent = `סיבוב ${currentRound} מתוך ${selectedRounds}`;
+    ri.style.display = '';
+  } else {
+    ri.style.display = 'none';
+  }
+
+  if (gameMode === 'team') {
+    document.getElementById('teamScoreboard').style.display = '';
+    document.getElementById('scoreBar').style.display = 'none';
+    renderTeamScoreboard();
+  } else {
+    document.getElementById('teamScoreboard').style.display = 'none';
+    document.getElementById('scoreBar').style.display = '';
+    renderScoreBar();
+  }
+
+  renderCurrentPlayer();
+  nextWord();
+  updateTimer();
+  updateSkipCounter();
+  document.getElementById('funnyMsg').textContent = '';
+  startTimer();
+}
+
+function showStartCountdown() {
+  let pIdx;
+  if (gameMode === 'team') {
+    pIdx = teamTurnOrder[currentDescriberIdx].playerIdx;
+  } else {
+    pIdx = describerOrder[currentDescriberIdx];
+  }
+  const p = players[pIdx];
+
+  const overlay = document.createElement('div');
+  overlay.className = 'start-countdown-overlay';
+
+  const teamLabel = gameMode === 'team' ?
+    `<div style="font-size:.95rem;color:${currentTeam === 'a' ? 'var(--teamA)' : 'var(--teamB)'};font-weight:700;margin-bottom:4px">${currentTeam === 'a' ? '🔵 ' + teams.a.name : '🔴 ' + teams.b.name}</div>` : '';
+
+  overlay.innerHTML = `
+    <div class="sco-label">התור של</div>
+    ${teamLabel}
+    <div class="sco-avatar">${p.avatar}</div>
+    <div class="sco-name">${p.name}</div>
+    <div class="sco-number" id="scoNumber"></div>
+  `;
+  document.body.appendChild(overlay);
+
+  const numEl = overlay.querySelector('#scoNumber');
+  const sequence = ['3', '2', '1', 'GO!'];
+  let step = 0;
+
+  function showNext() {
+    if (step >= sequence.length) {
+      overlay.remove();
+      beginTurnAfterCountdown();
+      return;
+    }
+    const val = sequence[step];
+    numEl.textContent = val;
+    numEl.className = 'sco-number sco-pop';
+    numEl.style.animation = 'none';
+    numEl.offsetHeight;
+    numEl.style.animation = '';
+    numEl.className = 'sco-number sco-pop';
+
+    if (val === 'GO!') {
+      playGoSound();
+      haptic(50);
+      numEl.classList.add('sco-go');
+      step++;
+      setTimeout(showNext, 500);
+    } else {
+      playCountdownTick();
+      haptic(15);
+      step++;
+      setTimeout(showNext, 1000);
+    }
+  }
+
+  showNext();
+}
+
+function renderTeamScoreboard() {
+  document.getElementById('teamALabel').textContent = teams.a.name;
+  document.getElementById('teamBLabel').textContent = teams.b.name;
+
+  const scoreAEl = document.getElementById('teamAScore');
+  const scoreBEl = document.getElementById('teamBScore');
+  scoreAEl.textContent = teams.a.score;
+  scoreBEl.textContent = teams.b.score;
+
+  document.getElementById('teamACard').classList.toggle('active-team', currentTeam === 'a');
+  document.getElementById('teamBCard').classList.toggle('active-team', currentTeam === 'b');
+
+  const total = teams.a.score + teams.b.score;
+  if (total === 0) {
+    document.getElementById('teamBarA').style.width = '50%';
+    document.getElementById('teamBarB').style.width = '50%';
+  } else {
+    const aPct = Math.max(5, (teams.a.score / total) * 100);
+    const bPct = Math.max(5, (teams.b.score / total) * 100);
+    document.getElementById('teamBarA').style.width = aPct + '%';
+    document.getElementById('teamBarB').style.width = bPct + '%';
+  }
+}
+
+function renderScoreBar() {
+  const bar = document.getElementById('scoreBar');
+  const maxScore = Math.max(...players.map(p => p.score), 0);
+  const activeIdx = gameMode === 'team' ? teamTurnOrder[currentDescriberIdx]?.playerIdx : describerOrder[currentDescriberIdx];
+  bar.innerHTML = players.map((p, i) => {
+    const isActive = i === activeIdx;
+    const isCrown = p.score > 0 && p.score === maxScore;
+    return `<div class="sb-item ${isActive ? 'active' : ''}">
+      ${isCrown ? '<span class="sb-crown">👑</span>' : ''}
+      <span class="sb-emoji">${p.avatar}</span>
+      <span class="sb-score">${p.score}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderCurrentPlayer() {
+  let pIdx;
+  if (gameMode === 'team') {
+    pIdx = teamTurnOrder[currentDescriberIdx].playerIdx;
+  } else {
+    pIdx = describerOrder[currentDescriberIdx];
+  }
+  const p = players[pIdx];
+  const teamBadge = gameMode === 'team' ?
+    `<span style="font-size:.7rem;padding:2px 7px;border-radius:6px;background:${currentTeam === 'a' ? 'rgba(68,138,255,.2)' : 'rgba(255,64,129,.2)'};color:${currentTeam === 'a' ? 'var(--teamA)' : 'var(--teamB)'};margin-right:6px">${currentTeam === 'a' ? teams.a.name : teams.b.name}</span>` : '';
+  document.getElementById('currentPlayerHeader').innerHTML = `
+    <span class="cph-emoji">${p.avatar}</span>
+    <span class="cph-name">${p.name}</span>
+    ${teamBadge}
+    <span class="cph-score">${p.score} נקודות</span>
+  `;
+}
+
+// ============ WORD SELECTION ============
+function getCurrentPlayerIdx() {
+  if (gameMode === 'team') return teamTurnOrder[currentDescriberIdx].playerIdx;
+  return describerOrder[currentDescriberIdx];
+}
+
+function nextWord() {
+  const pIdx = getCurrentPlayerIdx();
+  const p = players[pIdx];
+  const wd = document.getElementById('wordDisplay');
+
+  if (p.cannotRead) {
+    // Emoji mode for this player
+    let attempts = 0;
+    let emojiWord;
+    do {
+      emojiWord = EMOJI_WORDS[Math.floor(Math.random() * EMOJI_WORDS.length)];
+      attempts++;
+      if (attempts > EMOJI_WORDS.length) { usedEmojiWords.clear(); }
+    } while (usedEmojiWords.has(emojiWord.emoji));
+    usedEmojiWords.add(emojiWord.emoji);
+    currentWord = emojiWord.label;
+    wd.innerHTML = `<span class="emoji-word">${emojiWord.emoji}</span>`;
+  } else {
+    // Normal text word
+    const bank = WORDS[level];
+    let attempts = 0;
+    do {
+      currentWord = bank[Math.floor(Math.random() * bank.length)];
+      attempts++;
+      if (attempts > bank.length) { usedWords.clear(); }
+    } while (usedWords.has(currentWord));
+    usedWords.add(currentWord);
+    wd.innerHTML = currentWord;
+  }
+
+  wd.className = 'word-display game-word-area word-pop';
+  setTimeout(() => { wd.classList.remove('word-pop'); }, 500);
+}
+
+function updateTimer() {
+  const text = document.getElementById('timerText');
+  const progress = document.getElementById('timerProgress');
+  const ring = document.getElementById('timerRing');
+  text.textContent = timeLeft;
+  const circumference = 2 * Math.PI * 52;
+  const offset = circumference * (1 - timeLeft / 60);
+  progress.style.strokeDashoffset = offset;
+
+  // Progress bar/ring color: green → yellow → red
+  const pct = timeLeft / 60;
+  let strokeColor;
+  if (pct > 0.5) {
+    strokeColor = '#00e676'; // green
+  } else if (pct > 0.17) {
+    strokeColor = '#ffcc00'; // yellow
+  } else {
+    strokeColor = '#ff1744'; // red
+  }
+  progress.style.stroke = strokeColor;
+
+  if (timeLeft <= 10) {
+    ring.classList.add('urgent');
+  } else {
+    ring.classList.remove('urgent');
+  }
+}
+
+function updateSkipCounter() {
+  document.getElementById('skipCounter').textContent = `${skipsLeft} דילוגים נותרו`;
+  const skipBtn = document.getElementById('btnSkip');
+  skipBtn.disabled = skipsLeft <= 0;
+  skipBtn.style.opacity = skipsLeft <= 0 ? '.4' : '1';
+  skipBtn.style.pointerEvents = skipsLeft <= 0 ? 'none' : 'auto';
+}
+
+function startTimer() {
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+    if (timeLeft <= 5 && timeLeft > 0) {
+      playUrgentBeep();
+      // Haptic pulse last 5 seconds
+      haptic(100);
+    }
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      playBuzzer();
+      // Game over haptic
+      haptic(300);
+      showFunnyMsg(FUNNY_TIMESUP);
+      endTurn();
+    }
+  }, 1000);
+}
+
+// ============ FUNNY MESSAGES ============
+function showFunnyMsg(arr) {
+  const el = document.getElementById('funnyMsg');
+  el.textContent = arr[Math.floor(Math.random() * arr.length)];
+  el.style.animation = 'none';
+  el.offsetHeight;
+  el.style.animation = 'fadeIn .5s';
+}
+
+// ============ GAME ACTIONS ============
+function wordCorrect() {
+  let pIdx;
+  if (gameMode === 'team') {
+    pIdx = teamTurnOrder[currentDescriberIdx].playerIdx;
+    teams[currentTeam].score++;
+  } else {
+    pIdx = describerOrder[currentDescriberIdx];
+  }
+  players[pIdx].score++;
+  playCorrect();
+  // Correct answer haptic
+  haptic(50);
+  showScorePopup();
+  showFunnyMsg(FUNNY_CORRECT);
+
+  if (gameMode === 'team') {
+    renderTeamScoreboard();
+    const scoreEl = document.getElementById(currentTeam === 'a' ? 'teamAScore' : 'teamBScore');
+    scoreEl.classList.remove('score-bounce');
+    scoreEl.offsetHeight;
+    scoreEl.classList.add('score-bounce');
+  } else {
+    renderScoreBar();
+  }
+  renderCurrentPlayer();
+  nextWord();
+}
+
+function wordSkip() {
+  if (skipsLeft <= 0) return;
+  skipsLeft--;
+  haptic(10);
+  showFunnyMsg(FUNNY_SKIP);
+  updateSkipCounter();
+  nextWord();
+}
+
+function showScorePopup() {
+  const popup = document.createElement('div');
+  popup.className = 'score-popup';
+  popup.textContent = '+1';
+  popup.style.left = '50%';
+  popup.style.top = '50%';
+  popup.style.transform = 'translateX(-50%)';
+  document.body.appendChild(popup);
+  setTimeout(() => popup.remove(), 1000);
+}
+
+// ============ END TURN ============
+function endTurn() {
+  clearInterval(timerInterval);
+  currentDescriberIdx++;
+
+  const maxTurns = gameMode === 'team' ? teamTurnOrder.length : describerOrder.length;
+  if (currentDescriberIdx >= maxTurns) {
+    endRound();
+  } else {
+    showTurnTransition();
+  }
+}
+
+// ============ END ROUND ============
+function endRound() {
+  playFanfare();
+  launchConfetti();
+
+  players.forEach(p => {
+    totalScores[p.name] = (totalScores[p.name] || 0) + p.score;
+    bestRoundScores[p.name] = Math.max(bestRoundScores[p.name] || 0, p.score);
+  });
+  if (gameMode === 'team') {
+    teams.a.totalScore += teams.a.score;
+    teams.b.totalScore += teams.b.score;
+  }
+
+  const container = document.getElementById('roundScores');
+  const title = document.getElementById('roundEndTitle');
+  const subtitle = document.getElementById('roundEndSubtitle');
+  const btns = document.getElementById('roundEndButtons');
+
+  if (gameMode === 'team') {
+    const winner = teams.a.score > teams.b.score ? 'a' : teams.b.score > teams.a.score ? 'b' : null;
+    container.innerHTML = `
+      <div class="round-score-item" style="border-color:rgba(68,138,255,.4);animation-delay:0ms">
+        <span class="rs-avatar">🔵</span>
+        <span class="rs-name">${teams.a.name} ${winner === 'a' ? '👑' : ''}</span>
+        <span class="rs-score" style="color:var(--teamA)">${teams.a.score}</span>
+      </div>
+      <div class="round-score-item" style="border-color:rgba(255,64,129,.4);animation-delay:200ms">
+        <span class="rs-avatar">🔴</span>
+        <span class="rs-name">${teams.b.name} ${winner === 'b' ? '👑' : ''}</span>
+        <span class="rs-score" style="color:var(--teamB)">${teams.b.score}</span>
+      </div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.1)">
+        <p style="font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:6px">ניקוד אישי:</p>
+        ${[...players].sort((a, b) => b.score - a.score).map((p, i) => `
+          <div class="round-score-item" style="min-height:44px;padding:8px 12px;animation-delay:${(i+2)*200}ms">
+            <span class="rs-avatar" style="font-size:1.2rem">${p.avatar}</span>
+            <span class="rs-name" style="font-size:.9rem">${p.name}</span>
+            <span class="rs-score" style="font-size:1rem">${p.score}</span>
+          </div>`).join('')}
+      </div>`;
+  } else {
+    const sorted = [...players].sort((a, b) => b.score - a.score);
+    const maxScore = sorted[0]?.score || 0;
+    container.innerHTML = sorted.map((p, i) => {
+      const medal = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+      const crown = p.score === maxScore && p.score > 0 ? '👑' : '';
+      return `<div class="round-score-item ${medal}" style="animation-delay:${i*200}ms">
+        <span class="rs-avatar">${p.avatar}</span>
+        <span class="rs-name">${p.name} ${crown}</span>
+        <span class="rs-score">${p.score}</span>
+      </div>`;
+    }).join('');
+  }
+
+  if (currentRound < selectedRounds) {
+    title.textContent = `סיום סיבוב ${currentRound}!`;
+    subtitle.textContent = `נותרו עוד ${selectedRounds - currentRound} סיבובים`;
+    btns.innerHTML = `
+      <button class="btn btn-action btn-primary" onclick="startNextRound()">סיבוב הבא ▸</button>
+      <button class="btn btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="backToWelcome()">עזיבה</button>
+    `;
+  } else {
+    if (selectedRounds > 1) {
+      title.textContent = `סיום סיבוב ${currentRound}!`;
+      subtitle.textContent = 'עוברים לגמר הגדול...';
+      saveToLeaderboard();
+      showScreen('screenRoundEnd');
+      setTimeout(() => showGrandFinal(), 2500);
+      return;
+    }
+    title.textContent = 'סיום משחק!';
+    subtitle.textContent = '';
+    btns.innerHTML = `
+      <button class="btn btn-action btn-share" onclick="shareResults(event)">📤 שתף תוצאות</button>
+      <button class="btn btn-action btn-primary" onclick="playAgain()">שחקו שוב 🔄</button>
+      <button class="btn btn-action btn-purple" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
+      <button class="btn btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="backToWelcome()">תפריט ראשי</button>
+    `;
+    saveToLeaderboard();
+  }
+
+  showScreen('screenRoundEnd');
+}
+
+function startNextRound() {
+  currentRound++;
+  prepareRound();
+  showScreen('screenReady');
+}
+
+function showGrandFinal() {
+  playTeamWin();
+  launchConfetti();
+  setTimeout(() => launchConfetti(), 800);
+
+  const icon = document.getElementById('grandFinalIcon');
+  const titleEl = document.getElementById('grandFinalTitle');
+  document.getElementById('grandFinalSubtitle').textContent = `${selectedRounds} סיבובים הושלמו!`;
+
+  const container = document.getElementById('grandFinalScores');
+
+  if (gameMode === 'team') {
+    const winner = teams.a.totalScore > teams.b.totalScore ? 'a' : teams.b.totalScore > teams.a.totalScore ? 'b' : null;
+    haptic(200);
+
+    if (winner) {
+      icon.innerHTML = `<div class="winner-crown">🏆</div>`;
+      titleEl.innerHTML = `<span class="winner-team-name ${winner === 'a' ? 'winner-team-a' : 'winner-team-b'}">${teams[winner].name} ניצחו!</span>`;
+    } else {
+      icon.innerHTML = '🤝';
+      titleEl.textContent = 'תיקו!';
+    }
+
+    container.innerHTML = `
+      <div class="round-score-item ${teams.a.totalScore >= teams.b.totalScore ? 'gold' : ''}" style="border-color:rgba(68,138,255,.4);animation-delay:0ms">
+        <span class="rs-avatar">🔵</span>
+        <span class="rs-name">${teams.a.name} ${winner === 'a' ? '👑' : ''}</span>
+        <span class="rs-score" style="color:var(--teamA)">${teams.a.totalScore}</span>
+      </div>
+      <div class="round-score-item ${teams.b.totalScore >= teams.a.totalScore ? 'gold' : ''}" style="border-color:rgba(255,64,129,.4);animation-delay:200ms">
+        <span class="rs-avatar">🔴</span>
+        <span class="rs-name">${teams.b.name} ${winner === 'b' ? '👑' : ''}</span>
+        <span class="rs-score" style="color:var(--teamB)">${teams.b.totalScore}</span>
+      </div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.1)">
+        <p style="font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:6px">MVP — ניקוד אישי כולל:</p>
+        ${[...players].sort((a, b) => (totalScores[b.name] || 0) - (totalScores[a.name] || 0)).map((p, i) => `
+          <div class="round-score-item" style="min-height:44px;padding:8px 12px;${i === 0 ? 'border-color:var(--primary)' : ''};animation-delay:${(i+2)*200}ms">
+            <span class="rs-avatar" style="font-size:1.2rem">${p.avatar}</span>
+            <span class="rs-name" style="font-size:.9rem">${p.name} ${i === 0 ? '⭐' : ''}</span>
+            <div style="text-align:left">
+              <span class="rs-score" style="font-size:1rem">${totalScores[p.name] || 0}</span>
+              <div class="rs-best">שיא: ${bestRoundScores[p.name] || 0}</div>
+            </div>
+          </div>`).join('')}
+      </div>`;
+  } else {
+    icon.innerHTML = '🏆🎉🏆';
+    titleEl.textContent = 'גמר גדול!';
+
+    const sortedPlayers = [...players].sort((a, b) => (totalScores[b.name] || 0) - (totalScores[a.name] || 0));
+    const maxTotal = totalScores[sortedPlayers[0]?.name] || 0;
+
+    container.innerHTML = sortedPlayers.map((p, i) => {
+      const t = totalScores[p.name] || 0;
+      const medal = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+      const crown = t === maxTotal && t > 0 ? '👑' : '';
+      return `<div class="round-score-item ${medal}" style="animation-delay:${i*200}ms">
+        <span class="rs-avatar">${p.avatar}</span>
+        <span class="rs-name">${p.name} ${crown}</span>
+        <div style="text-align:left">
+          <span class="rs-score">${t}</span>
+          <div class="rs-best">שיא סיבוב: ${bestRoundScores[p.name] || 0}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  showScreen('screenGrandFinal');
+}
+
+function playAgain() {
+  prepareRound();
+  currentRound = 1;
+  totalScores = {};
+  bestRoundScores = {};
+  players.forEach(p => { totalScores[p.name] = 0; bestRoundScores[p.name] = 0; });
+  if (gameMode === 'team') {
+    teams.a.totalScore = 0;
+    teams.b.totalScore = 0;
+  }
+  showScreen('screenReady');
+}
+
+// ============ SHARE RESULTS ============
+function shareResults(e) {
+  let winnerName = '';
+  let winnerScore = 0;
+
+  if (gameMode === 'team') {
+    if (teams.a.totalScore >= teams.b.totalScore && teams.a.totalScore > 0) {
+      winnerName = teams.a.name;
+      winnerScore = selectedRounds > 1 ? teams.a.totalScore : teams.a.score;
+    } else if (teams.b.totalScore > 0) {
+      winnerName = teams.b.name;
+      winnerScore = selectedRounds > 1 ? teams.b.totalScore : teams.b.score;
+    }
+  } else {
+    const sorted = [...players].sort((a, b) => {
+      const aTotal = selectedRounds > 1 ? (totalScores[a.name] || 0) : a.score;
+      const bTotal = selectedRounds > 1 ? (totalScores[b.name] || 0) : b.score;
+      return bTotal - aTotal;
+    });
+    if (sorted.length > 0) {
+      winnerName = sorted[0].name;
+      winnerScore = selectedRounds > 1 ? (totalScores[sorted[0].name] || 0) : sorted[0].score;
+    }
+  }
+
+  const shareText = `שיחקנו מילה בלי מילה! 🎉 ${winnerName} ניצח עם ${winnerScore} נקודות! שחק גם: https://tinyurl.com/223xkexc`;
+
+  if (navigator.share) {
+    navigator.share({
+      title: 'מילה בלי מילה',
+      text: shareText
+    }).catch(() => {});
+  } else {
+    const shareBtn = e && e.target ? (e.target.closest('.btn') || e.target) : null;
+    function showCopied() {
+      if (!shareBtn) return;
+      const orig = shareBtn.textContent;
+      shareBtn.textContent = '✓ הועתק!';
+      setTimeout(() => shareBtn.textContent = orig, 2000);
+    }
+    navigator.clipboard.writeText(shareText).then(showCopied).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = shareText;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      showCopied();
+    });
+  }
+}
+
+// ============ LEADERBOARD (localStorage) ============
+function getLeaderboardData() {
+  try { return JSON.parse(localStorage.getItem('mila-beli-mila-lb') || '{}'); }
+  catch { return {}; }
+}
+function saveLeaderboardData(data) {
+  localStorage.setItem('mila-beli-mila-lb', JSON.stringify(data));
+}
+
+function saveToLeaderboard() {
+  const data = getLeaderboardData();
+  if (!data.alltime) data.alltime = [];
+  if (!data.tournament) data.tournament = {};
+
+  const useTotal = selectedRounds > 1;
+
+  players.forEach(p => {
+    const score = useTotal ? (totalScores[p.name] || 0) : p.score;
+    const best = bestRoundScores[p.name] || p.score;
+    if (score > 0) {
+      data.alltime.push({ name: p.name, avatar: p.avatar, score, bestRound: best, date: Date.now() });
+    }
+  });
+  data.alltime.sort((a, b) => b.score - a.score);
+  data.alltime = data.alltime.slice(0, 50);
+
+  players.forEach(p => {
+    const score = useTotal ? (totalScores[p.name] || 0) : p.score;
+    const best = bestRoundScores[p.name] || p.score;
+    const key = `${p.avatar}_${p.name}`;
+    if (!data.tournament[key]) data.tournament[key] = { name: p.name, avatar: p.avatar, total: 0, games: 0, bestRound: 0 };
+    data.tournament[key].total += score;
+    data.tournament[key].games++;
+    data.tournament[key].bestRound = Math.max(data.tournament[key].bestRound || 0, best);
+  });
+
+  saveLeaderboardData(data);
+}
+
+function showLeaderboard() {
+  lbTab = 'alltime';
+  renderLeaderboard();
+  showScreen('screenLeaderboard');
+  document.querySelectorAll('#lbTabs .tab').forEach((t, i) => {
+    t.classList.toggle('active', i === 0);
+  });
+}
+
+function showLbTab(tab) {
+  lbTab = tab;
+  document.querySelectorAll('#lbTabs .tab').forEach(t => {
+    t.classList.toggle('active', (tab === 'alltime' && t.textContent.includes('כל')) || (tab === 'tournament' && t.textContent.includes('טורניר')));
+  });
+  renderLeaderboard();
+}
+
+function renderLeaderboard() {
+  const data = getLeaderboardData();
+  const list = document.getElementById('leaderboardList');
+  const empty = document.getElementById('lbEmpty');
+
+  if (lbTab === 'alltime') {
+    const entries = data.alltime || [];
+    if (entries.length === 0) { list.innerHTML = ''; empty.style.display = ''; return; }
+    empty.style.display = 'none';
+    list.innerHTML = entries.slice(0, 20).map((e, i) => {
+      const cls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+      const rank = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`;
+      const bestInfo = e.bestRound ? `<div class="lb-best">שיא סיבוב: ${e.bestRound}</div>` : '';
+      return `<div class="lb-item ${cls}" style="animation-delay:${i*200}ms">
+        <span class="rank">${rank}</span>
+        <span class="lb-avatar">${e.avatar}</span>
+        <span class="lb-name">${e.name}</span>
+        <div style="text-align:left">
+          <span class="lb-score">${e.score}</span>
+          ${bestInfo}
+        </div>
+      </div>`;
+    }).join('');
+  } else {
+    const t = data.tournament || {};
+    const entries = Object.values(t).sort((a, b) => b.total - a.total);
+    if (entries.length === 0) { list.innerHTML = ''; empty.style.display = ''; return; }
+    empty.style.display = 'none';
+    list.innerHTML = entries.slice(0, 20).map((e, i) => {
+      const cls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+      const rank = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`;
+      const bestInfo = e.bestRound ? `<div class="lb-best">שיא סיבוב: ${e.bestRound}</div>` : '';
+      return `<div class="lb-item ${cls}" style="animation-delay:${i*200}ms">
+        <span class="rank">${rank}</span>
+        <span class="lb-avatar">${e.avatar}</span>
+        <span class="lb-name">${e.name}</span>
+        <div style="text-align:left">
+          <span class="lb-score">${e.total} (${e.games} משחקים)</span>
+          ${bestInfo}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  if ((data.alltime && data.alltime.length > 0) || Object.keys(data.tournament || {}).length > 0) {
+    setTimeout(() => launchConfetti(), 600);
+  }
+}
+
+function confirmResetLb() {
+  if (confirm('בטוחים שרוצים לאפס את טבלת האלופים? אי אפשר לשחזר!')) {
+    localStorage.removeItem('mila-beli-mila-lb');
+    renderLeaderboard();
+  }
+}
+
+// ============ CONFETTI ============
+function launchConfetti() {
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = [];
+  const colors = ['#ffcc00', '#ff4081', '#00e676', '#448aff', '#d500f9', '#ff9100', '#ff1744', '#00bcd4', '#e91e63'];
+  const shapes = ['rect', 'circle', 'strip'];
+
+  for (let i = 0; i < 200; i++) {
+    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: -20 - Math.random() * canvas.height * 0.5,
+      w: shape === 'strip' ? 3 : Math.random() * 10 + 5,
+      h: shape === 'strip' ? Math.random() * 15 + 10 : Math.random() * 6 + 3,
+      r: shape === 'circle' ? Math.random() * 5 + 3 : 0,
+      shape,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vx: (Math.random() - 0.5) * 6,
+      vy: Math.random() * 4 + 2,
+      rotation: Math.random() * 360,
+      rotationSpeed: (Math.random() - 0.5) * 12,
+      opacity: 1,
+      wobble: Math.random() * 10,
+      wobbleSpeed: Math.random() * 0.1 + 0.03
+    });
+  }
+
+  let frame = 0;
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    particles.forEach(p => {
+      if (p.opacity <= 0) return;
+      alive = true;
+      p.wobble += p.wobbleSpeed;
+      p.x += p.vx + Math.sin(p.wobble) * 0.5;
+      p.y += p.vy;
+      p.vy += 0.04;
+      p.rotation += p.rotationSpeed;
+      if (frame > 80) p.opacity -= 0.008;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation * Math.PI / 180);
+      ctx.globalAlpha = Math.max(0, p.opacity);
+      ctx.fillStyle = p.color;
+      if (p.shape === 'circle') {
+        ctx.beginPath();
+        ctx.arc(0, 0, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      }
+      ctx.restore();
+    });
+    frame++;
+    if (alive && frame < 400) requestAnimationFrame(animate);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  animate();
+}
+
+// ============ INIT ============
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('touchstart', () => {
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}, { once: true });
+document.addEventListener('click', () => {
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}, { once: true });
+
+const observer = new MutationObserver(() => {
+  if (document.getElementById('screenSetup').classList.contains('active')) {
+    setTimeout(() => document.getElementById('playerNameInput')?.focus(), 100);
+  }
+});
+observer.observe(document.getElementById('screenSetup'), { attributes: true, attributeFilter: ['class'] });
+</script>
+</body>
+</html>
