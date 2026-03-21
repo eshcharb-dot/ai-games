@@ -615,9 +615,21 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 #screenGame .game-top-bar .timer-ring { width: 16vw !important; height: 16vw !important; min-width: 16vw !important; flex-shrink: 0 !important; }
 #screenGame .game-top-bar .time-text { font-size: 6.5vw !important; font-weight: 900 !important; }
 
-/* Funny msg and skip counter bigger */
-#screenGame .game-feedback { font-size: 6vw !important; min-height: 10vw !important; }
-#screenGame .skip-counter, #screenGame [id="skipCounter"] { font-size: 5vw !important; color: rgba(255,255,255,.7) !important; }
+/* Funny msg and skip counter — inside word area, overlay style */
+#screenGame .game-feedback { font-size: 6vw !important; min-height: 8vw !important; flex-shrink: 0 !important; }
+#screenGame .skip-counter, #screenGame [id="skipCounter"] { font-size: 5vw !important; color: rgba(255,255,255,.7) !important; flex-shrink: 0 !important; margin: 0 !important; padding: 0 4vw 2vw !important; }
+
+/* Word area — push funny msg inside it so word stays centered in remaining space */
+#screenGame .game-word-area {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 0 !important;
+  background: radial-gradient(ellipse at center, rgba(255,204,0,.06) 0%, transparent 70%) !important;
+  gap: 3vw !important;
+}
 
 /* Word centered vertically */
 #screenGame.active { flex-direction: column !important; height: 100dvh !important; overflow: hidden !important; padding: 0 !important; }
