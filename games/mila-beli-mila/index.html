@@ -24,7 +24,7 @@ background:#1a1a2e}
 
 /* Screens */
 .screen{display:none;flex-direction:column;align-items:center;justify-content:space-between;
-height:100svh;min-height:100svh;width:100%;max-width:100%;margin:0;padding:24px 18px 36px;box-sizing:border-box;
+height:100svh;min-height:100svh;width:100vw;max-width:100vw;margin:0;padding:24px 18px 36px;box-sizing:border-box;
 position:relative;text-align:center;overflow-y:auto;overflow-x:hidden}
 @media(min-width:600px){.screen{max-width:480px;margin:0 auto}}
 .screen.active{display:flex;animation:screenSlideIn .35s cubic-bezier(.4,0,.2,1)}
@@ -590,7 +590,7 @@ h1,h2{font-size:1.6rem}
 </div>
 
 <!-- PASS PHONE -->
-<div class="screen" id="screenPass"></div>
+<div class="screen" id="screenPass" style="padding:0"></div>
 
 <!-- ROUND END -->
 <div class="screen" id="screenRoundEnd">
@@ -1242,7 +1242,7 @@ function showTurnTransition() {
 
   const screen = document.getElementById('screenPass');
   screen.innerHTML = `
-    <div class="turn-transition ${teamClass}" style="position:relative;inset:auto;flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:0;padding:16px">
+    <div class="turn-transition ${teamClass}">
       <div class="pass-label">📱 תעבירו את הטלפון!</div>
       <p class="screen-subtitle" style="color:rgba(255,255,255,.7)">עברו את הטלפון ל${p.name}</p>
       ${teamInfo}
@@ -1251,7 +1251,7 @@ function showTurnTransition() {
       <div class="emoji">${p.avatar}</div>
       <div class="player-name">${p.name}</div>
       <div class="arrow">👇</div>
-      <button class="btn btn-primary mt-16" id="passSkipBtn" onclick="startTurn()" style="font-size:1.3rem;padding:18px 40px;width:90%">!יאללה 🚀</button>
+      <button class="btn btn-primary mt-16" id="passSkipBtn" onclick="startTurn()" style="font-size:1.3rem;padding:18px 40px;width:80%;max-width:320px">!יאללה 🚀</button>
     </div>
   `;
   showScreen('screenPass');
