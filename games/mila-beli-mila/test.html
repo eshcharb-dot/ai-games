@@ -662,6 +662,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
     </div>
   </div>
 
+  <p style="font-size:4vw;color:rgba(255,255,255,.5);margin:0;text-align:right">🌟 = מצב תמונות לילדים שלא קוראים</p>
   <div class="player-input-row">
     <input type="text" id="playerNameInput" placeholder="שם (או ריק לכינוי מצחיק)" maxlength="20" onkeydown="if(event.key==='Enter')addPlayer()">
     <button class="btn btn-action btn-green" onclick="addPlayer()">+ הוסיפו</button>
@@ -1265,7 +1266,7 @@ function renderPlayerList() {
       </div>
       <button class="kids-btn ${p.cannotRead ? 'active' : ''}" onclick="event.stopPropagation();toggleCannotRead(${i})" title="${p.cannotRead ? 'יראה אמוג\'י במקום מילה' : 'לחצו אם לא יודע לקרוא'}">
         🌟<span class="kids-dot"></span>
-        <span style="font-size:.45rem;font-weight:600;display:block;margin-top:2px;line-height:1;opacity:${p.cannotRead ? '1' : '0.5'}">${p.cannotRead ? 'פעיל' : 'לחץ'}</span>
+        <span style="font-size:3vw;font-weight:700;display:block;margin-top:1vw;line-height:1;color:${p.cannotRead ? '#ffcc00' : 'rgba(255,255,255,.5)'}">${p.cannotRead ? '✓ פעיל' : 'לחץ'}</span>
       </button>
       <button class="remove" onclick="removePlayer(${i})">✕</button>
     </div>`;
