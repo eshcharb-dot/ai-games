@@ -18,8 +18,7 @@
 --radius:16px;--shadow:0 8px 32px rgba(0,0,0,.4);
 --teamA:#448aff;--teamB:#ff4081;
 }
-html{font-size:28px}
-html{margin:0;padding:0;width:100%;height:100%;overflow-x:hidden;box-sizing:border-box;background:#1a1a2e}
+html{font-size:18px;margin:0;padding:0;width:100%;height:100%;overflow-x:hidden;box-sizing:border-box;background:#1a1a2e}
 body{margin:0;padding:0;width:100%;min-height:100dvh;overflow-x:hidden;box-sizing:border-box;
 font-family:'Rubik',system-ui,sans-serif;background:#1a1a2e;color:#fff;
 display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
@@ -27,8 +26,9 @@ overscroll-behavior:none;-webkit-user-select:none;user-select:none}
 
 /* Screens */
 .screen{display:none;flex-direction:column;align-items:center;justify-content:space-between;
-height:100dvh;min-height:100dvh;width:100%;max-width:600px;margin:0 auto;padding:16px 20px 24px;box-sizing:border-box;
-position:relative;text-align:center;overflow:hidden}
+height:100dvh;min-height:100dvh;width:100%;max-width:600px;margin:0 auto;padding:16px 20px calc(24px + env(safe-area-inset-bottom));box-sizing:border-box;
+position:relative;text-align:center;overflow-y:auto;overflow-x:hidden;
+-webkit-overflow-scrolling:touch}
 @media(min-width:600px){.screen{max-width:480px;margin:0 auto}}
 .screen.active{display:flex;animation:screenSlideIn .35s cubic-bezier(.4,0,.2,1)}
 
@@ -125,10 +125,10 @@ input:focus{border-color:var(--primary)}
 input::placeholder{color:rgba(255,255,255,.4)}
 
 /* Player setup */
-.player-list{width:100%;flex:1;min-height:0;max-height:35vh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin:10px 0;
+.player-list{width:100%;flex:1;min-height:0;max-height:35vh;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin:6px 0;
 scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
-.player-item{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.06);border-radius:18px;padding:14px 16px;
-border:1px solid rgba(255,255,255,.08);min-height:72px}
+.player-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border-radius:14px;padding:10px 12px;
+border:1px solid rgba(255,255,255,.08);min-height:56px}
 .player-item .avatar{font-size:2rem;min-width:44px;text-align:center}
 .player-item .name{flex:1;font-size:1.15rem;font-weight:700}
 .player-item .remove{background:none;border:none;color:var(--red);font-size:1.3rem;cursor:pointer;padding:8px 10px;
@@ -344,10 +344,10 @@ p,small{font-size:1rem;text-align:center}
 
 /* ===== TEAM MODE STYLES ===== */
 .mode-toggle{display:flex;gap:12px;margin:12px 0;width:100%}
-.mode-btn{flex:1;padding:16px 10px;border-radius:18px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);
-cursor:pointer;font-family:inherit;font-weight:700;font-size:1.2rem;color:rgba(255,255,255,.7);
-transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:70px;
-display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.mode-btn{flex:1;padding:10px 10px;border-radius:14px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);
+cursor:pointer;font-family:inherit;font-weight:700;font-size:1.1rem;color:rgba(255,255,255,.7);
+transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:52px;
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
 .mode-btn.active{background:rgba(255,204,0,.12);border-color:var(--primary);color:var(--primary)}
 
 /* Team name inputs */
@@ -469,12 +469,12 @@ h1,h2{font-size:1.4rem}
   <div style="width:100%;display:flex;flex-direction:column;gap:14px;margin-top:auto">
     <button class="btn btn-primary" onclick="showScreen('screenSetup')" style="font-size:1.5rem;min-height:80px">התחילו משחק 🎮</button>
     <button class="btn-leaderboard" onclick="showLeaderboard()" style="font-size:1.2rem;min-height:64px">🏆 טבלת אלופים</button>
-    <div style="font-size:1rem;font-weight:700;color:rgba(255,204,0,.35);letter-spacing:2px;text-align:center">v17</div>
+    <div style="font-size:1rem;font-weight:700;color:rgba(255,204,0,.35);letter-spacing:2px;text-align:center">v18</div>
   </div>
 </div>
 
 <!-- PLAYER SETUP -->
-<div class="screen" id="screenSetup" style="justify-content:flex-start;padding:20px;gap:14px;overflow:hidden">
+<div class="screen" id="screenSetup" style="justify-content:flex-start;padding:20px;gap:10px">
   <h2 style="font-size:2rem;font-weight:900;margin:0;width:100%;text-align:right">מי משחק? 👥</h2>
   <p class="screen-subtitle" id="setupSubtitle">הוסיפו לפחות 2 שחקנים • שם אופציונלי — דלגו וקבלו כינוי מצחיק!</p>
 
@@ -495,7 +495,7 @@ h1,h2{font-size:1.4rem}
     <button class="btn btn-action btn-green" onclick="addPlayer()" style="white-space:nowrap;flex-shrink:0">+ הוסיפו</button>
   </div>
 
-  <div class="player-list" id="playerList" style="width:100%;max-height:38vh;overflow-y:auto"></div>
+  <div class="player-list" id="playerList" style="width:100%;max-height:25vh;overflow-y:auto"></div>
 
   <p id="playerStatus" style="margin:0;text-align:center;color:rgba(255,255,255,.5)">צריך לפחות 2 שחקנים</p>
 
@@ -559,7 +559,7 @@ h1,h2{font-size:1.4rem}
 </div>
 
 <!-- GAME PLAY -->
-<div class="screen" id="screenGame" style="justify-content:flex-start;padding-top:10px;padding-bottom:10px">
+<div class="screen" id="screenGame" style="justify-content:flex-start;padding-top:10px;padding-bottom:10px;overflow:hidden">
   <div class="round-indicator" id="roundIndicator"></div>
   <p class="screen-subtitle" style="margin:0 0 4px 0">תאר את המילה — בלי לומר אותה!</p>
   <!-- Team scoreboard (shown in team mode) -->
@@ -654,7 +654,7 @@ h1,h2{font-size:1.4rem}
 // ============ SERVICE WORKER (Offline PWA) ============
 if ('serviceWorker' in navigator) {
   const swCode = `
-    const CACHE_NAME = 'mila-beli-mila-v17';
+    const CACHE_NAME = 'mila-beli-mila-v18';
     self.addEventListener('install', e => {
       e.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
@@ -697,7 +697,7 @@ if ('serviceWorker' in navigator) {
   }).catch(err => console.log('SW failed:', err));
 
   if ('caches' in window) {
-    caches.open('mila-beli-mila-v17').then(cache => {
+    caches.open('mila-beli-mila-v18').then(cache => {
       cache.add(window.location.href).catch(() => {});
     });
   }
