@@ -25,10 +25,9 @@ display:flex;flex-direction:column;align-items:center;justify-content:flex-start
 overscroll-behavior:none;-webkit-user-select:none;user-select:none}
 
 /* Screens */
-.screen{display:none;flex-direction:column;align-items:center;justify-content:space-between;
-height:100dvh;min-height:100dvh;width:100%;padding:16px 20px calc(20px + env(safe-area-inset-bottom));box-sizing:border-box;
-position:relative;text-align:center;overflow-y:auto;overflow-x:hidden;
--webkit-overflow-scrolling:touch}
+.screen{display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+height:100dvh;min-height:100dvh;width:100%;padding:12px 20px calc(16px + env(safe-area-inset-bottom));box-sizing:border-box;
+position:relative;text-align:center;overflow:hidden}
 @media(min-width:768px){.screen{max-width:600px;margin:0 auto}}
 .screen.active{display:flex;animation:screenSlideIn .35s cubic-bezier(.4,0,.2,1)}
 
@@ -149,9 +148,9 @@ background:var(--primary);border:2px solid #1a1a2e;display:none}
 .kids-btn.active .kids-dot{display:block}
 
 /* Level select */
-.level-grid{display:flex;flex-direction:column;gap:10px;width:100%;margin:10px 0;flex:1;justify-content:center}
-.level-btn{display:flex;align-items:center;gap:14px;padding:14px 14px;border-radius:18px;border:2px solid rgba(255,255,255,.1);
-background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:72px;flex:1}
+.level-grid{display:flex;flex-direction:column;gap:8px;width:100%;margin:6px 0}
+.level-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;border:2px solid rgba(255,255,255,.1);
+background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:56px}
 .level-btn:hover,.level-btn:active{border-color:var(--primary);background:rgba(255,204,0,.08);transform:scale(1.02)}
 .level-btn .icon{font-size:2.5rem}
 .level-btn .info{text-align:right}
@@ -159,7 +158,7 @@ background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:
 .level-btn .info p{font-size:0.9rem;color:rgba(255,255,255,.6);font-weight:400}
 
 /* Timer */
-.timer-ring{position:relative;width:80px;height:80px;margin:0 auto;flex-shrink:0}
+.timer-ring{position:relative;width:64px;height:64px;margin:0 auto;flex-shrink:0}
 .timer-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
 .timer-ring .track{fill:none;stroke:rgba(255,255,255,.08);stroke-width:8}
 .timer-ring .progress{fill:none;stroke-width:8;stroke-linecap:round;
@@ -170,10 +169,10 @@ font-size:2.2rem;font-weight:900;text-align:center}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
 
 /* Word display */
-.word-display{font-size:clamp(1.4rem,7vw,3rem);font-weight:900;text-align:center;padding:8px 12px;
-margin:6px 0;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+.word-display{font-size:clamp(1.6rem,8vw,3.5rem);font-weight:900;text-align:center;padding:6px 12px;
+margin:0;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
 text-shadow:0 0 30px rgba(255,204,0,.3);width:100%;word-break:keep-all;overflow-wrap:normal;
-line-height:1.2;color:#fff}
+line-height:1.2;color:#fff;min-height:0}
 
 /* Emoji word for kids mode */
 .emoji-word{font-size:7rem;animation:emojiBounce 1.5s ease-in-out infinite;line-height:1}
@@ -188,14 +187,14 @@ line-height:1.2;color:#fff}
 .word-pop{animation:wordPop .4s cubic-bezier(.17,.67,.21,1.3)}
 
 /* Action buttons for gameplay — correct + skip */
-.action-row{display:flex;gap:12px;width:100%;padding:0;flex-shrink:0;margin-top:auto;padding-bottom:8px}
-.action-row .btn-game-action{flex:1;width:48%;height:22vh;max-height:140px;min-height:100px;border-radius:20px;font-weight:800;
-display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0}
-.action-row .btn-game-action.btn-green{font-size:2.2rem;background:#22c55e}
-.action-row .btn-game-action.btn-green .action-label{font-size:1rem}
-.action-row .btn-game-action.btn-orange{font-size:2.2rem;background:#f97316}
-.action-row .btn-game-action.btn-orange .action-label{font-size:.9rem}
-.skip-counter{font-size:0.85rem;color:rgba(255,255,255,.6);margin-top:4px;margin-bottom:8px;flex-shrink:0}
+.action-row{display:flex;gap:10px;width:100%;padding:0;flex-shrink:0}
+.action-row .btn-game-action{flex:1;width:48%;height:80px;border-radius:18px;font-weight:800;
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0}
+.action-row .btn-game-action.btn-green{font-size:1.8rem;background:#22c55e}
+.action-row .btn-game-action.btn-green .action-label{font-size:.85rem}
+.action-row .btn-game-action.btn-orange{font-size:1.8rem;background:#f97316}
+.action-row .btn-game-action.btn-orange .action-label{font-size:.8rem}
+.skip-counter{font-size:0.75rem;color:rgba(255,255,255,.6);margin:0;flex-shrink:0}
 
 /* Score popup */
 .score-popup{position:fixed;pointer-events:none;z-index:200;font-size:2.5rem;font-weight:900;
@@ -320,11 +319,11 @@ text-shadow:0 0 60px rgba(255,204,0,.4),0 0 120px rgba(255,64,129,.2);line-heigh
 @keyframes scoPop{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
 
 /* Rounds select */
-.rounds-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;margin:14px 0}
-.round-btn{height:auto;min-height:80px;width:100%;border-radius:var(--radius);border:2px solid rgba(255,255,255,.1);
+.rounds-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin:8px 0}
+.round-btn{height:auto;min-height:64px;width:100%;border-radius:var(--radius);border:2px solid rgba(255,255,255,.1);
 background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;
 -webkit-tap-highlight-color:transparent;font-family:inherit;color:#fff;display:flex;flex-direction:column;
-align-items:center;justify-content:center;gap:4px;padding:14px 8px}
+align-items:center;justify-content:center;gap:2px;padding:10px 8px}
 .round-btn:hover,.round-btn:active{border-color:var(--primary);background:rgba(255,204,0,.08);transform:scale(1.02)}
 .round-btn.selected{border-color:var(--primary);background:rgba(255,204,0,.15);box-shadow:0 0 20px rgba(255,204,0,.2)}
 .round-btn .rb-title{font-size:1.15rem;font-weight:700}
@@ -391,43 +390,29 @@ touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .team-tag.tag-active{transform:scale(1.1)}
 
 /* Funny messages */
-.funny-msg{font-size:1rem;color:rgba(255,255,255,.7);font-style:italic;margin:4px 0;min-height:1.3em;
-animation:fadeIn .5s;text-align:center}
+.funny-msg{font-size:.85rem;color:rgba(255,255,255,.7);font-style:italic;margin:0;min-height:1em;
+animation:fadeIn .5s;text-align:center;flex-shrink:0}
 
 /* Share button */
 .btn-share{background:linear-gradient(135deg,#25D366,#128C7E);color:#fff}
 
 @media(max-width:380px){
-.game-title{font-size:1.4rem}
-#screenWelcome .game-title{font-size:2.4rem}
-#screenWelcome .welcome-hero{font-size:22vw}
-#screenWelcome .game-subtitle{font-size:1.05rem}
-.btn-primary{font-size:1.2rem;padding:14px 16px}
-.action-row .btn-game-action{height:120px}
-.action-row .btn-game-action.btn-green{font-size:2.2rem}
-.action-row .btn-game-action.btn-orange{font-size:2rem}
-.timer-ring{width:70px;height:70px}
-.timer-ring .time-text{font-size:2rem}
-.current-player-header .cph-name{font-size:1.05rem}
-.word-display{font-size:3rem}
-.emoji-word{font-size:5.5rem}
-.level-btn{min-height:80px;padding:14px 12px}
-.level-btn .icon{font-size:2rem}
-.level-btn .info h3{font-size:1.1rem}
-.round-btn{min-height:70px}
-.round-score-item{min-height:48px}
-.lb-item{min-height:48px}
-.team-score-card .team-score-num{font-size:1.5rem}
-h1,h2{font-size:1.4rem}
+.game-title{font-size:1.3rem}
+#screenWelcome .game-title{font-size:2.2rem}
+.btn-primary{font-size:1.1rem;padding:12px 14px}
+.action-row .btn-game-action{height:70px}
+.timer-ring{width:56px;height:56px}
+.timer-ring .time-text{font-size:1.6rem}
+.level-btn{min-height:50px;padding:10px}
+.round-btn{min-height:56px}
+h1,h2{font-size:1.3rem}
 }
 @media(max-height:600px){
-.action-row .btn-game-action{height:110px}
-.action-row .btn-game-action.btn-green{font-size:2rem}
-.action-row .btn-game-action.btn-orange{font-size:1.8rem}
-.word-display{font-size:2.8rem}
-.emoji-word{font-size:5rem}
-.timer-ring{width:65px;height:65px}
-.timer-ring .time-text{font-size:1.8rem}
+.action-row .btn-game-action{height:64px}
+.word-display{font-size:clamp(1.4rem,6vw,2.5rem)}
+.emoji-word{font-size:4rem}
+.timer-ring{width:50px;height:50px}
+.timer-ring .time-text{font-size:1.4rem}
 }
 </style>
 </head>
@@ -474,7 +459,7 @@ h1,h2{font-size:1.4rem}
 </div>
 
 <!-- PLAYER SETUP -->
-<div class="screen" id="screenSetup" style="justify-content:flex-start;padding:12px 16px 0;gap:8px;overflow:hidden">
+<div class="screen" id="screenSetup" style="justify-content:center;padding:12px 16px calc(12px + env(safe-area-inset-bottom));gap:6px;overflow:hidden">
   <h2 style="font-size:1.6rem;font-weight:900;margin:0;width:100%;text-align:right;flex-shrink:0">מי משחק? 👥</h2>
   <p class="screen-subtitle" id="setupSubtitle" style="margin:0 0 4px;flex-shrink:0;font-size:.8rem">הוסיפו לפחות 2 שחקנים</p>
 
@@ -499,49 +484,38 @@ h1,h2{font-size:1.4rem}
 
   <p id="playerStatus" style="margin:0;text-align:center;color:rgba(255,255,255,.5);flex-shrink:0;font-size:.85rem">צריך לפחות 2 שחקנים</p>
 
-  <div style="width:100%;flex-shrink:0;display:flex;flex-direction:column;gap:8px;padding:8px 0 calc(12px + env(safe-area-inset-bottom));background:#1a1a2e">
-    <button class="btn btn-primary" id="btnToLevel" onclick="showScreen('screenRounds')" disabled style="font-size:1.2rem;min-height:56px;opacity:.35;cursor:not-allowed;filter:grayscale(.5);transition:all .3s">המשיכו ▸</button>
-    <button style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);border:none;padding:12px;border-radius:14px;font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;width:100%" onclick="showScreen('screenWelcome')">חזרה</button>
+  <div style="width:100%;flex-shrink:0;display:flex;flex-direction:column;gap:6px">
+    <button class="btn btn-primary" id="btnToLevel" onclick="showScreen('screenRounds')" disabled style="font-size:1.2rem;min-height:52px;opacity:.35;cursor:not-allowed;filter:grayscale(.5);transition:all .3s">המשיכו ▸</button>
+    <button style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);border:none;padding:10px;border-radius:12px;font-family:inherit;font-size:.85rem;font-weight:600;cursor:pointer;width:100%" onclick="showScreen('screenWelcome')">חזרה</button>
   </div>
 </div>
 
 <!-- ROUNDS SELECT -->
 <div class="screen" id="screenRounds">
-  <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:2px">כמה סיבובים? 🔄</h2>
-  <p class="screen-subtitle">כמה סיבובים רוצים לשחק?</p>
-  <p style="font-size:.95rem;color:rgba(255,255,255,.6);margin-bottom:6px" id="roundsExplain">כל סיבוב = כולם משחקים פעם אחת (60 שניות לכל שחקן)</p>
+  <h2 style="font-size:1.5rem;font-weight:900;margin:0">כמה סיבובים? 🔄</h2>
+  <p style="font-size:.8rem;color:rgba(255,255,255,.6);margin:0" id="roundsExplain">כל סיבוב = כולם משחקים פעם אחת</p>
   <div class="rounds-grid" id="roundsGrid"></div>
-  <button class="btn btn-small btn-action mt-8" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:1rem;margin-top:auto" onclick="showScreen('screenSetup')">חזרה</button>
+  <button class="btn btn-small btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.9rem;width:100%" onclick="showScreen('screenSetup')">חזרה</button>
 </div>
 
 <!-- LEVEL SELECT -->
 <div class="screen" id="screenLevel">
-  <h2 style="font-size:1.8rem;font-weight:800;margin-bottom:2px">בחרו רמה 🎯</h2>
-  <p class="screen-subtitle">כמה קשה רוצים?</p>
-  <div class="level-grid">
+  <h2 style="font-size:1.5rem;font-weight:800;margin:0">בחרו רמה 🎯</h2>
+  <div class="level-grid" style="width:100%">
     <div class="level-btn" onclick="selectLevel('kids')">
       <div class="icon">👶</div>
-      <div class="info">
-        <h3>ילדים</h3>
-        <p>מילים פשוטות — מגיל 5+</p>
-      </div>
+      <div class="info"><h3>ילדים</h3><p>מילים פשוטות — מגיל 5+</p></div>
     </div>
     <div class="level-btn" onclick="selectLevel('family')">
       <div class="icon">👨‍👩‍👧</div>
-      <div class="info">
-        <h3>משפחה</h3>
-        <p>מומלץ — תרבות, אוכל, מקומות</p>
-      </div>
+      <div class="info"><h3>משפחה</h3><p>תרבות, אוכל, מקומות</p></div>
     </div>
     <div class="level-btn" onclick="selectLevel('pro')">
       <div class="icon">🔥</div>
-      <div class="info">
-        <h3>פרו</h3>
-        <p>אתגר — מושגים מופשטים</p>
-      </div>
+      <div class="info"><h3>פרו</h3><p>מושגים מופשטים</p></div>
     </div>
   </div>
-  <button class="btn btn-small btn-action mt-8" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:1rem;margin-top:auto" onclick="showScreen('screenRounds')">חזרה</button>
+  <button class="btn btn-small btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.9rem;width:100%" onclick="showScreen('screenRounds')">חזרה</button>
 </div>
 
 <!-- READY -->
@@ -556,7 +530,7 @@ h1,h2{font-size:1.4rem}
 </div>
 
 <!-- GAME PLAY -->
-<div class="screen" id="screenGame" style="justify-content:flex-start;padding-top:10px;padding-bottom:10px;overflow:hidden">
+<div class="screen" id="screenGame" style="justify-content:center;gap:4px;padding:8px 16px calc(10px + env(safe-area-inset-bottom));overflow:hidden">
   <div class="round-indicator" id="roundIndicator"></div>
   <p class="screen-subtitle" style="margin:0 0 4px 0">תאר את המילה — בלי לומר אותה!</p>
   <!-- Team scoreboard (shown in team mode) -->
@@ -650,12 +624,12 @@ h1,h2{font-size:1.4rem}
 <script>
 // ============ FORCE CACHE CLEAR ============
 if ('caches' in window) {
-  caches.keys().then(keys => keys.forEach(k => { if (k !== 'mila-beli-mila-v21') caches.delete(k); }));
+  caches.keys().then(keys => keys.forEach(k => { if (k !== 'mila-beli-mila-v22') caches.delete(k); }));
 }
 // ============ SERVICE WORKER (Offline PWA) ============
 if ('serviceWorker' in navigator) {
   const swCode = `
-    const CACHE_NAME = 'mila-beli-mila-v21';
+    const CACHE_NAME = 'mila-beli-mila-v22';
     self.addEventListener('install', e => {
       e.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
@@ -698,7 +672,7 @@ if ('serviceWorker' in navigator) {
   }).catch(err => console.log('SW failed:', err));
 
   if ('caches' in window) {
-    caches.open('mila-beli-mila-v21').then(cache => {
+    caches.open('mila-beli-mila-v22').then(cache => {
       cache.add(window.location.href).catch(() => {});
     });
   }
