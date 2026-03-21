@@ -593,12 +593,17 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 .pg-emoji { font-size: 9vw !important; }
 .pg-name { font-size: 4vw !important; max-width: none !important; overflow: visible !important; text-overflow: unset !important; white-space: normal !important; text-align: center !important; }
 
-/* Player list rows (setup screen) — fix overlap */
-.player-item { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 3vw !important; padding: 3vw 4vw !important; min-height: 18vw !important; overflow: visible !important; }
-.player-item .avatar { font-size: 8vw !important; flex-shrink: 0 !important; min-width: 10vw !important; }
-.player-item .name { flex: 1 !important; font-size: 5.5vw !important; font-weight: 700 !important; text-align: right !important; min-width: 0 !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; }
-.kids-btn { width: 14vw !important; height: 14vw !important; min-height: 14vw !important; font-size: 6vw !important; flex-shrink: 0 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; }
-.player-item .remove { font-size: 5vw !important; min-width: 10vw !important; min-height: 10vw !important; flex-shrink: 0 !important; }
+/* Player list rows — two rows: name on top, buttons below */
+.player-item { display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 2vw !important; padding: 3vw 4vw !important; min-height: auto !important; overflow: visible !important; }
+.player-item > div:first-child { display: flex !important; align-items: center !important; gap: 3vw !important; }
+.player-item .avatar { font-size: 8vw !important; flex-shrink: 0 !important; }
+.player-item .name { flex: 1 !important; font-size: 5.5vw !important; font-weight: 700 !important; text-align: right !important; white-space: normal !important; word-break: break-word !important; }
+/* Action row below name */
+.player-item .kids-toggle, .player-item > button { display: inline-flex !important; }
+.kids-btn { width: auto !important; min-width: 28vw !important; height: 11vw !important; min-height: 11vw !important; font-size: 5.5vw !important; flex-shrink: 0 !important; border-radius: 3vw !important; padding: 0 3vw !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 1.5vw !important; }
+.player-item .remove { font-size: 5vw !important; min-width: 12vw !important; min-height: 11vw !important; flex-shrink: 0 !important; }
+/* Wrapper for the buttons row */
+.player-item-actions { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 3vw !important; width: 100% !important; }
 
 /* Game top bar — bigger, high specificity */
 #screenGame .game-top-bar { height: 20vw !important; padding: 0 4vw !important; flex-shrink: 0 !important; background: rgba(255,255,255,.06) !important; gap: 3vw !important; }
@@ -1293,16 +1298,19 @@ function renderPlayerList() {
       </div>` : '';
     return `
     <div class="player-item" style="${isTeam ? (p.team === 'a' ? 'border-color:rgba(68,138,255,.3)' : 'border-color:rgba(255,64,129,.3)') : ''}">
-      <div class="avatar">${p.avatar}</div>
-      <div style="flex:1">
-        <div class="name">${p.name}</div>
-        ${teamBadge}
+      <!-- TOP ROW: avatar + name -->
+      <div style="display:flex;align-items:center;gap:3vw;width:100%">
+        <div class="avatar" style="font-size:8vw;flex-shrink:0">${p.avatar}</div>
+        <div class="name" style="flex:1;font-size:5.5vw;font-weight:700;word-break:break-word">${p.name}</div>
       </div>
-      <button class="kids-btn ${p.cannotRead ? 'active' : ''}" onclick="event.stopPropagation();toggleCannotRead(${i})" title="${p.cannotRead ? 'יראה אמוג\'י במקום מילה' : 'לחצו אם לא יודע לקרוא'}">
-        🌟<span class="kids-dot"></span>
-        <span style="font-size:3vw;font-weight:700;display:block;margin-top:1vw;line-height:1;color:${p.cannotRead ? '#ffcc00' : 'rgba(255,255,255,.5)'}">${p.cannotRead ? '✓ פעיל' : 'לחץ'}</span>
-      </button>
-      <button class="remove" onclick="removePlayer(${i})">✕</button>
+      <!-- BOTTOM ROW: team badge + kids btn + remove -->
+      <div style="display:flex;align-items:center;gap:3vw;width:100%;justify-content:flex-end">
+        ${teamBadge}
+        <button class="kids-btn ${p.cannotRead ? 'active' : ''}" onclick="event.stopPropagation();toggleCannotRead(${i})" style="font-size:5vw;padding:2vw 4vw;border-radius:3vw;min-height:10vw;width:auto;display:inline-flex;align-items:center;gap:2vw">
+          🌟 <span style="font-size:4.5vw;font-weight:700;color:${p.cannotRead ? '#ffcc00' : 'rgba(255,255,255,.6)'}">${p.cannotRead ? '✓ מצב ילדים' : 'מצב ילדים'}</span>
+        </button>
+        <button class="remove" onclick="removePlayer(${i})" style="font-size:5vw;min-width:11vw;min-height:11vw">✕</button>
+      </div>
     </div>`;
   }).join('');
 
