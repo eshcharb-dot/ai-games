@@ -56,7 +56,7 @@ opacity:.4}
 .container{position:relative;z-index:1;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
 
 /* All buttons base */
-.btn{min-height:72px;border-radius:20px;font-size:1.2rem;width:100%;cursor:pointer;border:none;font-family:inherit;
+.btn{min-height:60px;border-radius:16px;font-size:1.1rem;width:100%;cursor:pointer;border:none;font-family:inherit;
 font-weight:700;transition:transform .1s;position:relative;overflow:hidden;
 touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .btn:active{transform:scale(.95)!important}
@@ -461,16 +461,16 @@ h1,h2{font-size:1.4rem}
 <!-- GAME MODE SELECT -->
 <!-- PLAYER SETUP -->
 <div class="screen" id="screenSetup">
-  <h2 style="font-size:1.6rem;font-weight:800;margin-bottom:4px">מי משחק? 🎭</h2>
+  <h2 style="font-size:1.8rem;font-weight:800;margin-bottom:2px">מי משחק? 🎭</h2>
   <p class="screen-subtitle">הוסיפו שחקנים ובחרו רמה</p>
-  <div class="mode-toggle" style="margin-bottom:6px">
+  <div class="mode-toggle" style="margin-bottom:4px">
     <button class="mode-btn active" id="modeFree" onclick="setGameMode('free')">
       <div>🎭 חופשי</div>
-      <div style="font-size:0.75rem;font-weight:400;opacity:.7;margin-top:3px">כל אחד לעצמו</div>
+      <div style="font-size:.65rem;font-weight:400;opacity:.7;margin-top:3px">כל אחד לעצמו</div>
     </button>
     <button class="mode-btn" id="modeTeam" onclick="setGameMode('team')">
       <div>⚔️ קבוצות</div>
-      <div style="font-size:0.75rem;font-weight:400;opacity:.7;margin-top:3px">שתי קבוצות מתחרות</div>
+      <div style="font-size:.65rem;font-weight:400;opacity:.7;margin-top:3px">שתי קבוצות מתחרות</div>
     </button>
   </div>
   <div id="teamNamesSection" style="display:none;width:100%;margin-bottom:6px">
@@ -479,70 +479,77 @@ h1,h2{font-size:1.4rem}
       <input type="text" class="team-b-input" id="teamBName" placeholder="קבוצה ב׳" maxlength="15" style="border:2px solid rgba(255,64,129,.4);background:rgba(255,64,129,.1)">
     </div>
   </div>
-  <p style="font-size:0.85rem;color:rgba(255,255,255,.6);margin-bottom:8px;line-height:1.4" id="setupSubtitle">הוסיפו לפחות 2 שחקנים • שם אופציונלי — דלגו וקבלו כינוי מצחיק!</p>
+  <p style="font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:6px;line-height:1.4" id="setupSubtitle">הוסיפו לפחות 2 שחקנים • שם אופציונלי — דלגו וקבלו כינוי מצחיק!</p>
   <div class="player-list" id="playerList"></div>
   <div class="player-input-row">
     <input type="text" id="playerNameInput" placeholder="שם (או השאירו ריק)" maxlength="20"
       onkeydown="if(event.key==='Enter')addPlayer()">
-    <button class="btn btn-action btn-green" onclick="addPlayer()" style="min-height:60px;font-size:1.15rem;padding:14px 20px">+ הוסיפו</button>
+    <button class="btn btn-action btn-green" onclick="addPlayer()" style="min-height:64px;font-size:1.1rem">+ הוסיפו</button>
   </div>
 
-  <p id="playerStatus" style="font-size:0.85rem;margin-top:6px;min-height:1.3em;transition:opacity .3s;color:rgba(255,255,255,.5);text-align:center" id="playerCount">צריך לפחות 2 שחקנים כדי להתחיל</p>
-  <button class="btn btn-primary" id="btnToLevel" onclick="showScreen('screenRounds')" disabled style="width:100%;min-height:72px;font-size:1.35rem;opacity:.35;cursor:not-allowed;filter:grayscale(.5);transition:all .3s;margin-top:auto">המשיכו ▸</button>
-  <button class="btn btn-small btn-action mt-8" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);font-size:0.9rem" onclick="showScreen('screenWelcome')">חזרה</button>
+  <p style="font-size:.85rem;color:rgba(255,255,255,.6);margin-top:4px" id="playerCount">0/8 שחקנים</p>
+  <p id="playerStatus" style="font-size:.85rem;margin-top:4px;min-height:1.3em;transition:opacity .3s;color:rgba(255,255,255,.4)">צריך לפחות 2 שחקנים כדי להתחיל</p>
+  <button class="btn btn-primary" id="btnToLevel" onclick="showScreen('screenRounds')" disabled style="width:100%;min-height:64px;font-size:1.3rem;opacity:.4;cursor:not-allowed;filter:grayscale(.5);transition:all .3s;margin-top:auto">המשיכו ▸</button>
+  <button class="btn btn-small btn-action mt-8" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:1rem" onclick="showScreen('screenWelcome')">חזרה</button>
 </div>
 
 <!-- ROUNDS SELECT -->
 <div class="screen" id="screenRounds">
-  <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:4px">כמה סיבובים? 🔄</h2>
-  <p class="screen-subtitle" id="roundsExplain">60 שניות לכל שחקן בסיבוב</p>
-  <div class="rounds-grid" id="roundsGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;flex:1;align-content:center;margin:16px 0"></div>
-  <button class="btn btn-small btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);font-size:0.9rem" onclick="showScreen('screenSetup')">חזרה</button>
+  <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:2px">כמה סיבובים? 🔄</h2>
+  <p class="screen-subtitle">כמה סיבובים רוצים לשחק?</p>
+  <p style="font-size:.95rem;color:rgba(255,255,255,.6);margin-bottom:6px" id="roundsExplain">כל סיבוב = כולם משחקים פעם אחת (60 שניות לכל שחקן)</p>
+  <div class="rounds-grid" id="roundsGrid"></div>
+  <button class="btn btn-small btn-action mt-8" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:1rem;margin-top:auto" onclick="showScreen('screenSetup')">חזרה</button>
 </div>
 
 <!-- LEVEL SELECT -->
 <div class="screen" id="screenLevel">
-  <h2 style="font-size:1.8rem;font-weight:800;margin-bottom:4px">בחרו רמה 🎯</h2>
-  <p class="screen-subtitle">כמה קשה רוצים לשחק?</p>
+  <h2 style="font-size:1.8rem;font-weight:800;margin-bottom:2px">בחרו רמה 🎯</h2>
+  <p class="screen-subtitle">כמה קשה רוצים?</p>
   <div class="level-grid">
     <div class="level-btn" onclick="selectLevel('kids')">
       <div class="icon">👶</div>
       <div class="info">
         <h3>ילדים</h3>
-        <p>חיות, אוכל, צבעים — מגיל 5</p>
+        <p>מילים פשוטות — לילדים מגיל 5+</p>
+        <p style="font-size:.65rem;opacity:.6;margin-top:2px">חיות, אוכל, צבעים, כלי תחבורה</p>
       </div>
     </div>
     <div class="level-btn" onclick="selectLevel('family')">
       <div class="icon">👨‍👩‍👧</div>
       <div class="info">
-        <h3>משפחה ⭐</h3>
-        <p>ישראלי, תרבות, אוכל — מומלץ</p>
+        <h3>משפחה</h3>
+        <p>מומלץ לרוב המשחקים</p>
+        <p style="font-size:.65rem;opacity:.6;margin-top:2px">ישראלי, תרבות, אוכל, מקומות</p>
       </div>
     </div>
     <div class="level-btn" onclick="selectLevel('pro')">
       <div class="icon">🔥</div>
       <div class="info">
         <h3>פרו</h3>
-        <p>מושגים קשים — למבוגרים</p>
+        <p>לקהל מבוגר — אתגר אמיתי</p>
+        <p style="font-size:.65rem;opacity:.6;margin-top:2px">מושגים מופשטים, מקצועות, סלנג</p>
       </div>
     </div>
   </div>
-  <button class="btn btn-small btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);font-size:0.9rem;margin-top:auto" onclick="showScreen('screenRounds')">חזרה</button>
+  <button class="btn btn-small btn-action mt-8" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:1rem;margin-top:auto" onclick="showScreen('screenRounds')">חזרה</button>
 </div>
 
 <!-- READY -->
-<div class="screen" id="screenReady" style="justify-content:center;gap:16px">
-  <div style="font-size:5rem;line-height:1" id="readyAvatar">🎭</div>
-  <h2 style="font-size:2rem;font-weight:900;margin:0" id="readySubtitle">מוכנים?</h2>
-  <p style="font-size:1rem;color:rgba(255,255,255,.6);margin:0" id="readyLevelLabel"></p>
-  <div class="players-grid" id="readyPlayers" style="display:none"></div>
-  <p style="display:none" id="readyDescriberNote"></p>
-  <button class="btn btn-primary" onclick="startRound()" style="font-size:1.4rem;min-height:76px;margin-top:8px">!התחילו 🚀</button>
+<div class="screen" id="screenReady">
+  <h2 style="font-size:1.6rem;font-weight:900;margin-bottom:4px">מוכנים? 🏁</h2>
+  <p class="screen-subtitle" id="readySubtitle">עברו את הטלפון לשחקן הראשון</p>
+  <p class="text-muted" id="readyLevelLabel"></p>
+  <div class="players-grid" id="readyPlayers"></div>
+  <p class="text-muted" id="readyDescriberNote"></p>
+  <button class="btn btn-primary mt-16" onclick="startRound()" style="font-size:1.3rem;padding:18px 40px;width:100%;min-height:64px">!התחילו 🚀</button>
+  <button class="btn btn-small btn-action mt-8" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="showScreen('screenLevel')">חזרה</button>
 </div>
 
 <!-- GAME PLAY -->
 <div class="screen" id="screenGame" style="justify-content:flex-start;padding-top:10px;padding-bottom:10px">
   <div class="round-indicator" id="roundIndicator"></div>
+  <p class="screen-subtitle" style="margin:0 0 4px 0">תאר את המילה — בלי לומר אותה!</p>
   <!-- Team scoreboard (shown in team mode) -->
   <div id="teamScoreboard" style="display:none;width:100%">
     <div class="team-scoreboard">
@@ -560,6 +567,8 @@ h1,h2{font-size:1.4rem}
       <div class="team-bar-b" id="teamBarB" style="width:50%"></div>
     </div>
   </div>
+  <!-- Solo score bar (shown in free mode) -->
+  <div class="score-bar" id="scoreBar"></div>
   <div style="display:flex;align-items:center;gap:8px;width:100%;justify-content:center;flex-shrink:0">
     <div id="currentPlayerHeader" class="current-player-header" style="margin-bottom:0"></div>
     <div class="timer-ring" id="timerRing">
@@ -589,32 +598,32 @@ h1,h2{font-size:1.4rem}
 
 <!-- ROUND END -->
 <div class="screen" id="screenRoundEnd">
-  <div style="font-size:2.5rem;margin-bottom:8px">🏆</div>
-  <h2 style="font-size:1.6rem;font-weight:900;margin-bottom:4px" id="roundEndTitle">סיום סיבוב!</h2>
+  <div style="font-size:2.5rem;margin-bottom:6px">🏆</div>
+  <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:2px" id="roundEndTitle">סיום סיבוב!</h2>
   <p class="screen-subtitle">הניקוד של הסיבוב הזה</p>
-  <p style="font-size:0.9rem;color:rgba(255,255,255,.6);margin-bottom:10px" id="roundEndSubtitle"></p>
+  <p style="font-size:.95rem;color:rgba(255,255,255,.6);margin-bottom:8px" id="roundEndSubtitle"></p>
   <div class="round-scores" id="roundScores"></div>
   <div id="roundEndButtons" style="display:flex;flex-direction:column;gap:8px;margin-top:12px;width:100%"></div>
 </div>
 
 <!-- GRAND FINAL -->
 <div class="screen" id="screenGrandFinal">
-  <div id="grandFinalIcon" style="font-size:3rem;margin-bottom:8px">🏆🎉🏆</div>
-  <h2 class="grand-title" id="grandFinalTitle" style="font-size:1.8rem">גמר גדול!</h2>
+  <div id="grandFinalIcon" style="font-size:3.5rem;margin-bottom:6px">🏆🎉🏆</div>
+  <h2 class="grand-title" id="grandFinalTitle" style="font-size:2rem">גמר גדול!</h2>
   <p class="screen-subtitle">המשחק נגמר — הנה הניצחון!</p>
-  <p style="font-size:0.9rem;color:rgba(255,255,255,.6);margin-bottom:10px" id="grandFinalSubtitle"></p>
+  <p style="font-size:.95rem;color:rgba(255,255,255,.6);margin-bottom:8px" id="grandFinalSubtitle"></p>
   <div class="round-scores" id="grandFinalScores"></div>
-  <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px;width:100%">
-    <button class="btn btn-action btn-share" style="min-height:72px;font-size:1.2rem" onclick="shareResults(event)">📤 שתף תוצאות</button>
-    <button class="btn btn-action btn-primary" style="min-height:72px;font-size:1.2rem" onclick="playAgain()">שחקו שוב 🔄</button>
-    <button class="btn btn-action btn-purple" style="min-height:72px;font-size:1.2rem" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
-    <button class="btn btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);min-height:52px;font-size:0.9rem" onclick="backToWelcome()">תפריט ראשי</button>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px;width:100%">
+    <button class="btn btn-action btn-share" style="min-height:64px;font-size:1.1rem" onclick="shareResults(event)">📤 שתף תוצאות</button>
+    <button class="btn btn-action btn-primary" style="min-height:64px;font-size:1.1rem" onclick="playAgain()">שחקו שוב 🔄</button>
+    <button class="btn btn-action btn-purple" style="min-height:64px;font-size:1.1rem" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
+    <button class="btn btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);min-height:56px;font-size:1rem" onclick="backToWelcome()">תפריט ראשי</button>
   </div>
 </div>
 
 <!-- LEADERBOARD -->
 <div class="screen" id="screenLeaderboard" style="justify-content:flex-start;padding-top:16px;padding-bottom:14px">
-  <h2 style="font-size:1.6rem;font-weight:900;margin-bottom:6px;flex-shrink:0">🏆 טבלת אלופים</h2>
+  <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:4px;flex-shrink:0">🏆 טבלת אלופים</h2>
   <div class="tabs mt-8" id="lbTabs" style="flex-shrink:0">
     <button class="tab active" onclick="showLbTab('alltime')">כל הזמנים</button>
     <button class="tab" onclick="showLbTab('tournament')">טורניר</button>
@@ -622,8 +631,8 @@ h1,h2{font-size:1.4rem}
   <div class="leaderboard" id="leaderboardList"></div>
   <p style="font-size:1rem;color:rgba(255,255,255,.6);margin-top:10px;display:none" id="lbEmpty">אין תוצאות עדיין — שחקו משחק!</p>
   <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto;padding-top:10px;width:100%;flex-shrink:0">
-    <button class="btn btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);min-height:52px;font-size:0.9rem;width:100%" onclick="backToWelcome()">חזרה</button>
-    <button class="btn btn-action btn-red" style="min-height:52px;font-size:0.9rem;width:100%" onclick="confirmResetLb()">🗑️ איפוס</button>
+    <button class="btn btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);min-height:64px;font-size:1rem;width:100%" onclick="backToWelcome()">חזרה</button>
+    <button class="btn btn-action btn-red" style="min-height:56px;font-size:1rem;width:100%" onclick="confirmResetLb()">🗑️ איפוס</button>
   </div>
 </div>
 
@@ -633,7 +642,7 @@ h1,h2{font-size:1.4rem}
 // ============ SERVICE WORKER (Offline PWA) ============
 if ('serviceWorker' in navigator) {
   const swCode = `
-    const CACHE_NAME = 'mila-beli-mila-v14';
+    const CACHE_NAME = 'mila-beli-mila-v13';
     self.addEventListener('install', e => {
       e.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
@@ -676,7 +685,7 @@ if ('serviceWorker' in navigator) {
   }).catch(err => console.log('SW failed:', err));
 
   if ('caches' in window) {
-    caches.open('mila-beli-mila-v14').then(cache => {
+    caches.open('mila-beli-mila-v13').then(cache => {
       cache.add(window.location.href).catch(() => {});
     });
   }
@@ -1067,12 +1076,13 @@ function renderPlayerList() {
     </div>`;
   }).join('');
 
+  document.getElementById('playerCount').textContent = `${players.length}/8 שחקנים`;
   const btn = document.getElementById('btnToLevel');
   const status = document.getElementById('playerStatus');
   const minPlayers = isTeam ? 4 : 2;
   const enough = players.length >= minPlayers;
   btn.disabled = !enough;
-  btn.style.opacity = enough ? '1' : '.35';
+  btn.style.opacity = enough ? '1' : '.4';
   btn.style.cursor = enough ? 'pointer' : 'not-allowed';
   btn.style.filter = enough ? 'none' : 'grayscale(.5)';
 
@@ -1086,7 +1096,7 @@ function renderPlayerList() {
       status.textContent = 'צריך לפחות שחקן אחד בכל קבוצה';
       status.style.color = 'var(--red)';
       btn.disabled = true;
-      btn.style.opacity = '.35';
+      btn.style.opacity = '.4';
       btn.style.filter = 'grayscale(.5)';
     } else {
       status.textContent = `🔵 ${teamACount} נגד 🔴 ${teamBCount} — יאללה!`;
@@ -1176,13 +1186,10 @@ function prepareRound() {
 
   document.getElementById('readyLevelLabel').textContent = readyLabel;
 
-  // Update ready screen with first player
+  // Update ready subtitle with first player name
   const firstIdx = gameMode === 'team' ? teamTurnOrder[0]?.playerIdx : describerOrder[0];
-  const firstPlayer = players[firstIdx];
-  const firstName = firstPlayer?.name || '';
-  document.getElementById('readySubtitle').textContent = `התור של ${firstName} 🎯`;
-  document.getElementById('readyAvatar').textContent = firstPlayer?.avatar || '🎭';
-  document.getElementById('readyLevelLabel').textContent = `לחצו התחילו כשמוכנים`;
+  const firstName = players[firstIdx]?.name || '';
+  document.getElementById('readySubtitle').textContent = `עברו את הטלפון ל${firstName}`;
 
   const grid = document.getElementById('readyPlayers');
   if (gameMode === 'team') {
@@ -1634,8 +1641,8 @@ function endRound() {
     title.textContent = `סיום סיבוב ${currentRound}!`;
     subtitle.textContent = `נותרו עוד ${selectedRounds - currentRound} סיבובים`;
     btns.innerHTML = `
-      <button class="btn btn-action btn-primary" style="min-height:72px;font-size:1.2rem;width:100%" onclick="startNextRound()">סיבוב הבא ▸</button>
-      <button class="btn btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);min-height:52px;font-size:0.9rem;width:100%" onclick="backToWelcome()">עזיבה</button>
+      <button class="btn btn-action btn-primary" style="min-height:64px;font-size:1.1rem;width:100%" onclick="startNextRound()">סיבוב הבא ▸</button>
+      <button class="btn btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);min-height:56px;font-size:1rem;width:100%" onclick="backToWelcome()">עזיבה</button>
     `;
   } else {
     if (selectedRounds > 1) {
@@ -1649,10 +1656,10 @@ function endRound() {
     title.textContent = 'סיום משחק!';
     subtitle.textContent = '';
     btns.innerHTML = `
-      <button class="btn btn-action btn-share" style="min-height:72px;font-size:1.2rem;width:100%" onclick="shareResults(event)">📤 שתף תוצאות</button>
-      <button class="btn btn-action btn-primary" style="min-height:72px;font-size:1.2rem;width:100%" onclick="playAgain()">שחקו שוב 🔄</button>
-      <button class="btn btn-action btn-purple" style="min-height:72px;font-size:1.2rem;width:100%" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
-      <button class="btn btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);min-height:52px;font-size:0.9rem;width:100%" onclick="backToWelcome()">תפריט ראשי</button>
+      <button class="btn btn-action btn-share" style="min-height:64px;font-size:1.1rem;width:100%" onclick="shareResults(event)">📤 שתף תוצאות</button>
+      <button class="btn btn-action btn-primary" style="min-height:64px;font-size:1.1rem;width:100%" onclick="playAgain()">שחקו שוב 🔄</button>
+      <button class="btn btn-action btn-purple" style="min-height:64px;font-size:1.1rem;width:100%" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
+      <button class="btn btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);min-height:56px;font-size:1rem;width:100%" onclick="backToWelcome()">תפריט ראשי</button>
     `;
     saveToLeaderboard();
   }
