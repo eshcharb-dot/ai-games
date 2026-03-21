@@ -593,17 +593,12 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 .pg-emoji { font-size: 9vw !important; }
 .pg-name { font-size: 4vw !important; max-width: none !important; overflow: visible !important; text-overflow: unset !important; white-space: normal !important; text-align: center !important; }
 
-/* Player list rows — two rows: name on top, buttons below */
-.player-item { display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 2vw !important; padding: 3vw 4vw !important; min-height: auto !important; overflow: visible !important; }
-.player-item > div:first-child { display: flex !important; align-items: center !important; gap: 3vw !important; }
-.player-item .avatar { font-size: 8vw !important; flex-shrink: 0 !important; }
-.player-item .name { flex: 1 !important; font-size: 5.5vw !important; font-weight: 700 !important; text-align: right !important; white-space: normal !important; word-break: break-word !important; }
-/* Action row below name */
-.player-item .kids-toggle, .player-item > button { display: inline-flex !important; }
-.kids-btn { width: auto !important; min-width: 28vw !important; height: 11vw !important; min-height: 11vw !important; font-size: 5.5vw !important; flex-shrink: 0 !important; border-radius: 3vw !important; padding: 0 3vw !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 1.5vw !important; }
-.player-item .remove { font-size: 5vw !important; min-width: 12vw !important; min-height: 11vw !important; flex-shrink: 0 !important; }
-/* Wrapper for the buttons row */
-.player-item-actions { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 3vw !important; width: 100% !important; }
+/* Player list rows — single line compact */
+.player-item { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 2vw !important; padding: 2vw 3vw !important; min-height: 13vw !important; max-height: 13vw !important; overflow: hidden !important; }
+.player-item .avatar { font-size: 7vw !important; flex-shrink: 0 !important; width: 9vw !important; text-align: center !important; }
+.player-item .name { flex: 1 !important; font-size: 4.5vw !important; font-weight: 700 !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; min-width: 0 !important; }
+.kids-btn { width: 11vw !important; height: 11vw !important; min-height: 11vw !important; font-size: 6vw !important; flex-shrink: 0 !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 !important; }
+.player-item .remove { font-size: 5vw !important; width: 9vw !important; min-height: 9vw !important; flex-shrink: 0 !important; display: flex !important; align-items: center !important; justify-content: center !important; }
 
 /* Game top bar — bigger, high specificity */
 #screenGame .game-top-bar { height: 20vw !important; padding: 2vw 4vw 0 4vw !important; flex-shrink: 0 !important; background: rgba(255,255,255,.06) !important; gap: 3vw !important; margin-top: env(safe-area-inset-top, 0px) !important; }
@@ -1700,19 +1695,24 @@ function nextWord() {
     else if (len <= 9) wd.style.fontSize = '9vw';
     else if (len <= 11) wd.style.fontSize = '7.5vw';
     else wd.style.fontSize = '6vw';
-    wd.style.whiteSpace = 'nowrap';
-    wd.style.overflow = 'visible';
-    wd.style.textOverflow = 'clip';
-    wd.style.maxWidth = '100%';
     wd.style.textAlign = 'center';
     wd.style.direction = 'rtl';
-    // Shrink font if word still too wide
-    const testEl = wd;
+    wd.style.width = '100%';
+    wd.style.overflow = 'hidden';
+    // Auto-shrink until it fits
     setTimeout(() => {
-      while (testEl.scrollWidth > testEl.clientWidth && parseFloat(testEl.style.fontSize) > 5) {
-        testEl.style.fontSize = (parseFloat(testEl.style.fontSize) - 0.5) + 'vw';
+      let size = parseFloat(wd.style.fontSize) || 12;
+      wd.style.whiteSpace = 'nowrap';
+      while (wd.scrollWidth > wd.offsetWidth && size > 4) {
+        size -= 0.5;
+        wd.style.fontSize = size + 'vw';
       }
-    }, 10);
+      if (size <= 4) {
+        // Still too long — wrap it
+        wd.style.whiteSpace = 'normal';
+        wd.style.wordBreak = 'break-word';
+      }
+    }, 30);
   }
 
   wd.className = 'word-display game-word-area word-pop';
