@@ -96,14 +96,13 @@ font-size:.7rem;font-weight:600;display:none;align-items:center;gap:4px}
 .game-subtitle{font-size:1.05rem;color:rgba(255,255,255,.7);margin-bottom:16px;font-weight:400;text-align:center}
 
 /* Welcome screen overrides */
-#screenWelcome{justify-content:space-between;min-height:100vh;height:100svh;padding:0;display:flex;flex-direction:column}
-#screenWelcome .welcome-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:8vh 20px 20px;min-height:0}
-#screenWelcome .welcome-bottom{width:100%;padding:16px 20px env(safe-area-inset-bottom, 32px);display:flex;flex-direction:column;gap:12px;flex-shrink:0}
-#screenWelcome .welcome-hero{font-size:25vw;line-height:1;margin:0 0 20px}
-#screenWelcome .game-title{font-size:2.8rem;margin-bottom:8px}
-#screenWelcome .game-subtitle{font-size:1.2rem;color:rgba(255,255,255,.85);margin-bottom:0;font-weight:600}
-#screenWelcome .welcome-actions{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}
-#screenWelcome .btn-start{height:80px;font-size:1.45rem;width:100%;border-radius:20px}
+#screenWelcome{padding:0;display:flex;flex-direction:column;justify-content:space-between}
+#screenWelcome .welcome-top{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:100%;padding:0 20px 20px;flex:1;min-height:0}
+#screenWelcome .welcome-bottom{width:100%;padding:0 20px 40px;display:flex;flex-direction:column;gap:14px;flex-shrink:0}
+#screenWelcome .welcome-hero{font-size:22vw;line-height:1;margin:0 0 16px}
+#screenWelcome .game-title{font-size:2.6rem;margin-bottom:6px}
+#screenWelcome .game-subtitle{font-size:1.1rem;color:rgba(255,255,255,.85);margin-bottom:4px;font-weight:600}
+#screenWelcome .btn-start{height:76px;font-size:1.4rem;width:100%;border-radius:18px}
 #screenWelcome .btn-leaderboard{height:72px;font-size:1.2rem;width:100%;border-radius:16px;
 background:transparent;border:2px solid rgba(255,255,255,.25);color:var(--white);font-family:inherit;font-weight:700;
 cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
