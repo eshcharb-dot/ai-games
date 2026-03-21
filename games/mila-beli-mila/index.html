@@ -437,14 +437,18 @@ h1,h2{font-size:1.4rem}
 <div class="container">
 
 <!-- WELCOME -->
-<div class="screen active" id="screenWelcome" style="justify-content:center;gap:0;padding:24px 24px 40px">
-  <div class="welcome-hero" style="font-size:20vw;line-height:1;margin-bottom:16px">🗣️</div>
-  <h1 class="game-title" style="font-size:3.2rem;font-weight:900;margin-bottom:8px">מילה בלי מילה</h1>
-  <p class="game-subtitle" style="font-size:1.3rem;color:rgba(255,255,255,.85);font-weight:600;margin-bottom:6px">תתארו, תנחשו, תצחקו!</p>
-  <p style="font-size:1rem;color:rgba(255,255,255,.5);margin-bottom:36px">משחק מסיבה לכל המשפחה</p>
-  <button class="btn btn-primary" onclick="showScreen('screenSetup')" style="font-size:1.5rem;min-height:76px;margin-bottom:14px">התחילו משחק 🎮</button>
-  <button class="btn-leaderboard" onclick="showLeaderboard()" style="font-size:1.2rem;min-height:60px">🏆 טבלת אלופים</button>
-  <div style="font-size:1rem;font-weight:700;color:rgba(255,204,0,.4);letter-spacing:2px;margin-top:20px">v16</div>
+<div class="screen active" id="screenWelcome" style="justify-content:space-between;padding:10vh 24px 8vh">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center">
+    <div style="font-size:38vw;line-height:1;margin-bottom:20px">🗣️</div>
+    <h1 class="game-title" style="font-size:4rem;font-weight:900;margin-bottom:10px;line-height:1.1">מילה בלי מילה</h1>
+    <p style="font-size:1.4rem;color:rgba(255,255,255,.85);font-weight:600;margin-bottom:6px">תתארו, תנחשו, תצחקו!</p>
+    <p style="font-size:1rem;color:rgba(255,255,255,.45)">משחק מסיבה לכל המשפחה</p>
+  </div>
+  <div style="width:100%;display:flex;flex-direction:column;gap:14px">
+    <button class="btn btn-primary" onclick="showScreen('screenSetup')" style="font-size:1.5rem;min-height:80px">התחילו משחק 🎮</button>
+    <button class="btn-leaderboard" onclick="showLeaderboard()" style="font-size:1.2rem;min-height:64px">🏆 טבלת אלופים</button>
+    <div style="font-size:1rem;font-weight:700;color:rgba(255,204,0,.35);letter-spacing:2px;text-align:center">v16</div>
+  </div>
 </div>
 
 <!-- GAME MODE SELECT -->
