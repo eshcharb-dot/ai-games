@@ -469,39 +469,39 @@ h1,h2{font-size:1.4rem}
   <div style="width:100%;display:flex;flex-direction:column;gap:14px;margin-top:auto">
     <button class="btn btn-primary" onclick="showScreen('screenSetup')" style="font-size:1.5rem;min-height:80px">התחילו משחק 🎮</button>
     <button class="btn-leaderboard" onclick="showLeaderboard()" style="font-size:1.2rem;min-height:64px">🏆 טבלת אלופים</button>
-    <div style="font-size:1rem;font-weight:700;color:rgba(255,204,0,.35);letter-spacing:2px;text-align:center">v18</div>
+    <div style="font-size:1rem;font-weight:700;color:rgba(255,204,0,.35);letter-spacing:2px;text-align:center">v19</div>
   </div>
 </div>
 
 <!-- PLAYER SETUP -->
-<div class="screen" id="screenSetup" style="justify-content:flex-start;padding:20px;gap:10px">
-  <h2 style="font-size:2rem;font-weight:900;margin:0;width:100%;text-align:right">מי משחק? 👥</h2>
-  <p class="screen-subtitle" id="setupSubtitle">הוסיפו לפחות 2 שחקנים • שם אופציונלי — דלגו וקבלו כינוי מצחיק!</p>
+<div class="screen" id="screenSetup" style="justify-content:flex-start;padding:12px 16px 0;gap:8px;overflow:hidden">
+  <h2 style="font-size:1.6rem;font-weight:900;margin:0;width:100%;text-align:right;flex-shrink:0">מי משחק? 👥</h2>
+  <p class="screen-subtitle" id="setupSubtitle" style="margin:0 0 4px;flex-shrink:0;font-size:.8rem">הוסיפו לפחות 2 שחקנים</p>
 
-  <div class="mode-toggle" style="width:100%;margin:0">
+  <div class="mode-toggle" style="width:100%;margin:0;flex-shrink:0">
     <button class="mode-btn active" id="modeFree" onclick="setGameMode('free')">🎭 חופשי</button>
     <button class="mode-btn" id="modeTeam" onclick="setGameMode('team')">⚔️ קבוצות</button>
   </div>
 
-  <div id="teamNamesSection" style="display:none;width:100%">
+  <div id="teamNamesSection" style="display:none;width:100%;flex-shrink:0">
     <div class="team-names-row">
       <input type="text" id="teamAName" placeholder="קבוצה א׳" maxlength="15" style="border:2px solid rgba(68,138,255,.4);background:rgba(68,138,255,.1)">
       <input type="text" id="teamBName" placeholder="קבוצה ב׳" maxlength="15" style="border:2px solid rgba(255,64,129,.4);background:rgba(255,64,129,.1)">
     </div>
   </div>
 
-  <div class="player-input-row" style="width:100%">
+  <div class="player-input-row" style="width:100%;flex-shrink:0">
     <input type="text" id="playerNameInput" placeholder="שם שחקן" maxlength="20" onkeydown="if(event.key==='Enter')addPlayer()">
     <button class="btn btn-action btn-green" onclick="addPlayer()" style="white-space:nowrap;flex-shrink:0">+ הוסיפו</button>
   </div>
 
-  <div class="player-list" id="playerList" style="width:100%;max-height:25vh;overflow-y:auto"></div>
+  <div class="player-list" id="playerList" style="width:100%;flex:1;min-height:0;overflow-y:auto"></div>
 
-  <p id="playerStatus" style="margin:0;text-align:center;color:rgba(255,255,255,.5)">צריך לפחות 2 שחקנים</p>
+  <p id="playerStatus" style="margin:0;text-align:center;color:rgba(255,255,255,.5);flex-shrink:0;font-size:.85rem">צריך לפחות 2 שחקנים</p>
 
-  <div style="width:100%;margin-top:auto;display:flex;flex-direction:column;gap:10px">
-    <button class="btn btn-primary" id="btnToLevel" onclick="showScreen('screenRounds')" disabled style="font-size:1.3rem;min-height:72px;opacity:.35;cursor:not-allowed;filter:grayscale(.5);transition:all .3s">המשיכו ▸</button>
-    <button style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);border:none;padding:16px;border-radius:14px;font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;width:100%" onclick="showScreen('screenWelcome')">חזרה</button>
+  <div style="width:100%;flex-shrink:0;display:flex;flex-direction:column;gap:8px;padding:8px 0 calc(12px + env(safe-area-inset-bottom));background:#1a1a2e">
+    <button class="btn btn-primary" id="btnToLevel" onclick="showScreen('screenRounds')" disabled style="font-size:1.2rem;min-height:56px;opacity:.35;cursor:not-allowed;filter:grayscale(.5);transition:all .3s">המשיכו ▸</button>
+    <button style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);border:none;padding:12px;border-radius:14px;font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;width:100%" onclick="showScreen('screenWelcome')">חזרה</button>
   </div>
 </div>
 
@@ -651,10 +651,14 @@ h1,h2{font-size:1.4rem}
 </div><!-- /container -->
 
 <script>
+// ============ FORCE CACHE CLEAR ============
+if ('caches' in window) {
+  caches.keys().then(keys => keys.forEach(k => { if (k !== 'mila-beli-mila-v19') caches.delete(k); }));
+}
 // ============ SERVICE WORKER (Offline PWA) ============
 if ('serviceWorker' in navigator) {
   const swCode = `
-    const CACHE_NAME = 'mila-beli-mila-v18';
+    const CACHE_NAME = 'mila-beli-mila-v19';
     self.addEventListener('install', e => {
       e.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
@@ -697,7 +701,7 @@ if ('serviceWorker' in navigator) {
   }).catch(err => console.log('SW failed:', err));
 
   if ('caches' in window) {
-    caches.open('mila-beli-mila-v18').then(cache => {
+    caches.open('mila-beli-mila-v19').then(cache => {
       cache.add(window.location.href).catch(() => {});
     });
   }
@@ -1092,10 +1096,12 @@ function renderPlayerList() {
   const status = document.getElementById('playerStatus');
   const minPlayers = isTeam ? 4 : 2;
   const enough = players.length >= minPlayers;
+  console.log('renderPlayerList:', players.length, 'players, enough:', enough);
   btn.disabled = !enough;
   btn.style.opacity = enough ? '1' : '.4';
   btn.style.cursor = enough ? 'pointer' : 'not-allowed';
   btn.style.filter = enough ? 'none' : 'grayscale(.5)';
+  btn.style.pointerEvents = enough ? 'auto' : 'none';
 
   if (isTeam) {
     const teamACount = players.filter(p => p.team === 'a').length;
