@@ -93,13 +93,15 @@ font-size:.7rem;font-weight:600;display:none;align-items:center;gap:4px}
 .game-subtitle{font-size:1rem;color:rgba(255,255,255,.7);margin-bottom:16px;font-weight:400;text-align:center}
 
 /* Welcome screen overrides */
-#screenWelcome{justify-content:space-evenly;min-height:100vh;padding:20px 14px}
-#screenWelcome .welcome-hero{font-size:5rem;line-height:1;margin:0}
-#screenWelcome .game-title{font-size:2.8rem;margin-bottom:4px}
-#screenWelcome .game-subtitle{font-size:1.05rem;color:rgba(255,255,255,.85);margin-bottom:0;font-weight:600}
+#screenWelcome{justify-content:space-between;min-height:100vh;height:100vh;padding:0;flex:1}
+#screenWelcome .welcome-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:20px 16px 0}
+#screenWelcome .welcome-bottom{width:100%;padding:16px 16px 32px;display:flex;flex-direction:column;gap:12px}
+#screenWelcome .welcome-hero{font-size:8rem;line-height:1;margin:0 0 16px}
+#screenWelcome .game-title{font-size:3.2rem;margin-bottom:6px}
+#screenWelcome .game-subtitle{font-size:1.1rem;color:rgba(255,255,255,.85);margin-bottom:0;font-weight:600}
 #screenWelcome .welcome-actions{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}
-#screenWelcome .btn-start{height:80px;font-size:1.5rem;width:100%;border-radius:20px}
-#screenWelcome .btn-leaderboard{height:64px;font-size:1.05rem;width:100%;border-radius:16px;
+#screenWelcome .btn-start{height:88px;font-size:1.6rem;width:100%;border-radius:20px}
+#screenWelcome .btn-leaderboard{height:72px;font-size:1.1rem;width:100%;border-radius:16px;
 background:transparent;border:2px solid rgba(255,255,255,.25);color:var(--white);font-family:inherit;font-weight:700;
 cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 #screenWelcome .btn-leaderboard:active{transform:scale(.95);background:rgba(255,255,255,.08)}
@@ -450,17 +452,17 @@ html{font-size:18px}
 
 <!-- WELCOME -->
 <div class="screen active" id="screenWelcome">
-  <div class="welcome-hero">🎭</div>
-  <div>
+  <div class="welcome-top">
+    <div class="welcome-hero">🎭</div>
     <h1 class="game-title">מילה בלי מילה</h1>
     <p class="game-subtitle">תתארו, תנחשו, תצחקו — בלי לגיד את המילה!</p>
     <p class="screen-subtitle">משחק מסיבה בעברית לכל המשפחה</p>
   </div>
-  <div class="welcome-actions">
+  <div class="welcome-bottom">
     <button class="btn btn-primary btn-start" onclick="showScreen('screenMode')">התחילו משחק 🎮</button>
     <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
+    <div class="welcome-version">v12.0</div>
   </div>
-  <div class="welcome-version">v12.0</div>
 </div>
 
 <!-- GAME MODE SELECT -->
