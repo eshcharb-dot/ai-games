@@ -1244,11 +1244,7 @@ function renderPlayerList() {
   const isTeam = gameMode === 'team';
 
   const sub = document.getElementById('setupSubtitle');
-  if (isTeam) {
-    sub.innerHTML = 'הוסיפו שחקנים • לחצו על צבע הקבוצה כדי להחליף';
-  } else {
-    sub.innerHTML = 'הוסיפו לפחות 2 שחקנים • שם אופציונלי — דלגו וקבלו כינוי מצחיק!';
-  }
+  sub.style.display = 'none';
 
   list.innerHTML = players.map((p, i) => {
     const teamBadge = isTeam ? `
