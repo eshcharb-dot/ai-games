@@ -18,7 +18,7 @@
 --radius:16px;--shadow:0 8px 32px rgba(0,0,0,.4);
 --teamA:#448aff;--teamB:#ff4081;
 }
-html{font-size:18px;margin:0;padding:0;width:100%;height:100%;overflow-x:hidden;box-sizing:border-box;background:#1a1a2e}
+html{font-size:22px;margin:0;padding:0;width:100%;height:100%;overflow-x:hidden;box-sizing:border-box;background:#1a1a2e}
 body{margin:0;padding:0;width:100%;min-height:100dvh;overflow-x:hidden;box-sizing:border-box;
 font-family:'Rubik',system-ui,sans-serif;background:#1a1a2e;color:#fff;
 display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
@@ -26,10 +26,10 @@ overscroll-behavior:none;-webkit-user-select:none;user-select:none}
 
 /* Screens */
 .screen{display:none;flex-direction:column;align-items:center;justify-content:space-between;
-height:100dvh;min-height:100dvh;width:100%;max-width:600px;margin:0 auto;padding:16px 20px calc(24px + env(safe-area-inset-bottom));box-sizing:border-box;
+height:100dvh;min-height:100dvh;width:100%;padding:16px 20px calc(20px + env(safe-area-inset-bottom));box-sizing:border-box;
 position:relative;text-align:center;overflow-y:auto;overflow-x:hidden;
 -webkit-overflow-scrolling:touch}
-@media(min-width:600px){.screen{max-width:480px;margin:0 auto}}
+@media(min-width:768px){.screen{max-width:600px;margin:0 auto}}
 .screen.active{display:flex;animation:screenSlideIn .35s cubic-bezier(.4,0,.2,1)}
 
 @keyframes screenSlideIn{
@@ -149,9 +149,9 @@ background:var(--primary);border:2px solid #1a1a2e;display:none}
 .kids-btn.active .kids-dot{display:block}
 
 /* Level select */
-.level-grid{display:flex;flex-direction:column;gap:12px;width:100%;margin:14px 0;flex:1;justify-content:center}
-.level-btn{display:flex;align-items:center;gap:16px;padding:18px 16px;border-radius:20px;border:2px solid rgba(255,255,255,.1);
-background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:100px;flex:1}
+.level-grid{display:flex;flex-direction:column;gap:10px;width:100%;margin:10px 0;flex:1;justify-content:center}
+.level-btn{display:flex;align-items:center;gap:14px;padding:14px 14px;border-radius:18px;border:2px solid rgba(255,255,255,.1);
+background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:72px;flex:1}
 .level-btn:hover,.level-btn:active{border-color:var(--primary);background:rgba(255,204,0,.08);transform:scale(1.02)}
 .level-btn .icon{font-size:2.5rem}
 .level-btn .info{text-align:right}
@@ -441,9 +441,9 @@ h1,h2{font-size:1.4rem}
 <div class="container">
 
 <!-- WELCOME -->
-<div class="screen active" id="screenWelcome" style="justify-content:center;gap:0;padding:20px 24px 32px">
-  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:28px">
-    <svg width="60vw" height="30vw" viewBox="0 0 360 180" style="margin-bottom:12px;max-width:260px;max-height:130px">
+<div class="screen active" id="screenWelcome" style="justify-content:center;gap:0;padding:20px 24px calc(24px + env(safe-area-inset-bottom))">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:20px">
+    <svg width="50vw" height="25vw" viewBox="0 0 360 180" style="margin-bottom:8px;max-width:200px;max-height:100px">
       <!-- Head 1 - left, pink -->
       <ellipse cx="60" cy="70" rx="36" ry="42" fill="#ff4081"/>
       <rect x="30" y="108" width="60" height="30" rx="15" fill="#ff4081"/>
@@ -462,14 +462,14 @@ h1,h2{font-size:1.4rem}
       <circle cx="242" cy="38" r="6" fill="rgba(255,255,255,0.9)"/>
       <circle cx="232" cy="28" r="4" fill="rgba(255,255,255,0.9)"/>
     </svg>
-    <h1 class="game-title" style="font-size:4rem;font-weight:900;margin-bottom:12px;line-height:1.1">מילה בלי מילה</h1>
-    <p style="font-size:2rem;color:rgba(255,255,255,.9);font-weight:700;margin-bottom:8px">תתארו, תנחשו, תצחקו!</p>
-    <p style="font-size:1rem;color:rgba(255,255,255,.4)">משחק מסיבה לכל המשפחה</p>
+    <h1 class="game-title" style="font-size:3rem;font-weight:900;margin-bottom:8px;line-height:1.1">מילה בלי מילה</h1>
+    <p style="font-size:1.4rem;color:rgba(255,255,255,.9);font-weight:700;margin-bottom:4px">תתארו, תנחשו, תצחקו!</p>
+    <p style="font-size:.9rem;color:rgba(255,255,255,.4)">משחק מסיבה לכל המשפחה</p>
   </div>
-  <div style="width:100%;display:flex;flex-direction:column;gap:14px;margin-top:auto">
-    <button class="btn btn-primary" onclick="showScreen('screenSetup')" style="font-size:1.5rem;min-height:80px">התחילו משחק 🎮</button>
-    <button class="btn-leaderboard" onclick="showLeaderboard()" style="font-size:1.2rem;min-height:64px">🏆 טבלת אלופים</button>
-    <div style="font-size:1rem;font-weight:700;color:rgba(255,204,0,.35);letter-spacing:2px;text-align:center">v20</div>
+  <div style="width:100%;display:flex;flex-direction:column;gap:12px">
+    <button class="btn btn-primary" onclick="showScreen('screenSetup')" style="font-size:1.4rem;min-height:72px">התחילו משחק 🎮</button>
+    <button class="btn-leaderboard" onclick="showLeaderboard()" style="font-size:1.1rem;min-height:56px">🏆 טבלת אלופים</button>
+    <div style="font-size:.7rem;font-weight:700;color:rgba(255,204,0,.35);letter-spacing:2px;text-align:center">v21</div>
   </div>
 </div>
 
@@ -523,24 +523,21 @@ h1,h2{font-size:1.4rem}
       <div class="icon">👶</div>
       <div class="info">
         <h3>ילדים</h3>
-        <p>מילים פשוטות — לילדים מגיל 5+</p>
-        <p style="font-size:.65rem;opacity:.6;margin-top:2px">חיות, אוכל, צבעים, כלי תחבורה</p>
+        <p>מילים פשוטות — מגיל 5+</p>
       </div>
     </div>
     <div class="level-btn" onclick="selectLevel('family')">
       <div class="icon">👨‍👩‍👧</div>
       <div class="info">
         <h3>משפחה</h3>
-        <p>מומלץ לרוב המשחקים</p>
-        <p style="font-size:.65rem;opacity:.6;margin-top:2px">ישראלי, תרבות, אוכל, מקומות</p>
+        <p>מומלץ — תרבות, אוכל, מקומות</p>
       </div>
     </div>
     <div class="level-btn" onclick="selectLevel('pro')">
       <div class="icon">🔥</div>
       <div class="info">
         <h3>פרו</h3>
-        <p>לקהל מבוגר — אתגר אמיתי</p>
-        <p style="font-size:.65rem;opacity:.6;margin-top:2px">מושגים מופשטים, מקצועות, סלנג</p>
+        <p>אתגר — מושגים מופשטים</p>
       </div>
     </div>
   </div>
@@ -548,14 +545,14 @@ h1,h2{font-size:1.4rem}
 </div>
 
 <!-- READY -->
-<div class="screen" id="screenReady">
-  <h2 style="font-size:1.6rem;font-weight:900;margin-bottom:4px">מוכנים? 🏁</h2>
-  <p class="screen-subtitle" id="readySubtitle">העבירו את הטלפון לשחקן הראשון</p>
-  <p class="text-muted" id="readyLevelLabel"></p>
-  <div class="players-grid" id="readyPlayers"></div>
-  <p class="text-muted" id="readyDescriberNote"></p>
-  <button class="btn btn-primary mt-16" onclick="startRound()" style="font-size:1.3rem;padding:18px 40px;width:100%;min-height:64px">!התחילו 🚀</button>
-  <button class="btn btn-small btn-action mt-8" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="showScreen('screenLevel')">חזרה</button>
+<div class="screen" id="screenReady" style="justify-content:center;gap:12px">
+  <h2 style="font-size:1.6rem;font-weight:900;margin:0">מוכנים? 🏁</h2>
+  <p class="screen-subtitle" id="readySubtitle" style="margin:0">העבירו את הטלפון לשחקן הראשון</p>
+  <p class="text-muted" id="readyLevelLabel" style="margin:0"></p>
+  <div class="players-grid" id="readyPlayers" style="max-height:30vh;overflow-y:auto"></div>
+  <p class="text-muted" id="readyDescriberNote" style="margin:0"></p>
+  <button class="btn btn-primary" onclick="startRound()" style="font-size:1.4rem;padding:18px;width:100%;min-height:72px">התחילו! 🚀</button>
+  <button class="btn btn-small btn-action" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)" onclick="showScreen('screenLevel')">חזרה</button>
 </div>
 
 <!-- GAME PLAY -->
@@ -653,12 +650,12 @@ h1,h2{font-size:1.4rem}
 <script>
 // ============ FORCE CACHE CLEAR ============
 if ('caches' in window) {
-  caches.keys().then(keys => keys.forEach(k => { if (k !== 'mila-beli-mila-v20') caches.delete(k); }));
+  caches.keys().then(keys => keys.forEach(k => { if (k !== 'mila-beli-mila-v21') caches.delete(k); }));
 }
 // ============ SERVICE WORKER (Offline PWA) ============
 if ('serviceWorker' in navigator) {
   const swCode = `
-    const CACHE_NAME = 'mila-beli-mila-v20';
+    const CACHE_NAME = 'mila-beli-mila-v21';
     self.addEventListener('install', e => {
       e.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
@@ -701,7 +698,7 @@ if ('serviceWorker' in navigator) {
   }).catch(err => console.log('SW failed:', err));
 
   if ('caches' in window) {
-    caches.open('mila-beli-mila-v20').then(cache => {
+    caches.open('mila-beli-mila-v21').then(cache => {
       cache.add(window.location.href).catch(() => {});
     });
   }
