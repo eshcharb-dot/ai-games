@@ -16,7 +16,7 @@
 --radius:16px;--shadow:0 8px 32px rgba(0,0,0,.4);
 --teamA:#448aff;--teamB:#ff4081;
 }
-html{font-size:22px}
+html{font-size:26px}
 html{margin:0;padding:0;width:100%;height:100%;overflow-x:hidden;box-sizing:border-box;background:#1a1a2e}
 body{margin:0;padding:0;width:100%;min-height:100svh;overflow-x:hidden;box-sizing:border-box;
 font-family:system-ui,sans-serif;background:#1a1a2e;color:#fff;
@@ -470,45 +470,33 @@ h1,h2{font-size:1.4rem}
 </div>
 
 <!-- PLAYER SETUP -->
-<div class="screen" id="screenSetup" style="padding:16px 20px;gap:0;overflow:hidden;justify-content:flex-start">
+<div class="screen" id="screenSetup" style="justify-content:flex-start;padding:20px;gap:14px;overflow:hidden">
+  <h2 style="font-size:2rem;font-weight:900;margin:0;width:100%;text-align:right">מי משחק? 👥</h2>
 
-  <!-- TOP: fixed -->
-  <div style="flex-shrink:0">
-    <h2 style="font-size:2.2rem;font-weight:900;margin:0 0 10px">מי משחק? 👥</h2>
-    <div class="mode-toggle" style="margin:0 0 10px">
-      <button class="mode-btn active" id="modeFree" onclick="setGameMode('free')">
-        <div style="font-size:1.2rem;font-weight:700">🎭 חופשי</div>
-        <div style="font-size:0.75rem;opacity:.6">כל אחד לעצמו</div>
-      </button>
-      <button class="mode-btn" id="modeTeam" onclick="setGameMode('team')">
-        <div style="font-size:1.2rem;font-weight:700">⚔️ קבוצות</div>
-        <div style="font-size:0.75rem;opacity:.6">שתי קבוצות</div>
-      </button>
-    </div>
-    <div id="teamNamesSection" style="display:none;width:100%;margin-bottom:8px">
-      <div class="team-names-row">
-        <input type="text" id="teamAName" placeholder="קבוצה א׳" maxlength="15" style="border:2px solid rgba(68,138,255,.4);background:rgba(68,138,255,.1)">
-        <input type="text" id="teamBName" placeholder="קבוצה ב׳" maxlength="15" style="border:2px solid rgba(255,64,129,.4);background:rgba(255,64,129,.1)">
-      </div>
+  <div class="mode-toggle" style="width:100%;margin:0">
+    <button class="mode-btn active" id="modeFree" onclick="setGameMode('free')">🎭 חופשי</button>
+    <button class="mode-btn" id="modeTeam" onclick="setGameMode('team')">⚔️ קבוצות</button>
+  </div>
+
+  <div id="teamNamesSection" style="display:none;width:100%">
+    <div class="team-names-row">
+      <input type="text" id="teamAName" placeholder="קבוצה א׳" maxlength="15" style="border:2px solid rgba(68,138,255,.4);background:rgba(68,138,255,.1)">
+      <input type="text" id="teamBName" placeholder="קבוצה ב׳" maxlength="15" style="border:2px solid rgba(255,64,129,.4);background:rgba(255,64,129,.1)">
     </div>
   </div>
 
-  <!-- MIDDLE: player list, grows as players added -->
-  <div class="player-list" id="playerList" style="flex:0 1 auto;min-height:0;max-height:35vh;overflow-y:auto;margin-bottom:6px"></div>
+  <div class="player-input-row" style="width:100%">
+    <input type="text" id="playerNameInput" placeholder="שם שחקן" maxlength="20" onkeydown="if(event.key==='Enter')addPlayer()">
+    <button class="btn btn-action btn-green" onclick="addPlayer()" style="white-space:nowrap;flex-shrink:0">+ הוסיפו</button>
+  </div>
 
-  <!-- SPACER -->
-  <div style="flex:1"></div>
+  <div class="player-list" id="playerList" style="width:100%;max-height:38vh;overflow-y:auto"></div>
 
-  <!-- BOTTOM: fixed -->
-  <div style="flex-shrink:0;display:flex;flex-direction:column;gap:10px">
-    <div class="player-input-row">
-      <input type="text" id="playerNameInput" placeholder="שם שחקן (אופציונלי)" maxlength="20"
-        onkeydown="if(event.key==='Enter')addPlayer()">
-      <button class="btn btn-action btn-green" onclick="addPlayer()" style="min-height:60px;font-size:1.2rem;white-space:nowrap;flex-shrink:0">+ הוסיפו</button>
-    </div>
-    <p id="playerStatus" style="font-size:1rem;color:rgba(255,255,255,.5);margin:0;text-align:center" id="playerCount">צריך לפחות 2 שחקנים</p>
-    <button class="btn btn-primary" id="btnToLevel" onclick="showScreen('screenRounds')" disabled style="min-height:72px;font-size:1.4rem;opacity:.35;cursor:not-allowed;filter:grayscale(.5);transition:all .3s">המשיכו ▸</button>
-    <button style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);font-size:1rem;border:none;padding:14px;border-radius:14px;font-family:inherit;font-weight:600;cursor:pointer" onclick="showScreen('screenWelcome')">חזרה</button>
+  <p id="playerStatus" style="margin:0;text-align:center;color:rgba(255,255,255,.5)" id="playerCount">צריך לפחות 2 שחקנים</p>
+
+  <div style="width:100%;margin-top:auto;display:flex;flex-direction:column;gap:10px">
+    <button class="btn btn-primary" id="btnToLevel" onclick="showScreen('screenRounds')" disabled style="font-size:1.3rem;min-height:72px;opacity:.35;cursor:not-allowed;filter:grayscale(.5);transition:all .3s">המשיכו ▸</button>
+    <button style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);border:none;padding:16px;border-radius:14px;font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;width:100%" onclick="showScreen('screenWelcome')">חזרה</button>
   </div>
 </div>
 
