@@ -628,13 +628,13 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 #screenReady .ready-title { font-size: 10vw !important; margin: 0 !important; }
 #screenReady .screen-subtitle { font-size: 5.5vw !important; color: rgba(255,255,255,.8) !important; margin: 0 !important; }
 #screenReady .text-muted { font-size: 4.5vw !important; margin: 0 !important; color: rgba(255,255,255,.6) !important; }
-#screenReady .ready-describer-note { font-size: 4.5vw !important; color: rgba(255,255,255,.6) !important; }
+#screenReady .ready-describer-note { display: none !important; }
 #screenReady .ready-start-btn { font-size: 6vw !important; min-height: 16vw !important; }
 #screenReady .ready-back-btn { font-size: 4vw !important; min-height: 10vw !important; background: rgba(255,255,255,.07) !important; color: rgba(255,255,255,.4) !important; border: none !important; }
-.players-grid { display: flex !important; flex-wrap: wrap !important; gap: 3vw !important; justify-content: center !important; width: 100% !important; }
-.pg-item { min-width: 22vw !important; max-width: 40vw !important; padding: 3vw !important; border-radius: 3vw !important; }
-.pg-item .pg-emoji { font-size: 10vw !important; }
-.pg-item .pg-name { font-size: 4vw !important; max-width: none !important; overflow: visible !important; text-overflow: unset !important; white-space: normal !important; word-break: break-all !important; }
+.players-grid { display: flex !important; flex-wrap: wrap !important; gap: 4vw !important; justify-content: center !important; width: 100% !important; }
+.pg-item { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 1.5vw !important; padding: 3vw 3vw !important; border-radius: 3vw !important; min-width: 20vw !important; max-width: 28vw !important; }
+.pg-item .pg-emoji { font-size: 11vw !important; }
+.pg-item .pg-name { font-size: 3.5vw !important; max-width: 26vw !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; text-align: center !important; }
 
 /* Setup screen: fixed layout, scroll when keyboard opens */
 #screenSetup { justify-content: flex-start !important; gap: 2vw !important; overflow-y: auto !important; overflow-x: hidden !important; height: 100dvh !important; }
@@ -1422,7 +1422,7 @@ function prepareRound() {
   // Update ready subtitle with first player name
   const firstIdx = gameMode === 'team' ? teamTurnOrder[0]?.playerIdx : describerOrder[0];
   const firstName = players[firstIdx]?.name || '';
-  document.getElementById('readySubtitle').textContent = `העבירו את הטלפון ל${firstName}`;
+  document.getElementById('readySubtitle').textContent = `מוכנים לשחק?`;
 
   const grid = document.getElementById('readyPlayers');
   if (gameMode === 'team') {
