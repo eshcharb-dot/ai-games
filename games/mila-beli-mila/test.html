@@ -478,6 +478,24 @@ html{font-size:22px}
 /* ===== TEST OVERRIDES: FORCE BIG UI ===== */
 html, body { font-size: 20px !important; }
 
+/* NUCLEAR FONT OVERRIDE — nothing smaller than 4vw */
+* { min-font-size: 4vw; }
+.screen-subtitle, .setup-subtitle, .welcome-tagline-small, .welcome-version,
+.round-indicator, .skip-counter, .text-muted, .offline-badge,
+.rb-time, .level-btn .info p, .pg-name, .team-label,
+small, caption, label { font-size: 4.5vw !important; color: rgba(255,255,255,.8) !important; }
+
+/* No text on images — suppress background blobs, ensure clean text */
+.bg-spots { display: none !important; }
+body::before { display: none !important; }
+
+/* Welcome logo — good size but not overlapping text */
+.welcome-logo { width: 55vw !important; height: auto !important; max-height: 28vw !important; display: block; margin: 0 auto 4vw !important; }
+.welcome-center { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 2vw !important; }
+.welcome-tagline { font-size: 6vw !important; font-weight: 700 !important; color: rgba(255,255,255,.95) !important; }
+.welcome-tagline-small { font-size: 4.5vw !important; color: rgba(255,255,255,.6) !important; }
+.welcome-version { font-size: 4vw !important; color: rgba(255,204,0,.5) !important; }
+
 /* Screens - full viewport, no max-width on phone */
 .screen {
   width: 100vw !important;
