@@ -589,9 +589,16 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 .start-countdown-overlay .sco-number { font-size: 40vw !important; line-height: 1 !important; }
 .start-countdown-overlay .sco-number.sco-go { font-size: 25vw !important; }
 
-/* Score / leaderboard */
+/* Score / leaderboard (ready screen grid) */
 .pg-emoji { font-size: 9vw !important; }
 .pg-name { font-size: 4vw !important; max-width: none !important; overflow: visible !important; text-overflow: unset !important; white-space: normal !important; text-align: center !important; }
+
+/* Player list rows (setup screen) — fix overlap */
+.player-item { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 3vw !important; padding: 3vw 4vw !important; min-height: 18vw !important; }
+.player-item .avatar { font-size: 8vw !important; flex-shrink: 0 !important; min-width: 10vw !important; }
+.player-item .name { flex: 1 !important; font-size: 5.5vw !important; font-weight: 700 !important; text-align: right !important; min-width: 0 !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; }
+.kids-btn { width: 12vw !important; height: 12vw !important; font-size: 6vw !important; flex-shrink: 0 !important; }
+.player-item .remove { font-size: 5vw !important; min-width: 10vw !important; min-height: 10vw !important; flex-shrink: 0 !important; }
 
 /* Ready screen */
 #screenReady { justify-content: center !important; gap: 3vw !important; }
