@@ -603,6 +603,9 @@ input[type="text"] { height: 14vw !important; font-size: 5vw !important; border-
   .round-btn .rb-title { font-size: 1.1rem !important; }
   .round-btn .rb-time { font-size: 0.8rem !important; }
 
+  /* Word display on desktop - allow wrapping, no overflow clipping issue */
+  .word-display, .game-word-area { white-space: normal !important; overflow: visible !important; word-break: keep-all !important; padding: 8px 16px !important; }
+
   /* Game top bar */
   #screenGame .game-top-bar { min-height: 60px !important; padding: 0 16px !important; }
   #screenGame .game-top-bar .timer-ring { width: 52px !important; height: 52px !important; }
