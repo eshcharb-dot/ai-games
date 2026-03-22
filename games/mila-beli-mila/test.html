@@ -204,7 +204,7 @@ line-height:1.2;color:#fff}
 .word-pop{animation:wordPop .4s cubic-bezier(.17,.67,.21,1.3)}
 
 /* ===== GAME SCREEN ===== */
-#screenGame{justify-content:flex-start;gap:0;padding:0;overflow:hidden}
+#screenGame{justify-content:flex-start;gap:0;padding:0;overflow:clip}
 .game-top-bar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:clamp(6px,1.2vh,12px) clamp(12px,3vw,20px);flex-shrink:0;background:rgba(255,255,255,.05);height:clamp(40px,6vh,52px)}
 .game-top-bar .current-player-header{margin:0}
 .game-top-bar .round-indicator{font-size:clamp(11px,2vw,14px);color:rgba(255,255,255,.5)}
@@ -551,15 +551,13 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
   display: flex !important; 
   align-items: center !important; 
   justify-content: center !important;
-  font-size: clamp(1.8rem, 12vw, 4rem) !important; 
-  white-space: normal !important; 
+  white-space: nowrap !important; 
   overflow: visible !important; 
-  text-overflow: unset !important;
-  word-break: break-word !important;
   text-align: center !important;
   width: 100% !important;
-  padding: 0 4vw !important;
+  padding: 0 3vw !important;
   box-sizing: border-box !important;
+  min-height: 0 !important;
 }
 .emoji-word { font-size: 35vw !important; }
 
@@ -677,7 +675,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 </head>
 <body>
 
-<div style="position:fixed;bottom:10px;left:10px;z-index:99999;background:#ff1744;color:#fff;font-size:3.5vw;font-weight:900;padding:1.5vw 3vw;border-radius:2vw;letter-spacing:1px;opacity:0.7">TEST</div>
+<div style="position:fixed;bottom:10px;left:10px;z-index:99999;background:#ff1744;color:#fff;font-size:3.5vw;font-weight:900;padding:1.5vw 3vw;border-radius:2vw;letter-spacing:1px;opacity:0.85">TEST v26</div>
 <div class="bg-spots"><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>
 <canvas id="confetti"></canvas>
 <button id="soundToggle" onclick="toggleSound()">🔊</button>
@@ -714,7 +712,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
   <div class="welcome-buttons">
     <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">התחילו משחק 🎮</button>
     <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
-    <div class="welcome-version">v25</div>
+    <div class="welcome-version">v26</div>
   </div>
 </div>
 
@@ -1706,35 +1704,23 @@ function nextWord() {
     } while (usedWords.has(currentWord));
     usedWords.add(currentWord);
     wd.innerHTML = currentWord;
-    // Reset styles
     wd.style.textAlign = 'center';
     wd.style.direction = 'rtl';
     wd.style.width = '100%';
-    wd.style.boxSizing = 'border-box';
     wd.style.whiteSpace = 'nowrap';
     wd.style.overflow = 'visible';
-    // Start size based on character count
+    // Font size purely by character count — no DOM measurement needed
     const len = currentWord.length;
-    let startSize = Math.min(20, Math.max(6, Math.floor(80 / Math.max(len, 1))));
-    wd.style.fontSize = startSize + 'vw';
-    // Use double rAF to ensure DOM has fully rendered before measuring
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const availW = window.innerWidth * 0.88;
-        let size = parseFloat(wd.style.fontSize) || startSize;
-        // Shrink until fits
-        while (wd.scrollWidth > availW && size > 4) {
-          size -= 0.5;
-          wd.style.fontSize = size + 'vw';
-        }
-        // Last resort: allow wrapping
-        if (wd.scrollWidth > availW) {
-          wd.style.whiteSpace = 'normal';
-          wd.style.wordBreak = 'break-word';
-          wd.style.fontSize = '7vw';
-        }
-      });
-    });
+    let vw;
+    if      (len <= 2)  vw = 22;
+    else if (len <= 4)  vw = 18;
+    else if (len <= 6)  vw = 15;
+    else if (len <= 8)  vw = 12;
+    else if (len <= 10) vw = 10;
+    else if (len <= 13) vw = 8;
+    else if (len <= 16) vw = 6.5;
+    else                vw = 5.5;
+    wd.style.fontSize = vw + 'vw';
   }
 
   wd.className = 'word-display game-word-area word-pop';
