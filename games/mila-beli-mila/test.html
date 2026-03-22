@@ -1706,40 +1706,35 @@ function nextWord() {
     } while (usedWords.has(currentWord));
     usedWords.add(currentWord);
     wd.innerHTML = currentWord;
-    // Reset styles first
-    wd.style.whiteSpace = 'nowrap';
-    wd.style.overflow = 'visible';
+    // Reset styles
     wd.style.textAlign = 'center';
     wd.style.direction = 'rtl';
     wd.style.width = '100%';
     wd.style.boxSizing = 'border-box';
-    // Start with font based on length, then auto-fit
+    wd.style.whiteSpace = 'nowrap';
+    wd.style.overflow = 'visible';
+    // Start size based on character count
     const len = currentWord.length;
-    let startSize;
-    if (len <= 3) startSize = 22;
-    else if (len <= 5) startSize = 18;
-    else if (len <= 7) startSize = 14;
-    else if (len <= 9) startSize = 11;
-    else if (len <= 13) startSize = 9;
-    else startSize = 7;
+    let startSize = Math.min(20, Math.max(6, Math.floor(80 / Math.max(len, 1))));
     wd.style.fontSize = startSize + 'vw';
-    // Auto-shrink until it fits — give DOM time to render
-    setTimeout(() => {
-      const container = wd.parentElement;
-      const maxWidth = container ? container.offsetWidth * 0.92 : window.innerWidth * 0.92;
-      let size = parseFloat(wd.style.fontSize) || startSize;
-      // Shrink until text fits in one line
-      while (wd.scrollWidth > maxWidth && size > 4) {
-        size -= 0.5;
-        wd.style.fontSize = size + 'vw';
-      }
-      // If still too big, allow wrapping
-      if (wd.scrollWidth > maxWidth) {
-        wd.style.whiteSpace = 'normal';
-        wd.style.wordBreak = 'break-word';
-        wd.style.fontSize = '6vw';
-      }
-    }, 50);
+    // Use double rAF to ensure DOM has fully rendered before measuring
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const availW = window.innerWidth * 0.88;
+        let size = parseFloat(wd.style.fontSize) || startSize;
+        // Shrink until fits
+        while (wd.scrollWidth > availW && size > 4) {
+          size -= 0.5;
+          wd.style.fontSize = size + 'vw';
+        }
+        // Last resort: allow wrapping
+        if (wd.scrollWidth > availW) {
+          wd.style.whiteSpace = 'normal';
+          wd.style.wordBreak = 'break-word';
+          wd.style.fontSize = '7vw';
+        }
+      });
+    });
   }
 
   wd.className = 'word-display game-word-area word-pop';
