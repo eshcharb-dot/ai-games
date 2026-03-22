@@ -1,0 +1,50 @@
+﻿You are fixing a Hebrew party word game at C:\Users\user\Projects\PR-004_ai-games\games\mila-beli-mila\index.html.
+
+PROBLEMS:
+1. File has UTF-8 BOM causing CSS to break
+2. Reload loop from old SW killer code causing delay after adding players
+3. Design looks tiny - V3 CSS overrides not applying
+
+YOUR TASK - do ALL of these using the Node.js script approach:
+1. Read the file as raw bytes
+2. Strip BOM if present (EF BB BF)
+3. Remove any script block that calls location.reload() or sessionStorage.setItem
+4. Remove any remaining navigator.serviceWorker code
+5. Ensure the welcome-version div shows v3.3
+6. Add badge before bg-spots div: div with position:fixed;bottom:6px;right:6px showing v3.3
+7. Write back without BOM
+8. Verify first byte is 3C
+9. git add, commit 'v3.3 fixed', push
+
+Run this Node.js script to do steps 1-8:
+`
+const fs = require('fs');
+const path = 'C:/Users/user/Projects/PR-004_ai-games/games/mila-beli-mila/index.html';
+let bytes = fs.readFileSync(path);
+// Strip BOM
+if (bytes[0]===0xEF && bytes[1]===0xBB && bytes[2]===0xBF) bytes = bytes.slice(3);
+let html = bytes.toString('utf8');
+// Remove reload script block
+html = html.replace(/<script>\s*\(function\(\)\{[\s\S]*?sessionStorage[\s\S]*?\}\)\(\);\s*<\/script>\s*/g, '');
+// Remove service worker
+html = html.replace(/\/\/ ={4,} FORCE CACHE CLEAR[\s\S]*?\/\/ ={4,} WORD BANK/, '// ============ WORD BANK');
+// Version
+html = html.replace(/>v3(\.\d)?<\/div>\s*<\/div>\s*<\/div>\s*<\/div>\s*(<div class="welcome-buttons">)/g, (m,v,rest) => '>v3.3</div></div></div></div>' + rest);
+html = html.replace('class="welcome-version">v3<', 'class="welcome-version">v3.3<');
+html = html.replace('class="welcome-version">v3.2<', 'class="welcome-version">v3.3<');
+// Badge
+if (!html.includes('v3.3</div>')) {
+  html = html.replace('<div class="bg-spots">', '<div style="position:fixed;bottom:6px;right:6px;z-index:9999;font-size:12px;font-weight:900;color:rgba(255,204,0,.6);pointer-events:none">v3.3</div>\n<div class="bg-spots">');
+}
+// Write without BOM
+fs.writeFileSync(path, html, 'utf8');
+// Verify
+const check = fs.readFileSync(path);
+console.log('First byte:', check[0].toString(16), '(should be 3c)');
+console.log('V3 block:', html.includes('V3 BIG UI OVERRIDES'));
+console.log('No reload:', !html.includes('location.reload'));
+console.log('v3.3 badge:', html.includes('v3.3'));
+`
+
+Then git add/commit/push.
+When done: openclaw system event --text "Done v3.3 BOM fixed design restored" --mode now
