@@ -1,4 +1,4 @@
-﻿﻿﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -650,7 +650,7 @@ input[type="text"] { height: 14vw !important; font-size: 5vw !important; border-
 </head>
 <body>
 
-<div style="position:fixed;bottom:6px;left:6px;z-index:9999;font-size:10px;font-weight:700;color:rgba(255,204,0,.4);letter-spacing:1px;pointer-events:none">v3.2</div>
+<div style="position:fixed;bottom:6px;left:6px;z-index:9999;font-size:10px;font-weight:700;color:rgba(255,204,0,.5);letter-spacing:1px;pointer-events:none">v3.2</div>
 <div class="bg-spots"><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>
 <canvas id="confetti"></canvas>
 <button id="soundToggle" onclick="toggleSound()">🔊</button>
@@ -687,7 +687,7 @@ input[type="text"] { height: 14vw !important; font-size: 5vw !important; border-
   <div class="welcome-buttons">
     <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">התחילו משחק 🎮</button>
     <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
-    <div class="welcome-version">v3.2</div>
+    <div class="welcome-version">v3</div>
   </div>
 </div>
 
@@ -856,12 +856,12 @@ input[type="text"] { height: 14vw !important; font-size: 5vw !important; border-
 <script>
 // ============ FORCE CACHE CLEAR ============
 if ('caches' in window) {
-  caches.keys().then(keys => keys.forEach(k => { if (k !== 'mila-beli-mila-v3-build2') caches.delete(k); }));
+  caches.keys().then(keys => keys.forEach(k => { if (k !== 'mila-beli-mila-v32') caches.delete(k); }));
 }
 // ============ SERVICE WORKER (Offline PWA) ============
 if ('serviceWorker' in navigator) {
   const swCode = `
-    const CACHE_NAME = 'mila-beli-mila-v3-build2';
+    const CACHE_NAME = 'mila-beli-mila-v32';
     self.addEventListener('install', e => {
       e.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
@@ -904,7 +904,7 @@ if ('serviceWorker' in navigator) {
   }).catch(err => console.log('SW failed:', err));
 
   if ('caches' in window) {
-    caches.open('mila-beli-mila-v3-build2').then(cache => {
+    caches.open('mila-beli-mila-v32').then(cache => {
       cache.add(window.location.href).catch(() => {});
     });
   }
@@ -959,7 +959,7 @@ family: [
 'חריימה','מוסקה','מלווח','ג\'חנון','קובה','חציל','שניצל','קציצות','מרק','לאפה',
 'באר שבע','נתניה','הרצליה','פתח תקווה','ראשון לציון','רחובות','נהריה','עכו','צפת','טבריה',
 'שוק הפשפשים','קולנוע','תיאטרון','מוזיאון','פאב','בית קפה','מסעדה','מאפייה','פיצרייה','ספרייה',
-'ספוטיפיי'ט','טוויטר','פייסבוק','פינטרסט','טלגרם','רדיט','טוויץ\'','דיסקורד',
+'סנאפצ\'ט','טוויטר','פייסבוק','פינטרסט','טלגרם','רדיט','טוויץ\'','דיסקורד',
 'חנוכייה','סביבון','מצות','קערת פסח','שופר','סוכה','לולב','אתרוג','משלוח מנות','אוזני המן',
 'רכבל','טלפריק','נחל','מפל','מצפור','שביל','טיילת','כביש','מנהרה','גשר',
 'תור','מדבקה','פקקים','חניון','רמקול','אוזניות','מטען','סוללה','שלט רחוק','ממתק',
