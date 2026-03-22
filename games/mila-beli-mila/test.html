@@ -1299,7 +1299,6 @@ function renderPlayerList() {
       </div>
       <button class="kids-btn ${p.cannotRead ? 'active' : ''}" onclick="event.stopPropagation();toggleCannotRead(${i})" title="${p.cannotRead ? 'יראה אמוג\'י במקום מילה' : 'לחצו אם לא יודע לקרוא'}">
         ⭐<span class="kids-dot"></span>
-        <span style="font-size:1.8vw;font-weight:600;display:block;margin-top:1px;line-height:1;opacity:${p.cannotRead ? '1' : '0.5'}">${p.cannotRead ? 'פעיל' : ''}</span>
       </button>
       <button class="remove" onclick="removePlayer(${i})">✕</button>
     </div>`;
