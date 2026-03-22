@@ -560,43 +560,6 @@ input[type="text"] { height: 14vw !important; font-size: 5vw !important; border-
 .lb-item .rank { font-size: 5.5vw !important; }
 .tab { min-height: 12vw !important; font-size: 4.5vw !important; }
 
-/* ===== UX FIX: Missing font overrides (all were below 14px) ===== */
-.lb-item .lb-best, .round-score-item .rs-best { font-size: 3.5vw !important; color: rgba(255,255,255,.6) !important; }
-.team-score-card .team-label { font-size: 4vw !important; }
-.sb-item { font-size: 3.5vw !important; }
-.sb-item .sb-emoji { font-size: 4.5vw !important; }
-.team-tag { font-size: 4vw !important; min-height: 12vw !important; min-width: 12vw !important; padding: 2vw 3vw !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; }
-.screen-subtitle, .setup-subtitle, .rounds-explain { font-size: 4vw !important; }
-.text-muted, .round-indicator, .ready-describer-note { font-size: 4vw !important; }
-.funny-msg { font-size: 4.5vw !important; }
-.round-btn .rb-time { font-size: 4vw !important; }
-.pg-item .pg-name { font-size: 4vw !important; }
-.lb-item .lb-avatar { font-size: 5vw !important; }
-.round-score-item .rs-avatar { font-size: 5vw !important; }
-
-/* ===== UX FIX: Touch targets (were below 44px) ===== */
-.player-item .remove { min-width: 12vw !important; min-height: 12vw !important; }
-.gf-small-btn { min-height: 12vw !important; }
-
-/* ===== UX FIX: Contrast (were below WCAG AA) ===== */
-.welcome-tagline-small { color: rgba(255,255,255,.65) !important; }
-.setup-back-btn { color: rgba(255,255,255,.6) !important; }
-.player-status { color: rgba(255,255,255,.65) !important; }
-.screen-subtitle { color: rgba(255,255,255,.6) !important; }
-.round-btn .rb-time { color: rgba(255,255,255,.6) !important; }
-input::placeholder { color: rgba(255,255,255,.5) !important; }
-
-/* ===== UX FIX: Layout ===== */
-.word-display, .game-word-area { word-break: break-word !important; white-space: normal !important; }
-.round-scores { max-height: 40vh !important; }
-
-/* ===== UX FIX: Landscape mode ===== */
-@media (max-height: 500px) {
-  .game-action-btn { height: 20vw !important; }
-  .game-top-bar { min-height: 10vw !important; }
-  .game-word-area { font-size: clamp(1.4rem, 6vw, 2.5rem) !important; }
-}
-
 /* ===== DESKTOP OVERRIDES (min-width: 768px) ===== */
 @media (min-width: 768px) {
   .screen {
@@ -680,20 +643,12 @@ input::placeholder { color: rgba(255,255,255,.5) !important; }
   .lb-item .lb-score, .round-score-item .rs-score { font-size: 1.1rem !important; }
   .lb-item .rank { font-size: 1.1rem !important; }
   .tab { min-height: 44px !important; font-size: 0.9rem !important; }
-
-  /* Desktop: UX fix selectors */
-  .lb-item .lb-best, .round-score-item .rs-best { font-size: 0.75rem !important; }
-  .team-score-card .team-label { font-size: 0.75rem !important; }
-  .sb-item { font-size: 0.75rem !important; }
-  .team-tag { font-size: 0.75rem !important; min-height: 32px !important; min-width: 32px !important; padding: 4px 10px !important; }
-  .screen-subtitle, .setup-subtitle, .rounds-explain, .text-muted, .round-indicator { font-size: 0.85rem !important; }
-  .funny-msg { font-size: 0.9rem !important; }
 }
 </style>
 </head>
 <body>
 
-<div style="position:fixed;bottom:6px;right:6px;z-index:9999;font-size:12px;font-weight:900;color:rgba(255,204,0,.4);pointer-events:none">v4</div>
+<div style="position:fixed;bottom:6px;right:6px;z-index:9999;font-size:12px;font-weight:900;color:rgba(255,204,0,.6);pointer-events:none">v3.3</div>
 <div class="bg-spots"><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>
 <canvas id="confetti"></canvas>
 <button id="soundToggle" onclick="toggleSound()">🔊</button>
@@ -737,7 +692,7 @@ input::placeholder { color: rgba(255,255,255,.5) !important; }
 <!-- PLAYER SETUP -->
 <div class="screen" id="screenSetup">
   <h2 class="setup-title">מי משחק? 👥</h2>
-  <p class="screen-subtitle setup-subtitle" id="setupSubtitle">בלי שם = כינוי מצחיק! • ⭐ = מצב ילדים (תמונות במקום מילים)</p>
+  <p class="screen-subtitle setup-subtitle" id="setupSubtitle">הוסיפו לפחות 2 שחקנים — בלי שם? תקבלו כינוי מצחיק!</p>
 
   <div class="mode-toggle">
     <button class="mode-btn active" id="modeFree" onclick="setGameMode('free')">🎭 חופשי</button>
@@ -1181,8 +1136,6 @@ function showScreen(id) {
   const target = document.getElementById(id);
   target.classList.add('active');
   if (id === 'screenRounds') updateRoundsGrid();
-  const snd = document.getElementById('soundToggle');
-  snd.style.display = (id === 'screenGame' || id === 'screenPass') ? 'none' : '';
 }
 function backToWelcome() { showScreen('screenWelcome'); }
 
@@ -1281,7 +1234,7 @@ function renderPlayerList() {
   if (isTeam) {
     sub.innerHTML = 'הוסיפו שחקנים • לחצו על צבע הקבוצה כדי להחליף';
   } else {
-    sub.innerHTML = 'בלי שם = כינוי מצחיק! • ⭐ = מצב ילדים (תמונות במקום מילים)';
+    sub.innerHTML = 'הוסיפו לפחות 2 שחקנים • שם אופציונלי — דלגו וקבלו כינוי מצחיק!';
   }
 
   list.innerHTML = players.map((p, i) => {
@@ -1300,6 +1253,7 @@ function renderPlayerList() {
       </div>
       <button class="kids-btn ${p.cannotRead ? 'active' : ''}" onclick="event.stopPropagation();toggleCannotRead(${i})" title="${p.cannotRead ? 'יראה אמוג\'י במקום מילה' : 'לחצו אם לא יודע לקרוא'}">
         ⭐<span class="kids-dot"></span>
+        <span style="font-size:.45rem;font-weight:600;display:block;margin-top:2px;line-height:1;opacity:${p.cannotRead ? '1' : '0.5'}">${p.cannotRead ? 'פעיל' : 'לחץ'}</span>
       </button>
       <button class="remove" onclick="removePlayer(${i})">✕</button>
     </div>`;
@@ -1485,7 +1439,7 @@ function showTurnTransition() {
       <div class="emoji">${p.avatar}</div>
       <div class="player-name">${p.name}</div>
       <div class="arrow">👇</div>
-      <button class="btn btn-primary mt-16" id="passSkipBtn" onclick="startTurn()" style="font-size:1.3rem;padding:18px 40px;width:80%;max-width:320px">יאללה 🚀</button>
+      <button class="btn btn-primary mt-16" id="passSkipBtn" onclick="startTurn()" style="font-size:1.3rem;padding:18px 40px;width:80%;max-width:320px">!יאללה 🚀</button>
     </div>
   `;
   showScreen('screenPass');
