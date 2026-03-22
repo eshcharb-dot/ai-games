@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>שובר — Passover Breaker</title>
+<link href="https://fonts.googleapis.com/css2?family=Secular+One&family=Varela+Round&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:18px;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+body{width:100vw;height:100dvh;overflow:hidden;background:#0a0a1a;font-family:'Varela Round','Secular One',sans-serif;color:#f0e6d0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+#ui-overlay{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:10}
+#ui-overlay.active{pointer-events:auto;background:rgba(5,5,20,0.85)}
+.screen{display:none;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;text-align:center;padding:1rem;width:100%;max-width:480px}
+.screen.visible{display:flex}
+h1{font-family:'Secular One',sans-serif;font-size:clamp(2.2rem,8vw,3.5rem);color:#f5c842;text-shadow:0 0 30px rgba(245,200,66,0.5),0 4px 8px rgba(0,0,0,0.6);white-space:nowrap;line-height:1.2}
+h2{font-family:'Secular One',sans-serif;font-size:clamp(1.4rem,5vw,2rem);color:#e8d5a3;white-space:nowrap}
+.subtitle{font-size:clamp(0.85rem,3vw,1rem);color:#a89070;max-width:90%}
+.btn{min-height:64px;padding:0.8rem 2rem;border:2px solid #f5c842;background:linear-gradient(135deg,rgba(245,200,66,0.15),rgba(200,150,30,0.1));color:#f5c842;font-family:'Secular One',sans-serif;font-size:clamp(1.1rem,4vw,1.4rem);border-radius:16px;cursor:pointer;transition:all 0.2s;white-space:nowrap;backdrop-filter:blur(4px)}
+.btn:hover,.btn:active{background:linear-gradient(135deg,rgba(245,200,66,0.35),rgba(200,150,30,0.25));transform:scale(1.03);box-shadow:0 0 20px rgba(245,200,66,0.3)}
+.stats{display:flex;gap:1.5rem;font-size:1rem;color:#c8b080}
+.stats span{display:flex;align-items:center;gap:0.3rem}
+.plague-list{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;max-width:320px}
+.plague-item{font-size:1.5rem;opacity:0.3;transition:all 0.3s}
+.plague-item.collected{opacity:1;transform:scale(1.2)}
+#hud{position:fixed;top:0;left:0;width:100%;padding:0.5rem 1rem;display:flex;justify-content:space-between;align-items:center;z-index:5;font-size:clamp(0.9rem,3vw,1.1rem);background:linear-gradient(to bottom,rgba(5,5,20,0.8),transparent);pointer-events:none}
+#hud .score{color:#f5c842;font-family:'Secular One',sans-serif}
+#hud .lives{color:#e85050}
+#hud .level-badge{color:#7ec8e3;font-family:'Secular One',sans-serif}
+#sound-btn{position:fixed;top:0.5rem;left:50%;transform:translateX(-50%);z-index:15;background:none;border:none;font-size:1.3rem;cursor:pointer;opacity:0.6;pointer-events:auto;padding:0.5rem}
+</style>
+</head>
+<body>
+
+<canvas id="game"></canvas>
+
+<div id="hud" style="display:none">
+  <span class="level-badge" id="hud-level">שלב 1</span>
+  <span class="score" id="hud-score">0</span>
+  <span class="lives" id="hud-lives">❤️❤️❤️</span>
+</div>
+
+<button id="sound-btn" onclick="toggleSound()">🔊</button>
+
+<div id="ui-overlay" class="active">
+  <div class="screen visible" id="start-screen">
+    <h1>שובר</h1>
+    <h2>Passover Breaker</h2>
+    <div class="subtitle">שבור את לבנות מצרים עם מצה ועשר המכות</div>
+    <div style="font-size:2.5rem;margin:0.5rem 0">🫓🌊🏗️</div>
+    <button class="btn" onclick="startGame()">יאללה!</button>
+    <div class="subtitle" style="font-size:0.75rem;margin-top:0.5rem">גרור / הזז עכבר לשליטה במשוט</div>
+  </div>
+
+  <div class="screen" id="levelup-screen">
+    <h2 id="levelup-title">שלב 2</h2>
+    <div class="subtitle" id="levelup-desc"></div>
+    <div class="plague-list" id="plague-tracker"></div>
+    <button class="btn" onclick="nextLevel()">המשך →</button>
+  </div>
+
+  <div class="screen" id="gameover-screen">
+    <h1>💥</h1>
+    <h2>נפלת במצרים</h2>
+    <div class="stats">
+      <span>ניקוד: <b id="final-score">0</b></span>
+      <span>שלב: <b id="final-level">1</b></span>
+    </div>
+    <button class="btn" onclick="startGame()">נסה שוב</button>
+  </div>
+
+  <div class="screen" id="win-screen">
+    <h1>🎉</h1>
+    <h2>יצאת ממצרים!</h2>
+    <div class="subtitle">חירות!</div>
+    <div class="stats">
+      <span>ניקוד: <b id="win-score">0</b></span>
+    </div>
+    <div class="plague-list" id="win-plagues"></div>
+    <button class="btn" onclick="startGame()">שחק שוב</button>
+  </div>
+</div>
+
+<script>
+// ── AUDIO ENGINE ──
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx = null;
+let soundOn = true;
+
+function ensureAudio() {
+  if (!actx) actx = new AudioCtx();
+  if (actx.state === 'suspended') actx.resume();
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById('sound-btn').textContent = soundOn ? '🔊' : '🔇';
+}
+
+function playTone(freq, dur, type = 'square', vol = 0.12) {
+  if (!soundOn || !actx) return;
+  try {
+    const o = actx.createOscillator();
+    const g = actx.createGain();
+    o.type = type;
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + dur);
+    o.connect(g).connect(actx.destination);
+    o.start();
+    o.stop(actx.currentTime + dur);
+  } catch(e) {}
+}
+
+function sndHit() { playTone(520, 0.08, 'square', 0.1); }
+function sndBrick() { playTone(880, 0.1, 'square', 0.12); }
+function sndWall() { playTone(300, 0.06, 'triangle', 0.08); }
+function sndPowerup() { playTone(660, 0.15, 'sine', 0.15); playTone(990, 0.15, 'sine', 0.1); }
+function sndLoseLife() { playTone(200, 0.3, 'sawtooth', 0.15); }
+function sndLevelUp() { playTone(523, 0.12, 'sine', 0.15); setTimeout(() => playTone(659, 0.12, 'sine', 0.15), 100); setTimeout(() => playTone(784, 0.2, 'sine', 0.15), 200); }
+function sndGameOver() { playTone(300, 0.2, 'sawtooth', 0.15); setTimeout(() => playTone(200, 0.3, 'sawtooth', 0.15), 200); }
+
+// ── CANVAS SETUP ──
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+let W, H, scale;
+
+function resize() {
+  W = canvas.width = window.innerWidth * devicePixelRatio;
+  H = canvas.height = window.innerHeight * devicePixelRatio;
+  scale = Math.min(W, H) / 400;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ── GAME STATE ──
+const PLAGUES = [
+  { emoji: '🩸', name: 'דם', desc: 'Blood' },
+  { emoji: '🐸', name: 'צפרדע', desc: 'Frogs' },
+  { emoji: '🦟', name: 'כינים', desc: 'Lice' },
+  { emoji: '🪰', name: 'ערוב', desc: 'Flies' },
+  { emoji: '🐄', name: 'דבר', desc: 'Pestilence' },
+  { emoji: '🔴', name: 'שחין', desc: 'Boils' },
+  { emoji: '🧊', name: 'ברד', desc: 'Hail' },
+  { emoji: '🦗', name: 'ארבה', desc: 'Locusts' },
+  { emoji: '🌑', name: 'חושך', desc: 'Darkness' },
+  { emoji: '⚡', name: 'בכורות', desc: 'Firstborn' },
+];
+
+const SEDER_FOODS = ['🫓','🥬','🍎','🥚','🦴','🧂'];
+
+const BRICK_COLORS = [
+  '#c44040', '#d4783c', '#c4a030', '#8b6914',
+  '#6b4226', '#a05030', '#d45050', '#b8860b',
+  '#cd7f32', '#8B4513',
+];
+
+const LEVEL_DESCS = [
+  'מכת דם — המים הפכו לדם',
+  'מכת צפרדע — צפרדעים בכל מקום',
+  'מכת כינים — אבק הארץ',
+  'מכת ערוב — חיות פרא',
+  'מכת דבר — מגפה בבהמות',
+  'מכת שחין — אבעבועות',
+  'מכת ברד — אש ואבנים',
+  'מכת ארבה — הארבה אוכל הכל',
+  'מכת חושך — שלושה ימים של חושך',
+  'מכת בכורות — המכה האחרונה',
+];
+
+let state = {
+  running: false,
+  screen: 'start',
+  score: 0,
+  lives: 3,
+  level: 1,
+  combo: 0,
+  plaguesCollected: new Set(),
+  balls: [],
+  paddle: { x: 0, y: 0, w: 0, h: 0 },
+  bricks: [],
+  powerups: [],
+  particles: [],
+  stars: [],
+  launched: false,
+};
+
+// ── STARS BACKGROUND ──
+function generateStars() {
+  state.stars = [];
+  for (let i = 0; i < 120; i++) {
+    state.stars.push({
+      x: Math.random() * W,
+      y: Math.random() * H * 0.7,
+      r: Math.random() * 1.5 + 0.3,
+      twinkle: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.02 + 0.01,
+    });
+  }
+}
+
+// ── BRICK LAYOUT ──
+function generateBricks() {
+  const bricks = [];
+  const cols = Math.min(8, Math.floor(W / (55 * scale)));
+  const rows = Math.min(4 + state.level, 8);
+  const bw = (W * 0.9) / cols;
+  const bh = 22 * scale;
+  const offsetX = W * 0.05;
+  const offsetY = 60 * scale;
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const hp = r < 2 && state.level > 3 ? 2 : 1;
+      bricks.push({
+        x: offsetX + c * bw,
+        y: offsetY + r * (bh + 3 * scale),
+        w: bw - 3 * scale,
+        h: bh,
+        hp,
+        maxHp: hp,
+        color: BRICK_COLORS[(r + state.level - 1) % BRICK_COLORS.length],
+        glyph: hieroglyphs[(r * cols + c) % hieroglyphs.length],
+      });
+    }
+  }
+  return bricks;
+}
+
+const hieroglyphs = ['𓀀','𓁀','𓂀','𓃀','𓅀','𓆀','𓇀','𓈀','𓊀','𓋀','𓌀','𓍀','𓎀','𓏀','𓐀','☥','𓂋','𓅃','𓆣','𓁹'];
+
+// ── INIT LEVEL ──
+function initLevel() {
+  const pw = 80 * scale;
+  const ph = 14 * scale;
+  state.paddle = { x: W / 2 - pw / 2, y: H - 50 * scale, w: pw, h: ph, baseW: pw };
+  state.bricks = generateBricks();
+  state.powerups = [];
+  state.particles = [];
+  state.combo = 0;
+  state.launched = false;
+  resetBall();
+  generateStars();
+}
+
+function resetBall() {
+  const r = 8 * scale;
+  state.balls = [{
+    x: state.paddle.x + state.paddle.w / 2,
+    y: state.paddle.y - r - 2,
+    r,
+    dx: 0,
+    dy: 0,
+    speed: (3.5 + state.level * 0.3) * scale,
+    rot: 0,
+  }];
+  state.launched = false;
+}
+
+function launchBall() {
+  if (state.launched) return;
+  state.launched = true;
+  const angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.6;
+  const spd = state.balls[0].speed;
+  state.balls[0].dx = Math.cos(angle) * spd;
+  state.balls[0].dy = Math.sin(angle) * spd;
+  ensureAudio();
+}
+
+// ── POWERUPS ──
+function spawnPowerup(x, y) {
+  if (Math.random() > 0.2) return;
+  const types = ['wider', 'multiball', 'slow', 'plague', 'seder'];
+  const weights = [0.25, 0.2, 0.2, 0.25, 0.1];
+  let r = Math.random(), cum = 0, type = types[0];
+  for (let i = 0; i < types.length; i++) {
+    cum += weights[i];
+    if (r < cum) { type = types[i]; break; }
+  }
+
+  let emoji, label;
+  if (type === 'plague') {
+    const uncollected = PLAGUES.filter((_, i) => !state.plaguesCollected.has(i));
+    if (uncollected.length === 0) type = 'wider';
+    else {
+      const p = uncollected[Math.floor(Math.random() * uncollected.length)];
+      emoji = p.emoji;
+      label = p.name;
+    }
+  }
+  if (type === 'seder') {
+    emoji = SEDER_FOODS[Math.floor(Math.random() * SEDER_FOODS.length)];
+    label = '+50';
+  }
+  if (type === 'wider') { emoji = '🌊'; label = 'רחב'; }
+  if (type === 'multiball') { emoji = '🫓🫓'; label = 'כפול'; }
+  if (type === 'slow') { emoji = '🐢'; label = 'איטי'; }
+
+  state.powerups.push({
+    x, y, type, emoji, label,
+    dy: 2 * scale,
+    w: 28 * scale,
+    h: 28 * scale,
+  });
+}
+
+function applyPowerup(pu) {
+  sndPowerup();
+  spawnParticles(pu.x, pu.y, '#f5c842', 8);
+
+  switch (pu.type) {
+    case 'wider':
+      state.paddle.w = Math.min(state.paddle.baseW * 1.8, W * 0.45);
+      setTimeout(() => { if (state.running) state.paddle.w = state.paddle.baseW; }, 8000);
+      break;
+    case 'multiball': {
+      const newBalls = [];
+      for (const b of state.balls) {
+        for (let i = 0; i < 2; i++) {
+          const angle = Math.atan2(b.dy, b.dx) + (i === 0 ? 0.4 : -0.4);
+          newBalls.push({
+            ...b,
+            x: b.x, y: b.y,
+            dx: Math.cos(angle) * b.speed,
+            dy: Math.sin(angle) * b.speed,
+            rot: 0,
+          });
+        }
+      }
+      state.balls.push(...newBalls);
+      break;
+    }
+    case 'slow':
+      for (const b of state.balls) {
+        b.speed *= 0.65;
+        b.dx *= 0.65;
+        b.dy *= 0.65;
+      }
+      setTimeout(() => {
+        if (!state.running) return;
+        for (const b of state.balls) {
+          const s = (3.5 + state.level * 0.3) * scale;
+          const cur = Math.sqrt(b.dx * b.dx + b.dy * b.dy);
+          if (cur > 0) { b.dx = (b.dx / cur) * s; b.dy = (b.dy / cur) * s; b.speed = s; }
+        }
+      }, 6000);
+      break;
+    case 'plague': {
+      const idx = PLAGUES.findIndex(p => p.emoji === pu.emoji);
+      if (idx >= 0) state.plaguesCollected.add(idx);
+      state.score += 100;
+      break;
+    }
+    case 'seder':
+      state.score += 50;
+      break;
+  }
+}
+
+// ── PARTICLES ──
+function spawnParticles(x, y, color, count = 6) {
+  for (let i = 0; i < count; i++) {
+    const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
+    const speed = (1.5 + Math.random() * 3) * scale;
+    state.particles.push({
+      x, y,
+      dx: Math.cos(angle) * speed,
+      dy: Math.sin(angle) * speed,
+      r: (2 + Math.random() * 3) * scale,
+      color,
+      life: 1,
+      decay: 0.02 + Math.random() * 0.02,
+    });
+  }
+}
+
+// ── UPDATE ──
+function update() {
+  if (!state.running) return;
+
+  // Update particles
+  for (let i = state.particles.length - 1; i >= 0; i--) {
+    const p = state.particles[i];
+    p.x += p.dx;
+    p.y += p.dy;
+    p.dy += 0.1 * scale;
+    p.life -= p.decay;
+    if (p.life <= 0) state.particles.splice(i, 1);
+  }
+
+  // Stars twinkle
+  for (const s of state.stars) s.twinkle += s.speed;
+
+  // If not launched, ball follows paddle
+  if (!state.launched) {
+    if (state.balls.length > 0) {
+      state.balls[0].x = state.paddle.x + state.paddle.w / 2;
+      state.balls[0].y = state.paddle.y - state.balls[0].r - 2;
+    }
+    return;
+  }
+
+  // Update powerups
+  for (let i = state.powerups.length - 1; i >= 0; i--) {
+    const pu = state.powerups[i];
+    pu.y += pu.dy;
+    // Paddle catch
+    if (pu.y + pu.h > state.paddle.y && pu.y < state.paddle.y + state.paddle.h &&
+        pu.x + pu.w > state.paddle.x && pu.x < state.paddle.x + state.paddle.w) {
+      applyPowerup(pu);
+      state.powerups.splice(i, 1);
+      continue;
+    }
+    if (pu.y > H) state.powerups.splice(i, 1);
+  }
+
+  // Update balls
+  for (let bi = state.balls.length - 1; bi >= 0; bi--) {
+    const b = state.balls[bi];
+    b.x += b.dx;
+    b.y += b.dy;
+    b.rot += 0.05;
+
+    // Wall collisions
+    if (b.x - b.r < 0) { b.x = b.r; b.dx = Math.abs(b.dx); sndWall(); }
+    if (b.x + b.r > W) { b.x = W - b.r; b.dx = -Math.abs(b.dx); sndWall(); }
+    if (b.y - b.r < 0) { b.y = b.r; b.dy = Math.abs(b.dy); sndWall(); }
+
+    // Bottom — lose ball
+    if (b.y - b.r > H) {
+      state.balls.splice(bi, 1);
+      if (state.balls.length === 0) {
+        state.lives--;
+        state.combo = 0;
+        if (state.lives <= 0) {
+          gameOver();
+          return;
+        }
+        sndLoseLife();
+        resetBall();
+      }
+      continue;
+    }
+
+    // Paddle collision
+    const p = state.paddle;
+    if (b.dy > 0 && b.y + b.r > p.y && b.y + b.r < p.y + p.h + b.speed &&
+        b.x > p.x - b.r && b.x < p.x + p.w + b.r) {
+      const hit = (b.x - p.x) / p.w; // 0..1
+      const angle = -Math.PI * 0.15 - hit * Math.PI * 0.7; // -15° to -165°
+      b.dx = Math.cos(angle) * b.speed;
+      b.dy = Math.sin(angle) * b.speed;
+      b.y = p.y - b.r;
+      sndHit();
+      spawnParticles(b.x, b.y, '#5599cc', 4);
+    }
+
+    // Brick collision
+    for (let i = state.bricks.length - 1; i >= 0; i--) {
+      const br = state.bricks[i];
+      if (b.x + b.r > br.x && b.x - b.r < br.x + br.w &&
+          b.y + b.r > br.y && b.y - b.r < br.y + br.h) {
+        // Determine bounce direction
+        const overlapL = (b.x + b.r) - br.x;
+        const overlapR = (br.x + br.w) - (b.x - b.r);
+        const overlapT = (b.y + b.r) - br.y;
+        const overlapB = (br.y + br.h) - (b.y - b.r);
+        const minOverlap = Math.min(overlapL, overlapR, overlapT, overlapB);
+
+        if (minOverlap === overlapT || minOverlap === overlapB) b.dy = -b.dy;
+        else b.dx = -b.dx;
+
+        br.hp--;
+        sndBrick();
+        state.combo++;
+        const comboBonus = Math.min(state.combo, 10);
+        state.score += 10 * comboBonus;
+
+        if (br.hp <= 0) {
+          spawnParticles(br.x + br.w / 2, br.y + br.h / 2, br.color, 10);
+          spawnPowerup(br.x + br.w / 2, br.y + br.h / 2);
+          state.bricks.splice(i, 1);
+        } else {
+          spawnParticles(br.x + br.w / 2, br.y + br.h / 2, br.color, 4);
+        }
+        break;
+      }
+    }
+  }
+
+  // Check level clear
+  if (state.bricks.length === 0) {
+    if (state.level >= 10) {
+      winGame();
+    } else {
+      sndLevelUp();
+      state.level++;
+      showScreen('levelup');
+    }
+  }
+
+  updateHUD();
+}
+
+// ── DRAWING ──
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Night sky gradient
+  const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
+  skyGrad.addColorStop(0, '#05051a');
+  skyGrad.addColorStop(0.4, '#0a0f2e');
+  skyGrad.addColorStop(0.7, '#1a1530');
+  skyGrad.addColorStop(1, '#2a1a15');
+  ctx.fillStyle = skyGrad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Stars
+  for (const s of state.stars) {
+    const alpha = 0.4 + Math.sin(s.twinkle) * 0.4;
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = '#ffe8a0';
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r * scale, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  // Pyramids silhouette
+  drawPyramids();
+
+  // Bricks
+  for (const br of state.bricks) {
+    const alpha = br.hp / br.maxHp;
+    ctx.globalAlpha = 0.5 + alpha * 0.5;
+
+    // Brick body
+    ctx.fillStyle = br.color;
+    ctx.beginPath();
+    const rr = 3 * scale;
+    ctx.roundRect(br.x, br.y, br.w, br.h, rr);
+    ctx.fill();
+
+    // Brick highlight
+    const bGrad = ctx.createLinearGradient(br.x, br.y, br.x, br.y + br.h);
+    bGrad.addColorStop(0, 'rgba(255,255,255,0.2)');
+    bGrad.addColorStop(1, 'rgba(0,0,0,0.2)');
+    ctx.fillStyle = bGrad;
+    ctx.fill();
+
+    // Hieroglyph
+    ctx.fillStyle = 'rgba(255,255,200,0.35)';
+    ctx.font = `${br.h * 0.7}px serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(br.glyph, br.x + br.w / 2, br.y + br.h / 2);
+
+    ctx.globalAlpha = 1;
+  }
+
+  // Powerups
+  for (const pu of state.powerups) {
+    ctx.font = `${pu.w * 0.7}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    // Glow
+    ctx.shadowColor = '#f5c842';
+    ctx.shadowBlur = 12 * scale;
+    ctx.fillText(pu.emoji, pu.x + pu.w / 2, pu.y + pu.h / 2);
+    ctx.shadowBlur = 0;
+  }
+
+  // Paddle (Red Sea)
+  drawPaddle();
+
+  // Balls (Matzah)
+  for (const b of state.balls) {
+    drawMatzah(b);
+  }
+
+  // Particles
+  for (const p of state.particles) {
+    ctx.globalAlpha = p.life;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawPyramids() {
+  ctx.fillStyle = 'rgba(20,15,10,0.4)';
+  const baseY = H * 0.75;
+
+  // Large pyramid
+  ctx.beginPath();
+  ctx.moveTo(W * 0.1, baseY);
+  ctx.lineTo(W * 0.25, baseY - H * 0.2);
+  ctx.lineTo(W * 0.4, baseY);
+  ctx.fill();
+
+  // Medium pyramid
+  ctx.beginPath();
+  ctx.moveTo(W * 0.5, baseY);
+  ctx.lineTo(W * 0.62, baseY - H * 0.15);
+  ctx.lineTo(W * 0.74, baseY);
+  ctx.fill();
+
+  // Small pyramid
+  ctx.beginPath();
+  ctx.moveTo(W * 0.7, baseY);
+  ctx.lineTo(W * 0.78, baseY - H * 0.1);
+  ctx.lineTo(W * 0.86, baseY);
+  ctx.fill();
+}
+
+function drawPaddle() {
+  const p = state.paddle;
+  const t = performance.now() / 1000;
+
+  // Water body
+  const waterGrad = ctx.createLinearGradient(p.x, p.y, p.x, p.y + p.h);
+  waterGrad.addColorStop(0, '#2288cc');
+  waterGrad.addColorStop(0.5, '#1166aa');
+  waterGrad.addColorStop(1, '#0a4488');
+  ctx.fillStyle = waterGrad;
+
+  // Wave shape
+  ctx.beginPath();
+  ctx.moveTo(p.x, p.y + p.h);
+  for (let x = p.x; x <= p.x + p.w; x += 2) {
+    const wave = Math.sin((x - p.x) / (8 * scale) + t * 4) * 3 * scale;
+    ctx.lineTo(x, p.y + wave);
+  }
+  ctx.lineTo(p.x + p.w, p.y + p.h);
+  ctx.closePath();
+  ctx.fill();
+
+  // Foam highlights
+  ctx.strokeStyle = 'rgba(180,220,255,0.5)';
+  ctx.lineWidth = 1.5 * scale;
+  ctx.beginPath();
+  for (let x = p.x + 5 * scale; x < p.x + p.w - 5 * scale; x += 12 * scale) {
+    const wave = Math.sin(x / (6 * scale) + t * 5) * 2 * scale;
+    ctx.moveTo(x, p.y + wave + 2 * scale);
+    ctx.lineTo(x + 6 * scale, p.y + wave + 2 * scale);
+  }
+  ctx.stroke();
+
+  // Side walls (parting sea effect)
+  const wallH = 20 * scale;
+  const wallW = 6 * scale;
+
+  // Left wall
+  const lwGrad = ctx.createLinearGradient(p.x - wallW, p.y - wallH, p.x, p.y);
+  lwGrad.addColorStop(0, 'rgba(30,100,180,0.0)');
+  lwGrad.addColorStop(1, 'rgba(30,100,180,0.7)');
+  ctx.fillStyle = lwGrad;
+  ctx.beginPath();
+  ctx.moveTo(p.x, p.y + p.h);
+  ctx.lineTo(p.x, p.y);
+  ctx.quadraticCurveTo(p.x - wallW, p.y - wallH * 0.3, p.x - wallW * 0.5, p.y - wallH);
+  ctx.lineTo(p.x - wallW * 1.5, p.y - wallH * 0.5);
+  ctx.closePath();
+  ctx.fill();
+
+  // Right wall
+  const rwGrad = ctx.createLinearGradient(p.x + p.w + wallW, p.y - wallH, p.x + p.w, p.y);
+  rwGrad.addColorStop(0, 'rgba(30,100,180,0.0)');
+  rwGrad.addColorStop(1, 'rgba(30,100,180,0.7)');
+  ctx.fillStyle = rwGrad;
+  ctx.beginPath();
+  ctx.moveTo(p.x + p.w, p.y + p.h);
+  ctx.lineTo(p.x + p.w, p.y);
+  ctx.quadraticCurveTo(p.x + p.w + wallW, p.y - wallH * 0.3, p.x + p.w + wallW * 0.5, p.y - wallH);
+  ctx.lineTo(p.x + p.w + wallW * 1.5, p.y - wallH * 0.5);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawMatzah(b) {
+  ctx.save();
+  ctx.translate(b.x, b.y);
+  ctx.rotate(b.rot);
+
+  const r = b.r;
+
+  // Matzah base — golden circle
+  const mGrad = ctx.createRadialGradient(0, 0, r * 0.2, 0, 0, r);
+  mGrad.addColorStop(0, '#f0dca0');
+  mGrad.addColorStop(0.6, '#d4b060');
+  mGrad.addColorStop(1, '#b08830');
+  ctx.fillStyle = mGrad;
+  ctx.beginPath();
+  ctx.arc(0, 0, r, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Matzah dots pattern
+  ctx.fillStyle = 'rgba(140,100,40,0.4)';
+  const dots = [[0,0],[-r*0.4,-r*0.3],[r*0.3,-r*0.4],[-r*0.3,r*0.4],[r*0.4,r*0.2]];
+  for (const [dx, dy] of dots) {
+    ctx.beginPath();
+    ctx.arc(dx, dy, r * 0.1, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Score lines
+  ctx.strokeStyle = 'rgba(140,100,40,0.3)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(-r * 0.7, 0);
+  ctx.lineTo(r * 0.7, 0);
+  ctx.moveTo(0, -r * 0.7);
+  ctx.lineTo(0, r * 0.7);
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+// ── HUD ──
+function updateHUD() {
+  document.getElementById('hud-score').textContent = state.score;
+  document.getElementById('hud-level').textContent = `שלב ${state.level}`;
+  let hearts = '';
+  for (let i = 0; i < state.lives; i++) hearts += '❤️';
+  document.getElementById('hud-lives').textContent = hearts;
+}
+
+// ── SCREENS ──
+function showScreen(name) {
+  state.running = name === null;
+  const overlay = document.getElementById('ui-overlay');
+  const hud = document.getElementById('hud');
+
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('visible'));
+
+  if (name === null) {
+    overlay.classList.remove('active');
+    hud.style.display = 'flex';
+    return;
+  }
+
+  overlay.classList.add('active');
+
+  if (name === 'levelup') {
+    document.getElementById('levelup-title').textContent = `שלב ${state.level}`;
+    document.getElementById('levelup-desc').textContent = LEVEL_DESCS[state.level - 1] || '';
+    updatePlagueTracker('plague-tracker');
+    hud.style.display = 'flex';
+  } else if (name === 'gameover') {
+    document.getElementById('final-score').textContent = state.score;
+    document.getElementById('final-level').textContent = state.level;
+    hud.style.display = 'none';
+  } else if (name === 'win') {
+    document.getElementById('win-score').textContent = state.score;
+    updatePlagueTracker('win-plagues');
+    hud.style.display = 'none';
+  } else {
+    hud.style.display = 'none';
+  }
+
+  document.getElementById(`${name}-screen`).classList.add('visible');
+}
+
+function updatePlagueTracker(containerId) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  PLAGUES.forEach((p, i) => {
+    const span = document.createElement('span');
+    span.className = 'plague-item' + (state.plaguesCollected.has(i) ? ' collected' : '');
+    span.textContent = p.emoji;
+    span.title = p.name;
+    el.appendChild(span);
+  });
+}
+
+// ── GAME FLOW ──
+function startGame() {
+  ensureAudio();
+  state.score = 0;
+  state.lives = 3;
+  state.level = 1;
+  state.combo = 0;
+  state.plaguesCollected = new Set();
+  state.particles = [];
+  initLevel();
+  showScreen(null);
+  state.running = true;
+  updateHUD();
+}
+
+function nextLevel() {
+  initLevel();
+  showScreen(null);
+  state.running = true;
+  updateHUD();
+}
+
+function gameOver() {
+  state.running = false;
+  sndGameOver();
+  showScreen('gameover');
+}
+
+function winGame() {
+  state.running = false;
+  sndLevelUp();
+  showScreen('win');
+}
+
+// ── INPUT ──
+let inputX = null;
+
+canvas.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  const t = e.touches[0];
+  inputX = t.clientX * devicePixelRatio;
+  if (!state.launched && state.running) launchBall();
+}, { passive: false });
+
+canvas.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+  const t = e.touches[0];
+  inputX = t.clientX * devicePixelRatio;
+}, { passive: false });
+
+canvas.addEventListener('mousemove', (e) => {
+  inputX = e.clientX * devicePixelRatio;
+});
+
+canvas.addEventListener('click', () => {
+  if (!state.launched && state.running) launchBall();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space' && !state.launched && state.running) {
+    e.preventDefault();
+    launchBall();
+  }
+});
+
+function handleInput() {
+  if (inputX === null || !state.running) return;
+  const p = state.paddle;
+  const targetX = inputX - p.w / 2;
+  // Smooth follow
+  p.x += (targetX - p.x) * 0.25;
+  p.x = Math.max(0, Math.min(W - p.w, p.x));
+}
+
+// ── GAME LOOP ──
+function gameLoop() {
+  resize();
+  handleInput();
+  update();
+  draw();
+  requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+</script>
+</body>
+</html>
