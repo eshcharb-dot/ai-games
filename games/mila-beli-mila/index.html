@@ -1,28 +1,6 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
-<head><script>
-(function(){
-  // Kill all service workers and caches, then reload once
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(regs) {
-      var killed = regs.map(r => r.unregister());
-      return Promise.all(killed);
-    }).then(function() {
-      if ('caches' in window) {
-        return caches.keys().then(function(keys) {
-          return Promise.all(keys.map(k => caches.delete(k)));
-        });
-      }
-    }).then(function() {
-      // Only reload if we actually had something to kill
-      if (!sessionStorage.getItem('sw-cleared')) {
-        sessionStorage.setItem('sw-cleared', '1');
-        location.reload(true);
-      }
-    });
-  }
-})();
-</script>
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -670,6 +648,7 @@ input[type="text"] { height: 14vw !important; font-size: 5vw !important; border-
 </head>
 <body>
 
+<div style="position:fixed;bottom:6px;right:6px;z-index:9999;font-size:12px;font-weight:900;color:rgba(255,204,0,.6);pointer-events:none">v3.3</div>
 <div class="bg-spots"><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>
 <canvas id="confetti"></canvas>
 <button id="soundToggle" onclick="toggleSound()">🔊</button>
@@ -706,7 +685,7 @@ input[type="text"] { height: 14vw !important; font-size: 5vw !important; border-
   <div class="welcome-buttons">
     <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">התחילו משחק 🎮</button>
     <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
-    <div class="welcome-version">v3</div>
+    <div class="welcome-version">v3.3</div>
   </div>
 </div>
 
@@ -873,62 +852,6 @@ input[type="text"] { height: 14vw !important; font-size: 5vw !important; border-
 </div><!-- /container -->
 
 <script>
-// ============ FORCE CACHE CLEAR ============
-if ('caches' in window) {
-  caches.keys().then(keys => keys.forEach(k => { if (k !== 'mila-beli-mila-v25') caches.delete(k); }));
-}
-// ============ SERVICE WORKER (Offline PWA) ============
-if ('serviceWorker' in navigator) {
-  const swCode = `
-    const CACHE_NAME = 'mila-beli-mila-v25';
-    self.addEventListener('install', e => {
-      e.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-          return cache.addAll([self.location.href.replace(/\\/sw\\.js.*/, '/index.html'), self.location.href.replace(/\\/sw\\.js.*/, '/')]);
-        }).catch(() => {})
-      );
-      self.skipWaiting();
-    });
-    self.addEventListener('activate', e => {
-      e.waitUntil(
-        caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))))
-      );
-      self.clients.claim();
-    });
-    self.addEventListener('fetch', e => {
-      if (e.request.method !== 'GET') return;
-      e.respondWith(
-        caches.match(e.request).then(cached => {
-          const fetchPromise = fetch(e.request).then(response => {
-            if (response && response.status === 200) {
-              const clone = response.clone();
-              caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
-            }
-            return response;
-          }).catch(() => cached);
-          return cached || fetchPromise;
-        })
-      );
-    });
-  `;
-  const blob = new Blob([swCode], { type: 'application/javascript' });
-  const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl, { scope: '.' }).then(reg => {
-    console.log('SW registered');
-    if (reg.active || reg.installing || reg.waiting) {
-      setTimeout(() => {
-        document.getElementById('offlineBadge').classList.add('visible');
-      }, 2000);
-    }
-  }).catch(err => console.log('SW failed:', err));
-
-  if ('caches' in window) {
-    caches.open('mila-beli-mila-v25').then(cache => {
-      cache.add(window.location.href).catch(() => {});
-    });
-  }
-}
-
 // ============ WORD BANK ============
 const WORDS = {
 kids: [
