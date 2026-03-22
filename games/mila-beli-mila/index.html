@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -30,7 +30,7 @@ overscroll-behavior:none;-webkit-user-select:none;user-select:none}
 height:100dvh;width:100%;padding:clamp(10px,2vh,20px) clamp(12px,3vw,24px) calc(clamp(10px,2vh,20px) + var(--safe-bottom));
 box-sizing:border-box;position:relative;text-align:center;overflow:hidden;gap:clamp(4px,1vh,10px)}
 .screen.active{display:flex;animation:screenSlideIn .35s cubic-bezier(.4,0,.2,1)}
-@media(min-width:480px){.screen{max-width:480px;margin:0 auto}}
+@media(min-width:480px){.screen{max-width:100%;margin:0}}
 
 @keyframes screenSlideIn{
 0%{opacity:0;transform:translateY(30px)}
@@ -204,8 +204,8 @@ line-height:1.2;color:#fff}
 .word-pop{animation:wordPop .4s cubic-bezier(.17,.67,.21,1.3)}
 
 /* ===== GAME SCREEN ===== */
-#screenGame{justify-content:flex-start;gap:0;padding:0;overflow:hidden}
-.game-top-bar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:clamp(6px,1.2vh,12px) clamp(12px,3vw,20px);flex-shrink:0;background:rgba(255,255,255,.05);min-height:clamp(48px,7vh,64px)}
+#screenGame{justify-content:flex-start;gap:0;padding:0;overflow:clip}
+.game-top-bar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:clamp(6px,1.2vh,10px) clamp(8px,2vw,14px);flex-shrink:0;background:rgba(255,255,255,.05);min-height:clamp(44px,7vh,56px)}
 .game-top-bar .current-player-header{margin:0}
 .game-top-bar .round-indicator{font-size:clamp(11px,2vw,14px);color:rgba(255,255,255,.5)}
 .game-top-bar .timer-ring{width:clamp(40px,6vw,52px);height:clamp(40px,6vw,52px)}
@@ -347,7 +347,7 @@ border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,25
 /* Current player header in game */
 .current-player-header{display:flex;align-items:center;gap:6px}
 .current-player-header .cph-emoji{font-size:clamp(1.1rem,3vw,1.6rem)}
-.current-player-header .cph-name{font-size:clamp(.9rem,2.5vw,1.15rem);font-weight:800;color:var(--primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:clamp(90px,25vw,180px)}
+.current-player-header .cph-name{font-size:clamp(.9rem,2.5vw,1.15rem);font-weight:800;color:var(--primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:clamp(90px,25vw,180px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45vw}
 .current-player-header .cph-score{font-size:clamp(.7rem,2vw,.85rem);color:rgba(255,255,255,.6);font-weight:600}
 
 /* Score bar */
@@ -513,7 +513,7 @@ html{font-size:22px}
   <div class="welcome-buttons">
     <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">התחילו משחק 🎮</button>
     <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
-    <div class="welcome-version">v25</div>
+    <div class="welcome-version">v3</div>
   </div>
 </div>
 
@@ -1516,6 +1516,23 @@ function nextWord() {
     } while (usedWords.has(currentWord));
     usedWords.add(currentWord);
     wd.innerHTML = currentWord;
+    wd.style.textAlign = 'center';
+    wd.style.direction = 'rtl';
+    wd.style.width = '100%';
+    wd.style.whiteSpace = 'nowrap';
+    wd.style.overflow = 'visible';
+    const len = currentWord.length;
+    let vw;
+    if      (len <= 5)  vw = 18;
+    else if (len === 6) vw = 18;
+    else if (len === 7) vw = 16;
+    else if (len === 8) vw = 14;
+    else if (len === 9) vw = 12.5;
+    else if (len === 10) vw = 11.5;
+    else if (len === 11) vw = 10.5;
+    else if (len === 12) vw = 9.5;
+    else                vw = 8.5;
+    wd.style.fontSize = vw + 'vw';
   }
 
   wd.className = 'word-display game-word-area word-pop';
