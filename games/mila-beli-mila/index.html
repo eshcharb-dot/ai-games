@@ -555,6 +555,88 @@ input[type="text"] { height: 14vw !important; font-size: 5vw !important; border-
 .lb-item .lb-score, .round-score-item .rs-score { font-size: 5vw !important; }
 .lb-item .rank { font-size: 5.5vw !important; }
 .tab { min-height: 12vw !important; font-size: 4.5vw !important; }
+
+/* ===== DESKTOP OVERRIDES (min-width: 768px) ===== */
+@media (min-width: 768px) {
+  .screen {
+    max-width: 480px !important;
+    margin: 0 auto !important;
+    padding: 32px 28px 40px !important;
+    gap: 16px !important;
+  }
+  html, body { font-size: 16px !important; }
+
+  /* Welcome */
+  .welcome-logo { width: 180px !important; height: auto !important; max-height: 90px !important; }
+  .game-title { font-size: 2.4rem !important; }
+  .welcome-tagline { font-size: 1.2rem !important; }
+  .welcome-tagline-small { font-size: 0.85rem !important; }
+  .welcome-version { font-size: 0.7rem !important; }
+  .welcome-center { gap: 8px !important; }
+  .welcome-buttons { gap: 10px !important; margin-top: 20px !important; }
+  .btn-start { min-height: 56px !important; font-size: 1.2rem !important; }
+  .btn-leaderboard { min-height: 48px !important; font-size: 1rem !important; }
+
+  /* Buttons */
+  .btn { min-height: 48px !important; font-size: 1rem !important; border-radius: 14px !important; }
+  .btn-primary { font-size: 1.1rem !important; min-height: 52px !important; }
+  .btn-small { font-size: 0.9rem !important; min-height: 44px !important; }
+
+  /* Setup */
+  h1, h2 { font-size: 1.5rem !important; }
+  .setup-title { font-size: 1.4rem !important; }
+  .mode-btn { min-height: 52px !important; font-size: 1rem !important; }
+  input[type="text"] { height: 48px !important; font-size: 1rem !important; border-radius: 12px !important; }
+  .player-item { min-height: 56px !important; border-radius: 14px !important; }
+  .player-item .avatar { font-size: 1.6rem !important; }
+  .player-item .name { font-size: 1rem !important; }
+  .kids-btn { width: 44px !important; height: 44px !important; font-size: 1.2rem !important; }
+  .player-item .remove { min-width: 44px !important; min-height: 44px !important; font-size: 1rem !important; }
+  .player-status { font-size: 0.85rem !important; }
+
+  /* Level/Rounds */
+  .level-btn { min-height: 72px !important; padding: 12px 16px !important; border-radius: 16px !important; }
+  .level-btn .icon { font-size: 2rem !important; }
+  .level-btn .info h3 { font-size: 1.1rem !important; }
+  .level-btn .info p { font-size: 0.85rem !important; }
+  .round-btn { min-height: 90px !important; border-radius: 16px !important; }
+  .round-btn .rb-title { font-size: 1.1rem !important; }
+  .round-btn .rb-time { font-size: 0.8rem !important; }
+
+  /* Game top bar */
+  #screenGame .game-top-bar { min-height: 60px !important; padding: 0 16px !important; }
+  #screenGame .game-top-bar .timer-ring { width: 52px !important; height: 52px !important; }
+  #screenGame .game-top-bar .time-text { font-size: 1.3rem !important; }
+  #screenGame .game-top-bar .cph-emoji { font-size: 1.4rem !important; }
+  #screenGame .game-top-bar .cph-name { font-size: 1rem !important; max-width: 160px !important; }
+  #screenGame .game-top-bar .cph-score { font-size: 0.85rem !important; }
+
+  /* Game action buttons */
+  .game-action-btn { height: 120px !important; border-radius: 20px !important; }
+  .game-action-btn .action-icon { font-size: 2.5rem !important; }
+  .game-action-btn .action-label { font-size: 1rem !important; }
+  .game-feedback { font-size: 1rem !important; }
+  .skip-counter, .game-skip-counter { font-size: 0.85rem !important; }
+
+  /* Pass/transition screen */
+  .turn-transition .pass-label { font-size: 1.8rem !important; }
+  .turn-transition .emoji { font-size: 5rem !important; }
+  .turn-transition .player-name { font-size: 2rem !important; }
+
+  /* Ready screen */
+  .ready-title { font-size: 1.6rem !important; }
+  .ready-start-btn { min-height: 56px !important; font-size: 1.1rem !important; }
+  .pg-item .pg-emoji { font-size: 1.8rem !important; }
+  .pg-item .pg-name { font-size: 0.75rem !important; }
+
+  /* Leaderboard/Round end */
+  .lb-title, .round-end-title, .grand-title { font-size: 1.6rem !important; }
+  .lb-item, .round-score-item { min-height: 52px !important; padding: 8px 14px !important; border-radius: 12px !important; }
+  .lb-item .lb-name, .round-score-item .rs-name { font-size: 1rem !important; }
+  .lb-item .lb-score, .round-score-item .rs-score { font-size: 1.1rem !important; }
+  .lb-item .rank { font-size: 1.1rem !important; }
+  .tab { min-height: 44px !important; font-size: 0.9rem !important; }
+}
 </style>
 </head>
 <body>
@@ -1614,7 +1696,14 @@ function nextWord() {
     else if (len === 11) vw = 10.5;
     else if (len === 12) vw = 9.5;
     else                vw = 8.5;
-    wd.style.fontSize = vw + 'vw';
+    // On desktop, cap font size to reasonable px values
+    if (window.innerWidth > 768) {
+      const maxPx = Math.min(window.innerWidth * 0.4, 180);
+      const pxSize = Math.min(maxPx, (vw / 100) * window.innerWidth);
+      wd.style.fontSize = Math.round(pxSize) + 'px';
+    } else {
+      wd.style.fontSize = vw + 'vw';
+    }
   }
 
   wd.className = 'word-display game-word-area word-pop';
