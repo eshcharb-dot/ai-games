@@ -1699,14 +1699,11 @@ function nextWord() {
     else if (len === 11) vw = 10.5;
     else if (len === 12) vw = 9.5;
     else                vw = 8.5;
-    // On desktop, cap font size to reasonable px values
-    if (window.innerWidth > 768) {
-      const maxPx = Math.min(window.innerWidth * 0.4, 180);
-      const pxSize = Math.min(maxPx, (vw / 100) * window.innerWidth);
-      wd.style.fontSize = Math.round(pxSize) + 'px';
-    } else {
-      wd.style.fontSize = vw + 'vw';
-    }
+    // Use container width for sizing, not viewport width
+    const containerW = wd.parentElement ? wd.parentElement.offsetWidth : window.innerWidth;
+    const refW = Math.min(containerW, 480); // desktop capped at 480px container
+    const pxSize = Math.round((vw / 100) * refW);
+    wd.style.fontSize = pxSize + 'px';
   }
 
   wd.className = 'word-display game-word-area word-pop';
