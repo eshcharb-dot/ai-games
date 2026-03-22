@@ -205,7 +205,7 @@ line-height:1.2;color:#fff}
 
 /* ===== GAME SCREEN ===== */
 #screenGame{justify-content:flex-start;gap:0;padding:0;overflow:clip}
-.game-top-bar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:clamp(6px,1.2vh,12px) clamp(12px,3vw,20px);flex-shrink:0;background:rgba(255,255,255,.05);height:clamp(40px,6vh,52px)}
+.game-top-bar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:clamp(6px,1.2vh,10px) clamp(8px,2vw,14px);flex-shrink:0;background:rgba(255,255,255,.05);min-height:clamp(44px,7vh,56px)}
 .game-top-bar .current-player-header{margin:0}
 .game-top-bar .round-indicator{font-size:clamp(11px,2vw,14px);color:rgba(255,255,255,.5)}
 .game-top-bar .timer-ring{width:clamp(40px,6vw,52px);height:clamp(40px,6vw,52px)}
@@ -555,7 +555,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
   overflow: visible !important; 
   text-align: center !important;
   width: 100% !important;
-  padding: 0 3vw !important;
+  padding: 0 1vw !important;
   box-sizing: border-box !important;
   min-height: 0 !important;
 }
@@ -602,7 +602,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 .player-item .remove { font-size: 5vw !important; width: 9vw !important; min-height: 9vw !important; flex-shrink: 0 !important; display: flex !important; align-items: center !important; justify-content: center !important; }
 
 /* Game top bar — bigger, high specificity */
-#screenGame .game-top-bar { height: 16vw !important; padding: 0 3vw !important; flex-shrink: 0 !important; background: rgba(255,255,255,.06) !important; gap: 2vw !important; overflow: hidden !important; width: 100% !important; box-sizing: border-box !important; flex-wrap: nowrap !important; }
+#screenGame .game-top-bar { height: 16vw !important; padding: 0 1vw !important; flex-shrink: 0 !important; background: rgba(255,255,255,.06) !important; gap: 2vw !important; overflow: hidden !important; width: 100% !important; box-sizing: border-box !important; flex-wrap: nowrap !important; }
 #screenGame .game-top-bar .timer-ring { width: 15vw !important; height: 15vw !important; min-width: 15vw !important; flex-shrink: 0 !important; }
 #screenGame .game-top-bar .time-text { font-size: 6vw !important; font-weight: 900 !important; }
 #screenGame .game-top-bar .round-indicator { font-size: 3.5vw !important; color: rgba(255,255,255,.5) !important; white-space: nowrap !important; flex-shrink: 1 !important; overflow: hidden !important; }
@@ -675,7 +675,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 </head>
 <body>
 
-<div style="position:fixed;bottom:10px;left:10px;z-index:99999;background:#ff1744;color:#fff;font-size:3.5vw;font-weight:900;padding:1.5vw 3vw;border-radius:2vw;letter-spacing:1px;opacity:0.85">TEST v28</div>
+<div style="position:fixed;bottom:10px;left:10px;z-index:99999;background:#ff1744;color:#fff;font-size:3.5vw;font-weight:900;padding:1.5vw 3vw;border-radius:2vw;letter-spacing:1px;opacity:0.85">TEST v29</div>
 <div class="bg-spots"><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>
 <canvas id="confetti"></canvas>
 <button id="soundToggle" onclick="toggleSound()">🔊</button>
@@ -712,7 +712,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
   <div class="welcome-buttons">
     <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">התחילו משחק 🎮</button>
     <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
-    <div class="welcome-version">v28</div>
+    <div class="welcome-version">v29</div>
   </div>
 </div>
 
@@ -1712,14 +1712,16 @@ function nextWord() {
     // Font size purely by character count — no DOM measurement needed
     const len = currentWord.length;
     let vw;
-    if      (len <= 3)  vw = 28;
-    else if (len <= 5)  vw = 24;
-    else if (len <= 7)  vw = 20;
-    else if (len <= 9)  vw = 17;
-    else if (len <= 11) vw = 14;
-    else if (len <= 14) vw = 11;
-    else if (len <= 17) vw = 9;
-    else                vw = 7.5;
+    // font_vw = min(20, 133/len) — fits all words incl. spaces, 15% smaller than max
+    if      (len <= 5)  vw = 20;
+    else if (len === 6) vw = 18;
+    else if (len === 7) vw = 16;
+    else if (len === 8) vw = 14;
+    else if (len === 9) vw = 12.5;
+    else if (len === 10) vw = 11.5;
+    else if (len === 11) vw = 10.5;
+    else if (len === 12) vw = 9.5;
+    else                vw = 8.5;
     wd.style.fontSize = vw + 'vw';
   }
 
