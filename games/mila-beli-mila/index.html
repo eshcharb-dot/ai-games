@@ -205,7 +205,7 @@ line-height:1.2;color:#fff}
 
 /* ===== GAME SCREEN ===== */
 #screenGame{justify-content:flex-start;gap:0;padding:0;overflow:hidden}
-.game-top-bar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:clamp(6px,1.2vh,12px) clamp(12px,3vw,20px);flex-shrink:0;background:rgba(255,255,255,.05);height:clamp(40px,6vh,52px)}
+.game-top-bar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:clamp(6px,1.2vh,12px) clamp(12px,3vw,20px);flex-shrink:0;background:rgba(255,255,255,.05);min-height:clamp(48px,7vh,64px)}
 .game-top-bar .current-player-header{margin:0}
 .game-top-bar .round-indicator{font-size:clamp(11px,2vw,14px);color:rgba(255,255,255,.5)}
 .game-top-bar .timer-ring{width:clamp(40px,6vw,52px);height:clamp(40px,6vw,52px)}
@@ -339,7 +339,7 @@ transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transpa
 .pg-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 10px;
 border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);min-width:64px}
 .pg-item .pg-emoji{font-size:clamp(1.3rem,4vw,1.8rem)}
-.pg-item .pg-name{font-size:clamp(.6rem,1.8vw,.75rem);font-weight:600;max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg-item .pg-name{font-size:clamp(.6rem,1.8vw,.75rem);font-weight:600;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ready-start-btn{font-size:clamp(1.1rem,3.5vw,1.4rem);padding:14px;width:100%;min-height:clamp(56px,8vh,72px);flex-shrink:0}
 .ready-back-btn{flex-shrink:0}
 .ready-describer-note{margin:0;flex-shrink:0}
@@ -347,7 +347,7 @@ border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,25
 /* Current player header in game */
 .current-player-header{display:flex;align-items:center;gap:6px}
 .current-player-header .cph-emoji{font-size:clamp(1.1rem,3vw,1.6rem)}
-.current-player-header .cph-name{font-size:clamp(.9rem,2.5vw,1.15rem);font-weight:800;color:var(--primary)}
+.current-player-header .cph-name{font-size:clamp(.9rem,2.5vw,1.15rem);font-weight:800;color:var(--primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:clamp(90px,25vw,180px)}
 .current-player-header .cph-score{font-size:clamp(.7rem,2vw,.85rem);color:rgba(255,255,255,.6);font-weight:600}
 
 /* Score bar */
