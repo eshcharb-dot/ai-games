@@ -474,6 +474,10 @@ html{font-size:22px}
 .emoji-word{font-size:clamp(3rem,10vw,4rem)}
 }
 
+/* screenPass has its own fullscreen overlay - skip slide animation */
+#screenPass { animation: none !important; background: linear-gradient(135deg,#ff4081,#d500f9) !important; }
+#screenPass.active { opacity: 1 !important; transform: none !important; }
+
 /* ===== V3 BIG UI OVERRIDES ===== */
 html, body { font-size: 20px !important; }
 
