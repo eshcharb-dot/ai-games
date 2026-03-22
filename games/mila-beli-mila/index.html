@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -131,7 +131,7 @@ input::placeholder{color:rgba(255,255,255,.4)}
 .setup-subtitle{margin:0;flex-shrink:0;font-size:clamp(.7rem,2vw,.8rem)}
 
 /* Player setup */
-.player-list{width:100%;flex:1;min-height:0;max-height:38vh;overflow-y:auto;display:flex;flex-direction:column;gap:6px;
+.player-list{width:100%;flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:6px;
 scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
 .player-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border-radius:14px;padding:10px 12px;
 border:1px solid rgba(255,255,255,.1);min-height:56px}
@@ -515,6 +515,9 @@ input[type="text"] { height: 14vw !important; font-size: 5vw !important; border-
 .kids-btn { width: 12vw !important; height: 12vw !important; font-size: 5.5vw !important; }
 .player-item .remove { min-width: 10vw !important; min-height: 10vw !important; font-size: 5vw !important; }
 .player-status { font-size: 4.5vw !important; }
+.player-list { max-height: 35vh !important; flex: 0 1 auto !important; overflow-y: auto !important; }
+.setup-buttons { flex-shrink: 0 !important; }
+#screenSetup { overflow-y: auto !important; overflow-x: hidden !important; }
 
 /* Level/Rounds */
 .level-btn { min-height: 18vw !important; padding: 3vw !important; border-radius: 4vw !important; }
