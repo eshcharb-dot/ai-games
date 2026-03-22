@@ -678,7 +678,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 </head>
 <body>
 
-<div style="position:fixed;bottom:10px;left:10px;z-index:99999;background:#ff1744;color:#fff;font-size:3.5vw;font-weight:900;padding:1.5vw 3vw;border-radius:2vw;letter-spacing:1px;opacity:0.85">TEST v30</div>
+<div style="position:fixed;bottom:10px;left:10px;z-index:99999;background:#ff1744;color:#fff;font-size:3.5vw;font-weight:900;padding:1.5vw 3vw;border-radius:2vw;letter-spacing:1px;opacity:0.85">TEST v31</div>
 <div class="bg-spots"><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>
 <canvas id="confetti"></canvas>
 <button id="soundToggle" onclick="toggleSound()">🔊</button>
@@ -715,7 +715,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
   <div class="welcome-buttons">
     <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">התחילו משחק 🎮</button>
     <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
-    <div class="welcome-version">v30</div>
+    <div class="welcome-version">v31</div>
   </div>
 </div>
 
@@ -1716,7 +1716,7 @@ function nextWord() {
     const len = currentWord.length;
     let vw;
     // font_vw = min(20, 133/len) — fits all words incl. spaces, 15% smaller than max
-    if      (len <= 5)  vw = 20;
+    if      (len <= 5)  vw = 18;
     else if (len === 6) vw = 18;
     else if (len === 7) vw = 16;
     else if (len === 8) vw = 14;
