@@ -546,7 +546,7 @@ input[type="text"] { height: 14vw !important; font-size: 5vw !important; border-
 .ready-title { font-size: 9vw !important; }
 .ready-start-btn { min-height: 16vw !important; font-size: 6vw !important; }
 .pg-item .pg-emoji { font-size: 10vw !important; }
-.pg-item .pg-name { font-size: 3.5vw !important; }
+.pg-item .pg-name { font-size: 3.5vw !important; max-width: none !important; overflow: visible !important; white-space: normal !important; word-break: break-word !important; text-align: center !important; line-height: 1.2 !important; }
 
 /* Leaderboard/Round end */
 .lb-title, .round-end-title, .grand-title { font-size: 8vw !important; }
@@ -1367,7 +1367,7 @@ function prepareRound() {
         <div class="pg-name">${p.name}</div>
       </div>`;
     }).join('');
-    document.getElementById('readyDescriberNote').textContent = `כולם מתארים — ${players.length} × 60 שניות`;
+    document.readyDescriberNote').textContent = '';
   }
 }
 
