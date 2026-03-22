@@ -126,7 +126,7 @@ input:focus{border-color:var(--primary)}
 input::placeholder{color:rgba(255,255,255,.4)}
 
 /* ===== SETUP SCREEN ===== */
-#screenSetup{justify-content:flex-start;padding:clamp(8px,1.5vh,12px) clamp(12px,3vw,16px) calc(clamp(8px,1.5vh,12px) + var(--safe-bottom));gap:clamp(4px,.8vh,6px);overflow:hidden}
+#screenSetup{justify-content:flex-start;padding:clamp(8px,1.5vh,12px) clamp(6px,1.5vw,10px) calc(clamp(8px,1.5vh,12px) + var(--safe-bottom));gap:clamp(4px,.8vh,6px);overflow:hidden}
 .setup-title{font-size:clamp(1.2rem,4vw,1.6rem);font-weight:900;width:100%;text-align:right;flex-shrink:0}
 .setup-subtitle{margin:0;flex-shrink:0;font-size:clamp(.7rem,2vw,.8rem)}
 
@@ -657,7 +657,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 #screenSetup { justify-content: flex-start !important; gap: 2vw !important; overflow-y: auto !important; overflow-x: hidden !important; height: 100dvh !important; }
 #screenSetup .setup-subtitle { display: none !important; }
 #screenSetup .setup-title::after { content: '' !important; }
-#screenSetup .player-list { flex: 1 1 auto !important; min-height: 0 !important; max-height: 30vh !important; overflow-y: auto !important; }
+#screenSetup .player-list { flex: 1 1 auto !important; min-height: 0 !important; max-height: 55vh !important; overflow-y: auto !important; }
 #screenSetup .setup-continue-btn, #screenSetup #btnToLevel { margin-top: 0 !important; }
 #screenSetup .setup-back-btn, #screenSetup button:last-child { font-size: 4vw !important; min-height: 10vw !important; }
 
@@ -675,7 +675,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 </head>
 <body>
 
-<div style="position:fixed;bottom:10px;left:10px;z-index:99999;background:#ff1744;color:#fff;font-size:3.5vw;font-weight:900;padding:1.5vw 3vw;border-radius:2vw;letter-spacing:1px;opacity:0.85">TEST v26</div>
+<div style="position:fixed;bottom:10px;left:10px;z-index:99999;background:#ff1744;color:#fff;font-size:3.5vw;font-weight:900;padding:1.5vw 3vw;border-radius:2vw;letter-spacing:1px;opacity:0.85">TEST v27</div>
 <div class="bg-spots"><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>
 <canvas id="confetti"></canvas>
 <button id="soundToggle" onclick="toggleSound()">🔊</button>
@@ -712,7 +712,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
   <div class="welcome-buttons">
     <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">התחילו משחק 🎮</button>
     <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
-    <div class="welcome-version">v26</div>
+    <div class="welcome-version">v27</div>
   </div>
 </div>
 
@@ -1326,9 +1326,9 @@ function renderPlayerList() {
       </div>` : '';
     const teamBtn = isTeam ? `<button onclick="event.stopPropagation();togglePlayerTeam(${i})" style="font-size:3.5vw;padding:1vw 2vw;border-radius:2vw;background:${p.team==='a'?'rgba(68,138,255,.3)':'rgba(255,64,129,.3)'};border:none;color:#fff;cursor:pointer;flex-shrink:0;white-space:nowrap">${p.team==='a'?'🔵 א':'🔴 ב'}</button>` : '';
     return `
-    <div style="display:grid;grid-template-columns:9vw 1fr ${isTeam ? '16vw' : ''} 8vw 7vw;align-items:center;gap:1.5vw;padding:2vw 3vw;min-height:13vw;background:rgba(255,255,255,.06);border-radius:4vw;border:1px solid rgba(255,255,255,.1);width:100%;box-sizing:border-box;direction:rtl;${isTeam ? (p.team === 'a' ? 'border-color:rgba(68,138,255,.3)' : 'border-color:rgba(255,64,129,.3)') : ''}">
+    <div style="display:grid;grid-template-columns:8vw 1fr ${isTeam ? '14vw' : ''} 7vw 7vw;align-items:center;gap:1vw;padding:2vw 2vw;min-height:13vw;background:rgba(255,255,255,.06);border-radius:4vw;border:1px solid rgba(255,255,255,.1);width:100%;box-sizing:border-box;direction:rtl;${isTeam ? (p.team === 'a' ? 'border-color:rgba(68,138,255,.3)' : 'border-color:rgba(255,64,129,.3)') : ''}">
       <span style="font-size:7vw;text-align:center">${p.avatar}</span>
-      <span style="font-size:3.8vw;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right">${p.name}</span>
+      <span style="font-size:5vw;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right;min-width:0">${p.name}</span>
       ${teamBtn}
       <button onclick="event.stopPropagation();toggleCannotRead(${i})" style="font-size:5vw;width:8vw;height:8vw;border-radius:2vw;flex-shrink:0;background:${p.cannotRead?'rgba(255,204,0,.25)':'rgba(255,255,255,.08)'};border:2px solid ${p.cannotRead?'rgba(255,204,0,.5)':'rgba(255,255,255,.1)'};cursor:pointer;display:flex;align-items:center;justify-content:center">${p.cannotRead?'⭐':'🌟'}</button>
       <button onclick="removePlayer(${i})" style="font-size:4.5vw;width:7vw;height:7vw;background:none;border:none;color:#ff4444;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center">✕</button>
@@ -1712,14 +1712,14 @@ function nextWord() {
     // Font size purely by character count — no DOM measurement needed
     const len = currentWord.length;
     let vw;
-    if      (len <= 2)  vw = 22;
-    else if (len <= 4)  vw = 18;
-    else if (len <= 6)  vw = 15;
-    else if (len <= 8)  vw = 12;
-    else if (len <= 10) vw = 10;
-    else if (len <= 13) vw = 8;
-    else if (len <= 16) vw = 6.5;
-    else                vw = 5.5;
+    if      (len <= 3)  vw = 28;
+    else if (len <= 5)  vw = 24;
+    else if (len <= 7)  vw = 20;
+    else if (len <= 9)  vw = 17;
+    else if (len <= 11) vw = 14;
+    else if (len <= 14) vw = 11;
+    else if (len <= 17) vw = 9;
+    else                vw = 7.5;
     wd.style.fontSize = vw + 'vw';
   }
 
