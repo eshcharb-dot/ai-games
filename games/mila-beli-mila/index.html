@@ -1,6 +1,28 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
-<head>
+<head><script>
+(function(){
+  // Kill all service workers and caches, then reload once
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(regs) {
+      var killed = regs.map(r => r.unregister());
+      return Promise.all(killed);
+    }).then(function() {
+      if ('caches' in window) {
+        return caches.keys().then(function(keys) {
+          return Promise.all(keys.map(k => caches.delete(k)));
+        });
+      }
+    }).then(function() {
+      // Only reload if we actually had something to kill
+      if (!sessionStorage.getItem('sw-cleared')) {
+        sessionStorage.setItem('sw-cleared', '1');
+        location.reload(true);
+      }
+    });
+  }
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
