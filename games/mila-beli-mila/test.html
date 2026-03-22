@@ -1,11 +1,11 @@
-﻿﻿﻿﻿﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>???? ??? ???? � TEST</title>
+<title>מילה בלי מילה — TEST v26</title>
 <link rel="manifest" href="../manifest.json">
 <meta name="theme-color" content="#1a1a2e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -126,7 +126,7 @@ input:focus{border-color:var(--primary)}
 input::placeholder{color:rgba(255,255,255,.4)}
 
 /* ===== SETUP SCREEN ===== */
-#screenSetup{justify-content:flex-start;padding:clamp(8px,1.5vh,12px) clamp(4px,1vw,8px) calc(clamp(8px,1.5vh,12px) + var(--safe-bottom));gap:clamp(4px,.8vh,6px);overflow:hidden}
+#screenSetup{justify-content:flex-start;padding:clamp(8px,1.5vh,12px) clamp(12px,3vw,16px) calc(clamp(8px,1.5vh,12px) + var(--safe-bottom));gap:clamp(4px,.8vh,6px);overflow:hidden}
 .setup-title{font-size:clamp(1.2rem,4vw,1.6rem);font-weight:900;width:100%;text-align:right;flex-shrink:0}
 .setup-subtitle{margin:0;flex-shrink:0;font-size:clamp(.7rem,2vw,.8rem)}
 
@@ -339,7 +339,7 @@ transition:all .2s;touch-action:manipulation;-webkit-tap-highlight-color:transpa
 .pg-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 10px;
 border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);min-width:64px}
 .pg-item .pg-emoji{font-size:clamp(1.3rem,4vw,1.8rem)}
-.pg-item .pg-name{font-size:clamp(.6rem,1.8vw,.75rem);font-weight:600;max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg-item .pg-name{font-size:clamp(.6rem,1.8vw,.75rem);font-weight:600;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ready-start-btn{font-size:clamp(1.1rem,3.5vw,1.4rem);padding:14px;width:100%;min-height:clamp(56px,8vh,72px);flex-shrink:0}
 .ready-back-btn{flex-shrink:0}
 .ready-describer-note{margin:0;flex-shrink:0}
@@ -347,7 +347,7 @@ border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,25
 /* Current player header in game */
 .current-player-header{display:flex;align-items:center;gap:6px}
 .current-player-header .cph-emoji{font-size:clamp(1.1rem,3vw,1.6rem)}
-.current-player-header .cph-name{font-size:clamp(.9rem,2.5vw,1.15rem);font-weight:800;color:var(--primary)}
+.current-player-header .cph-name{font-size:clamp(.9rem,2.5vw,1.15rem);font-weight:800;color:var(--primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:clamp(90px,25vw,180px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45vw}
 .current-player-header .cph-score{font-size:clamp(.7rem,2vw,.85rem);color:rgba(255,255,255,.6);font-weight:600}
 
 /* Score bar */
@@ -460,7 +460,7 @@ animation:fadeIn .5s;text-align:center;flex-shrink:0}
 .game-action-btn{height:clamp(70px,18vh,120px)}
 }
 @media(min-width:480px){
-.screen{max-width:100%;margin:0}
+.screen{max-width:480px;margin:0 auto}
 }
 @media(min-width:768px){
 html{font-size:20px}
@@ -473,212 +473,228 @@ html{font-size:22px}
 .game-word-area{font-size:clamp(1.4rem,6vw,2.5rem)}
 .emoji-word{font-size:clamp(3rem,10vw,4rem)}
 }
-</style>
-<style id="test-overrides">
-/* ===== TEST OVERRIDES: FORCE BIG UI ===== */
+
+/* screenPass has its own fullscreen overlay - skip slide animation */
+#screenPass { animation: none !important; background: linear-gradient(135deg,#ff4081,#d500f9) !important; }
+#screenPass.active { opacity: 1 !important; transform: none !important; }
+
+/* ===== V3 BIG UI OVERRIDES ===== */
 html, body { font-size: 20px !important; }
 
-/* NUCLEAR FONT OVERRIDE — nothing smaller than 4vw */
-* { min-font-size: 4vw; }
-.screen-subtitle, .setup-subtitle, .welcome-tagline-small, .welcome-version,
-.round-indicator, .skip-counter, .text-muted, .offline-badge,
-.rb-time, .level-btn .info p, .pg-name, .team-label,
-small, caption, label { font-size: 4.5vw !important; color: rgba(255,255,255,.8) !important; }
-
-/* No text on images — suppress background blobs, ensure clean text */
-.bg-spots { display: none !important; }
-body::before { display: none !important; }
-
-/* Welcome logo — good size but not overlapping text */
-.welcome-logo { width: 55vw !important; height: auto !important; max-height: 28vw !important; display: block; margin: 0 auto 4vw !important; }
-.welcome-center { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 2vw !important; }
-.welcome-tagline { font-size: 6vw !important; font-weight: 700 !important; color: rgba(255,255,255,.95) !important; }
-.welcome-tagline-small { font-size: 4.5vw !important; color: rgba(255,255,255,.6) !important; }
-.welcome-version { font-size: 4vw !important; color: rgba(255,204,0,.5) !important; }
-
-/* Screens - full viewport, no max-width on phone */
 .screen {
   width: 100vw !important;
   max-width: 100vw !important;
-  padding: 3vw 0 6vw !important;
+  padding: 4vw 3vw 6vw !important;
   gap: 2.5vh !important;
-  justify-content: space-evenly !important;
 }
-@media(min-width:600px){ .screen { max-width: 100vw !important; margin: 0 !important; padding-left: 0 !important; padding-right: 0 !important; } }
 
-/* Titles */
-h1, h2, .game-title { font-size: 9vw !important; }
-p, .screen-subtitle, .game-subtitle { font-size: 5vw !important; }
+/* Welcome */
+.welcome-logo { width: 55vw !important; height: auto !important; max-height: 28vw !important; }
+.welcome-center { gap: 2vw !important; }
+.game-title { font-size: 9vw !important; }
+.welcome-tagline { font-size: 6vw !important; }
+.welcome-tagline-small { font-size: 4vw !important; }
+.welcome-version { font-size: 3.5vw !important; }
+.welcome-buttons { gap: 3vw !important; margin-top: 4vw !important; }
+.btn-start { min-height: 16vw !important; font-size: 6vw !important; }
+.btn-leaderboard { min-height: 14vw !important; font-size: 5vw !important; }
 
 /* Buttons */
-.btn { min-height: 16vw !important; font-size: 5.5vw !important; border-radius: 4vw !important; }
-.btn-primary { font-size: 6vw !important; min-height: 18vw !important; }
+.btn { min-height: 14vw !important; font-size: 5vw !important; border-radius: 4vw !important; }
+.btn-primary { font-size: 6vw !important; min-height: 16vw !important; }
+.btn-small { font-size: 4.5vw !important; min-height: 12vw !important; }
 
-/* Mode toggle */
-.mode-btn { min-height: 20vw !important; font-size: 5.5vw !important; border-radius: 4vw !important; }
+/* Setup */
+h1, h2 { font-size: 8vw !important; }
+.setup-title { font-size: 7vw !important; }
+.mode-btn { min-height: 16vw !important; font-size: 5vw !important; }
+input[type="text"] { height: 14vw !important; font-size: 5vw !important; border-radius: 3vw !important; }
+.player-item { min-height: 16vw !important; border-radius: 4vw !important; }
+.player-item .avatar { font-size: 8vw !important; }
+.player-item .name { font-size: 5vw !important; }
+.kids-btn { width: 12vw !important; height: 12vw !important; font-size: 5.5vw !important; }
+.player-item .remove { min-width: 10vw !important; min-height: 10vw !important; font-size: 5vw !important; }
+.player-status { font-size: 4.5vw !important; }
 
-/* Level buttons */
-.level-btn { min-height: 20vw !important; padding: 4vw !important; border-radius: 4vw !important; }
-.level-btn .icon { font-size: 10vw !important; }
+/* Level/Rounds */
+.level-btn { min-height: 18vw !important; padding: 3vw !important; border-radius: 4vw !important; }
+.level-btn .icon { font-size: 9vw !important; }
 .level-btn .info h3 { font-size: 5.5vw !important; }
 .level-btn .info p { font-size: 4vw !important; }
-
-/* Round buttons */
-.round-btn { min-height: 25vw !important; font-size: 5vw !important; border-radius: 4vw !important; }
+.round-btn { min-height: 22vw !important; border-radius: 4vw !important; }
 .round-btn .rb-title { font-size: 5.5vw !important; }
 .round-btn .rb-time { font-size: 3.5vw !important; }
 
-/* Player items */
-.player-item { min-height: 18vw !important; padding: 3vw 4vw !important; border-radius: 4vw !important; }
-.player-item .avatar { font-size: 10vw !important; }
-.player-item .name { font-size: 5.5vw !important; }
-.kids-btn { width: 14vw !important; height: 14vw !important; font-size: 7vw !important; }
-.remove { font-size: 6vw !important; min-width: 12vw !important; min-height: 12vw !important; }
+/* Game top bar */
+#screenGame .game-top-bar { min-height: 18vw !important; padding: 0 3vw !important; }
+#screenGame .game-top-bar .timer-ring { width: 15vw !important; height: 15vw !important; }
+#screenGame .game-top-bar .time-text { font-size: 6vw !important; }
+#screenGame .game-top-bar .current-player-header { gap: 2vw !important; flex-direction: row !important; align-items: center !important; }
+#screenGame .game-top-bar .cph-emoji { font-size: 7vw !important; }
+#screenGame .game-top-bar .cph-name { font-size: 5vw !important; max-width: 38vw !important; font-weight: 900 !important; }
+#screenGame .game-top-bar .cph-score { font-size: 4.5vw !important; color: rgba(255,255,255,.8) !important; padding-right: 1vw !important; }
 
-/* Input */
-input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; padding: 0 4vw !important; border-radius: 3vw !important; }
-
-/* Game screen — structured layout */
-#screenGame { justify-content: flex-start !important; gap: 0 !important; padding: 0 !important; }
-
-/* Timer bar at top */
-#screenGame > div:first-child,
-#screenGame .round-indicator { flex-shrink: 0 !important; }
-
-/* Word area — takes all remaining space */
-.word-display, .game-word-area { 
-  flex: 1 !important; 
-  display: flex !important; 
-  align-items: center !important; 
-  justify-content: center !important;
-  white-space: nowrap !important; 
-  overflow: visible !important; 
-  text-align: center !important;
-  width: 100% !important;
-  padding: 0 1vw !important;
-  box-sizing: border-box !important;
-  min-height: 0 !important;
-}
-.emoji-word { font-size: 35vw !important; }
-
-/* Skip counter and funny msg — compact */
-.funny-msg { flex-shrink: 0 !important; min-height: 8vw !important; font-size: 5vw !important; padding: 0 4vw !important; }
-.skip-counter { flex-shrink: 0 !important; font-size: 4.5vw !important; padding: 0 4vw 2vw !important; margin: 0 !important; }
-
-/* Timer */
-.timer-ring { width: 14vw !important; height: 14vw !important; flex-shrink: 0 !important; }
-.timer-ring .time-text { font-size: 5vw !important; }
-
-/* Action buttons — fill bottom, tall */
-.action-row { gap: 4vw !important; padding: 2vw 4vw 6vw !important; flex-shrink: 0 !important; width: 100% !important; }
-.action-row .btn-game-action { height: 35vw !important; border-radius: 5vw !important; min-height: unset !important; }
-.action-row .btn-game-action.btn-green { font-size: 12vw !important; }
-.action-row .btn-game-action.btn-orange { font-size: 12vw !important; }
-.action-row .btn-game-action .action-label { font-size: 5.5vw !important; }
+/* Game action buttons */
+.game-action-btn { height: 32vw !important; border-radius: 5vw !important; }
+.game-action-btn .action-icon { font-size: 12vw !important; }
+.game-action-btn .action-label { font-size: 5.5vw !important; }
+.game-feedback { font-size: 5.5vw !important; }
+.skip-counter, .game-skip-counter { font-size: 4.5vw !important; }
 
 /* Pass screen */
 .turn-transition .pass-label { font-size: 8vw !important; }
 .turn-transition .emoji { font-size: 25vw !important; }
 .turn-transition .player-name { font-size: 10vw !important; }
-.turn-transition .countdown { font-size: 20vw !important; }
-
-/* Start countdown overlay */
-.start-countdown-overlay { justify-content: center !important; padding: 8vw !important; gap: 4vw !important; background: linear-gradient(135deg,#1a1052,#2a1060,#0a0a2e) !important; }
-.start-countdown-overlay .sco-label { font-size: 6vw !important; background: none !important; box-shadow: none !important; }
-.start-countdown-overlay .sco-avatar { font-size: 25vw !important; background: none !important; box-shadow: none !important; }
-.start-countdown-overlay .sco-name { font-size: 9vw !important; background: none !important; }
-.start-countdown-overlay .sco-number { font-size: 38vw !important; line-height: 1 !important; background: none !important; box-shadow: none !important; text-shadow: 0 0 40px rgba(255,204,0,.3) !important; }
-.start-countdown-overlay .sco-number.sco-go { font-size: 22vw !important; }
-
-/* Score / leaderboard (ready screen grid) */
-.pg-emoji { font-size: 9vw !important; }
-.pg-name { font-size: 4vw !important; max-width: none !important; overflow: visible !important; text-overflow: unset !important; white-space: normal !important; text-align: center !important; }
-
-/* Player list rows — single line compact */
-.player-item { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 2vw !important; padding: 2vw 3vw !important; min-height: 13vw !important; max-height: 13vw !important; overflow: hidden !important; }
-.player-item .avatar { font-size: 7vw !important; flex-shrink: 0 !important; width: 9vw !important; text-align: center !important; }
-.player-item .name { flex: 1 !important; font-size: 4.5vw !important; font-weight: 700 !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; min-width: 0 !important; }
-.kids-btn { width: 11vw !important; height: 11vw !important; min-height: 11vw !important; font-size: 6vw !important; flex-shrink: 0 !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 !important; }
-.player-item .remove { font-size: 5vw !important; width: 9vw !important; min-height: 9vw !important; flex-shrink: 0 !important; display: flex !important; align-items: center !important; justify-content: center !important; }
-
-/* Game top bar — bigger, high specificity */
-#screenGame .game-top-bar { height: 16vw !important; padding: 0 1vw !important; flex-shrink: 0 !important; background: rgba(255,255,255,.06) !important; gap: 2vw !important; overflow: hidden !important; width: 100% !important; box-sizing: border-box !important; flex-wrap: nowrap !important; }
-#screenGame .game-top-bar .timer-ring { width: 15vw !important; height: 15vw !important; min-width: 15vw !important; flex-shrink: 0 !important; }
-#screenGame .game-top-bar .time-text { font-size: 6vw !important; font-weight: 900 !important; }
-#screenGame .game-top-bar .round-indicator { font-size: 3.5vw !important; color: rgba(255,255,255,.5) !important; white-space: nowrap !important; flex-shrink: 1 !important; overflow: hidden !important; }
-#screenGame .game-top-bar .current-player-header { margin: 0 !important; flex: 1 !important; min-width: 0 !important; display: flex !important; align-items: center !important; gap: 1.5vw !important; justify-content: flex-end !important; overflow: hidden !important; }
-#screenGame .game-top-bar .cph-avatar { font-size: 7vw !important; flex-shrink: 0 !important; }
-#screenGame .game-top-bar .cph-name { font-size: 4vw !important; color: var(--primary) !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; max-width: 45vw !important; flex-shrink: 1 !important; }
-#screenGame .game-top-bar .cph-score { font-size: 3.5vw !important; color: rgba(255,255,255,.7) !important; white-space: nowrap !important; flex-shrink: 0 !important; }
-
-/* Funny msg and skip counter compact at bottom */
-#screenGame .game-feedback { font-size: 6vw !important; min-height: 0 !important; height: auto !important; flex-shrink: 0 !important; padding: 1vw 4vw !important; }
-#screenGame .skip-counter, #screenGame [id="skipCounter"] { font-size: 5vw !important; color: rgba(255,255,255,.7) !important; flex-shrink: 0 !important; margin: 0 !important; padding: 1vw 4vw !important; }
-
-/* Word area fills middle, word centered */
-#screenGame .game-word-area {
-  flex: 1 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-height: 0 !important;
-  background: radial-gradient(ellipse at center, rgba(255,204,0,.08) 0%, transparent 65%) !important;
-}
-
-/* Word centered vertically */
-#screenGame.active { flex-direction: column !important; height: 100dvh !important; overflow: hidden !important; padding: 0 !important; }
-#screenGame .game-word-area { 
-  flex: 1 !important; 
-  display: flex !important; 
-  align-items: center !important; 
-  justify-content: center !important;
-  min-height: 0 !important;
-  overflow: visible !important;
-  width: 100% !important;
-  padding: 0 4vw !important;
-  box-sizing: border-box !important;
-  background: radial-gradient(ellipse at center, rgba(255,204,0,.06) 0%, transparent 70%) !important;
-}
 
 /* Ready screen */
-#screenReady { justify-content: space-evenly !important; gap: 0 !important; padding: 6vw 6vw 8vw !important; }
-#screenReady .ready-title { font-size: 10vw !important; margin: 0 !important; }
-#screenReady .screen-subtitle { font-size: 5.5vw !important; color: rgba(255,255,255,.8) !important; margin: 0 !important; }
-#screenReady .text-muted { font-size: 4.5vw !important; margin: 0 !important; color: rgba(255,255,255,.6) !important; }
-#screenReady .ready-describer-note { display: none !important; }
-#screenReady .ready-start-btn { font-size: 6vw !important; min-height: 16vw !important; }
-#screenReady .ready-back-btn { font-size: 4vw !important; min-height: 10vw !important; background: rgba(255,255,255,.07) !important; color: rgba(255,255,255,.4) !important; border: none !important; }
-.players-grid { display: flex !important; flex-wrap: wrap !important; gap: 4vw !important; justify-content: center !important; width: 100% !important; }
-.pg-item { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 1.5vw !important; padding: 3vw 3vw !important; border-radius: 3vw !important; min-width: 20vw !important; max-width: 28vw !important; }
-.pg-item .pg-emoji { font-size: 11vw !important; }
-.pg-item .pg-name { font-size: 3.5vw !important; max-width: 26vw !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; text-align: center !important; }
+.ready-title { font-size: 9vw !important; }
+.ready-start-btn { min-height: 16vw !important; font-size: 6vw !important; }
+.pg-item .pg-emoji { font-size: 10vw !important; }
+.pg-item .pg-name { font-size: 3.5vw !important; max-width: none !important; overflow: visible !important; white-space: normal !important; word-break: break-word !important; text-align: center !important; line-height: 1.2 !important; }
 
-/* Setup screen: fixed layout, scroll when keyboard opens */
-#screenSetup { justify-content: flex-start !important; gap: 2vw !important; overflow-y: auto !important; overflow-x: hidden !important; height: 100dvh !important; }
-#screenSetup .setup-subtitle { display: none !important; }
-#screenSetup .setup-title::after { content: '' !important; }
-#screenSetup .player-list { flex: 1 1 auto !important; min-height: 0 !important; max-height: 55vh !important; overflow-y: auto !important; }
-#playerList { padding: 0 3vw !important; }
-#screenSetup .player-input-row { padding: 0 3vw !important; }
-#screenSetup h2, #screenSetup .setup-buttons, #screenSetup .player-status { padding-left: 3vw !important; padding-right: 3vw !important; }
-#screenSetup .setup-continue-btn, #screenSetup #btnToLevel { margin-top: 0 !important; }
-#screenSetup .setup-back-btn, #screenSetup button:last-child { font-size: 4vw !important; min-height: 10vw !important; }
+/* Leaderboard/Round end */
+.lb-title, .round-end-title, .grand-title { font-size: 8vw !important; }
+.lb-item, .round-score-item { min-height: 14vw !important; padding: 2vw 3vw !important; border-radius: 3vw !important; }
+.lb-item .lb-name, .round-score-item .rs-name { font-size: 4.5vw !important; }
+.lb-item .lb-score, .round-score-item .rs-score { font-size: 5vw !important; }
+.lb-item .rank { font-size: 5.5vw !important; }
+.tab { min-height: 12vw !important; font-size: 4.5vw !important; }
 
-/* Fix player name in setup list - must never be cut */
-#playerList [style*="grid"] span:nth-child(2),
-.player-item .name {
-  font-size: 4vw !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
+/* ===== UX FIX: Missing font overrides (all were below 14px) ===== */
+.lb-item .lb-best, .round-score-item .rs-best { font-size: 3.5vw !important; color: rgba(255,255,255,.6) !important; }
+.team-score-card .team-label { font-size: 4vw !important; }
+.sb-item { font-size: 3.5vw !important; }
+.sb-item .sb-emoji { font-size: 4.5vw !important; }
+.team-tag { font-size: 4vw !important; min-height: 12vw !important; min-width: 12vw !important; padding: 2vw 3vw !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; }
+.screen-subtitle, .setup-subtitle, .rounds-explain { font-size: 4vw !important; }
+.text-muted, .round-indicator, .ready-describer-note { font-size: 4vw !important; }
+.funny-msg { font-size: 4.5vw !important; }
+.round-btn .rb-time { font-size: 4vw !important; }
+.pg-item .pg-name { font-size: 4vw !important; }
+.lb-item .lb-avatar { font-size: 5vw !important; }
+.round-score-item .rs-avatar { font-size: 5vw !important; }
+
+/* ===== UX FIX: Touch targets (were below 44px) ===== */
+.player-item .remove { min-width: 12vw !important; min-height: 12vw !important; }
+.gf-small-btn { min-height: 12vw !important; }
+
+/* ===== UX FIX: Contrast (were below WCAG AA) ===== */
+.welcome-tagline-small { color: rgba(255,255,255,.65) !important; }
+.setup-back-btn { color: rgba(255,255,255,.6) !important; }
+.player-status { color: rgba(255,255,255,.65) !important; }
+.screen-subtitle { color: rgba(255,255,255,.6) !important; }
+.round-btn .rb-time { color: rgba(255,255,255,.6) !important; }
+input::placeholder { color: rgba(255,255,255,.5) !important; }
+
+/* ===== UX FIX: Layout ===== */
+.word-display, .game-word-area { word-break: break-word !important; white-space: normal !important; }
+.round-scores { max-height: 40vh !important; }
+
+/* ===== UX FIX: Landscape mode ===== */
+@media (max-height: 500px) {
+  .game-action-btn { height: 20vw !important; }
+  .game-top-bar { min-height: 10vw !important; }
+  .game-word-area { font-size: clamp(1.4rem, 6vw, 2.5rem) !important; }
+}
+
+/* ===== DESKTOP OVERRIDES (min-width: 768px) ===== */
+@media (min-width: 768px) {
+  .screen {
+    max-width: 480px !important;
+    margin: 0 auto !important;
+    padding: 32px 28px 40px !important;
+    gap: 16px !important;
+  }
+  html, body { font-size: 16px !important; }
+
+  /* Welcome */
+  .welcome-logo { width: 180px !important; height: auto !important; max-height: 90px !important; }
+  .game-title { font-size: 2.4rem !important; }
+  .welcome-tagline { font-size: 1.2rem !important; }
+  .welcome-tagline-small { font-size: 0.85rem !important; }
+  .welcome-version { font-size: 0.7rem !important; }
+  .welcome-center { gap: 8px !important; }
+  .welcome-buttons { gap: 10px !important; margin-top: 20px !important; }
+  .btn-start { min-height: 56px !important; font-size: 1.2rem !important; }
+  .btn-leaderboard { min-height: 48px !important; font-size: 1rem !important; }
+
+  /* Buttons */
+  .btn { min-height: 48px !important; font-size: 1rem !important; border-radius: 14px !important; }
+  .btn-primary { font-size: 1.1rem !important; min-height: 52px !important; }
+  .btn-small { font-size: 0.9rem !important; min-height: 44px !important; }
+
+  /* Setup */
+  h1, h2 { font-size: 1.5rem !important; }
+  .setup-title { font-size: 1.4rem !important; }
+  .mode-btn { min-height: 52px !important; font-size: 1rem !important; }
+  input[type="text"] { height: 48px !important; font-size: 1rem !important; border-radius: 12px !important; }
+  .player-item { min-height: 56px !important; border-radius: 14px !important; }
+  .player-item .avatar { font-size: 1.6rem !important; }
+  .player-item .name { font-size: 1rem !important; }
+  .kids-btn { width: 44px !important; height: 44px !important; font-size: 1.2rem !important; }
+  .player-item .remove { min-width: 44px !important; min-height: 44px !important; font-size: 1rem !important; }
+  .player-status { font-size: 0.85rem !important; }
+
+  /* Level/Rounds */
+  .level-btn { min-height: 72px !important; padding: 12px 16px !important; border-radius: 16px !important; }
+  .level-btn .icon { font-size: 2rem !important; }
+  .level-btn .info h3 { font-size: 1.1rem !important; }
+  .level-btn .info p { font-size: 0.85rem !important; }
+  .round-btn { min-height: 90px !important; border-radius: 16px !important; }
+  .round-btn .rb-title { font-size: 1.1rem !important; }
+  .round-btn .rb-time { font-size: 0.8rem !important; }
+
+  /* Word display on desktop - allow wrapping, no overflow clipping issue */
+  .word-display, .game-word-area { white-space: normal !important; overflow: visible !important; word-break: keep-all !important; padding: 8px 16px !important; }
+
+  /* Game top bar */
+  #screenGame .game-top-bar { min-height: 60px !important; padding: 0 16px !important; }
+  #screenGame .game-top-bar .timer-ring { width: 52px !important; height: 52px !important; }
+  #screenGame .game-top-bar .time-text { font-size: 1.3rem !important; }
+  #screenGame .game-top-bar .cph-emoji { font-size: 1.4rem !important; }
+  #screenGame .game-top-bar .cph-name { font-size: 1rem !important; max-width: 160px !important; }
+  #screenGame .game-top-bar .cph-score { font-size: 0.85rem !important; }
+
+  /* Game action buttons */
+  .game-action-btn { height: 120px !important; border-radius: 20px !important; }
+  .game-action-btn .action-icon { font-size: 2.5rem !important; }
+  .game-action-btn .action-label { font-size: 1rem !important; }
+  .game-feedback { font-size: 1rem !important; }
+  .skip-counter, .game-skip-counter { font-size: 0.85rem !important; }
+
+  /* Pass/transition screen */
+  .turn-transition .pass-label { font-size: 1.8rem !important; }
+  .turn-transition .emoji { font-size: 5rem !important; }
+  .turn-transition .player-name { font-size: 2rem !important; }
+
+  /* Ready screen */
+  .ready-title { font-size: 1.6rem !important; }
+  .ready-start-btn { min-height: 56px !important; font-size: 1.1rem !important; }
+  .pg-item .pg-emoji { font-size: 1.8rem !important; }
+  .pg-item .pg-name { font-size: 0.75rem !important; }
+
+  /* Leaderboard/Round end */
+  .lb-title, .round-end-title, .grand-title { font-size: 1.6rem !important; }
+  .lb-item, .round-score-item { min-height: 52px !important; padding: 8px 14px !important; border-radius: 12px !important; }
+  .lb-item .lb-name, .round-score-item .rs-name { font-size: 1rem !important; }
+  .lb-item .lb-score, .round-score-item .rs-score { font-size: 1.1rem !important; }
+  .lb-item .rank { font-size: 1.1rem !important; }
+  .tab { min-height: 44px !important; font-size: 0.9rem !important; }
+
+  /* Desktop: UX fix selectors */
+  .lb-item .lb-best, .round-score-item .rs-best { font-size: 0.75rem !important; }
+  .team-score-card .team-label { font-size: 0.75rem !important; }
+  .sb-item { font-size: 0.75rem !important; }
+  .team-tag { font-size: 0.75rem !important; min-height: 32px !important; min-width: 32px !important; padding: 4px 10px !important; }
+  .screen-subtitle, .setup-subtitle, .rounds-explain, .text-muted, .round-indicator { font-size: 0.85rem !important; }
+  .funny-msg { font-size: 0.9rem !important; }
 }
 </style>
 </head>
 <body>
 
-<div style="position:fixed;bottom:10px;left:10px;z-index:99999;background:#ff1744;color:#fff;font-size:3.5vw;font-weight:900;padding:1.5vw 3vw;border-radius:2vw;letter-spacing:1px;opacity:0.85">TEST v31</div>
+<div style="position:fixed;bottom:6px;right:6px;z-index:9999;font-size:14px;font-weight:900;color:rgba(255,204,0,.6);pointer-events:none">TEST v26</div>
+<div style="position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:9999;background:#ff1744;color:#fff;font-size:3vw;font-weight:900;padding:1vw 3vw;border-radius:2vw;pointer-events:none">UX TEST</div>
 <div class="bg-spots"><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>
 <canvas id="confetti"></canvas>
 <button id="soundToggle" onclick="toggleSound()">🔊</button>
@@ -715,18 +731,18 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
   <div class="welcome-buttons">
     <button class="btn btn-primary btn-start" onclick="showScreen('screenSetup')">התחילו משחק 🎮</button>
     <button class="btn-leaderboard" onclick="showLeaderboard()">🏆 טבלת אלופים</button>
-    <div class="welcome-version">v31</div>
+    <div class="welcome-version">v3.3</div>
   </div>
 </div>
 
 <!-- PLAYER SETUP -->
 <div class="screen" id="screenSetup">
-  <h2 class="setup-title">מי משחק?</h2>
-  <p class="screen-subtitle setup-subtitle" id="setupSubtitle" style="display:none"></p>
+  <h2 class="setup-title">מי משחק? 👥</h2>
+  <p class="screen-subtitle setup-subtitle" id="setupSubtitle">הוסיפו לפחות 2 שחקנים — בלי שם? תקבלו כינוי מצחיק!</p>
 
   <div class="mode-toggle">
     <button class="mode-btn active" id="modeFree" onclick="setGameMode('free')">🎭 חופשי</button>
-    <button class="mode-btn" id="modeTeam" onclick="setGameMode('team')">🤝 קבוצות</button>
+    <button class="mode-btn" id="modeTeam" onclick="setGameMode('team')">⚔️ קבוצות</button>
   </div>
 
   <div id="teamNamesSection" class="team-names-section" style="display:none">
@@ -736,9 +752,8 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
     </div>
   </div>
 
-  <p style="font-size:3.8vw;color:rgba(255,255,255,.5);margin:0;text-align:center">🌟 = מצב תמונות לילדים</p>
   <div class="player-input-row">
-    <input type="text" id="playerNameInput" placeholder="שם (או ריק לכינוי מצחיק)" maxlength="20" onkeydown="if(event.key==='Enter')addPlayer()" onfocus="setTimeout(()=>this.scrollIntoView({behavior:'smooth',block:'center'}),300)">
+    <input type="text" id="playerNameInput" placeholder="שם (או ריק לכינוי מצחיק)" maxlength="20" onkeydown="if(event.key==='Enter')addPlayer()">
     <button class="btn btn-action btn-green" onclick="addPlayer()">+ הוסיפו</button>
   </div>
 
@@ -766,7 +781,7 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
   <div class="level-grid">
     <div class="level-btn" onclick="selectLevel('kids')">
       <div class="icon">🧒</div>
-      <div class="info"><h3>ילדים</h3><p>מילים פשוטות עם תמונות — מגיל 5+</p></div>
+      <div class="info"><h3>ילדים</h3><p>מילים קלות — גיל 5+</p></div>
     </div>
     <div class="level-btn" onclick="selectLevel('family')">
       <div class="icon">👨‍👩‍👧</div>
@@ -883,62 +898,6 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 </div><!-- /container -->
 
 <script>
-// ============ FORCE CACHE CLEAR ============
-if ('caches' in window) {
-  caches.keys().then(keys => keys.forEach(k => { if (k !== 'mila-beli-mila-v25') caches.delete(k); }));
-}
-// ============ SERVICE WORKER (Offline PWA) ============
-if ('serviceWorker' in navigator) {
-  const swCode = `
-    const CACHE_NAME = 'mila-beli-mila-v25';
-    self.addEventListener('install', e => {
-      e.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-          return cache.addAll([self.location.href.replace(/\\/sw\\.js.*/, '/index.html'), self.location.href.replace(/\\/sw\\.js.*/, '/')]);
-        }).catch(() => {})
-      );
-      self.skipWaiting();
-    });
-    self.addEventListener('activate', e => {
-      e.waitUntil(
-        caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))))
-      );
-      self.clients.claim();
-    });
-    self.addEventListener('fetch', e => {
-      if (e.request.method !== 'GET') return;
-      e.respondWith(
-        caches.match(e.request).then(cached => {
-          const fetchPromise = fetch(e.request).then(response => {
-            if (response && response.status === 200) {
-              const clone = response.clone();
-              caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
-            }
-            return response;
-          }).catch(() => cached);
-          return cached || fetchPromise;
-        })
-      );
-    });
-  `;
-  const blob = new Blob([swCode], { type: 'application/javascript' });
-  const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl, { scope: '.' }).then(reg => {
-    console.log('SW registered');
-    if (reg.active || reg.installing || reg.waiting) {
-      setTimeout(() => {
-        document.getElementById('offlineBadge').classList.add('visible');
-      }, 2000);
-    }
-  }).catch(err => console.log('SW failed:', err));
-
-  if ('caches' in window) {
-    caches.open('mila-beli-mila-v25').then(cache => {
-      cache.add(window.location.href).catch(() => {});
-    });
-  }
-}
-
 // ============ WORD BANK ============
 const WORDS = {
 kids: [
@@ -988,7 +947,7 @@ family: [
 'חריימה','מוסקה','מלווח','ג\'חנון','קובה','חציל','שניצל','קציצות','מרק','לאפה',
 'באר שבע','נתניה','הרצליה','פתח תקווה','ראשון לציון','רחובות','נהריה','עכו','צפת','טבריה',
 'שוק הפשפשים','קולנוע','תיאטרון','מוזיאון','פאב','בית קפה','מסעדה','מאפייה','פיצרייה','ספרייה',
-'סנאפצ\'ט','טוויטר','פייסבוק','פינטרסט','טלגרם','רדיט','טוויץ\'','דיסקורד',
+'ווייז','ספוטיפיי','סנאפצ\'ט','טוויטר','פייסבוק','פינטרסט','טלגרם','רדיט','טוויץ\'','דיסקורד',
 'חנוכייה','סביבון','מצות','קערת פסח','שופר','סוכה','לולב','אתרוג','משלוח מנות','אוזני המן',
 'רכבל','טלפריק','נחל','מפל','מצפור','שביל','טיילת','כביש','מנהרה','גשר',
 'תור','מדבקה','פקקים','חניון','רמקול','אוזניות','מטען','סוללה','שלט רחוק','ממתק',
@@ -1017,10 +976,10 @@ pro: [
 'אפיסטמולוגיה','אונטולוגיה','פנומנולוגיה','טלאולוגיה','דאונטולוגיה','אוטיליטריזם','ליברליזם','קונסרוטיביזם','אנארכו-קפיטליזם','קומוניזם',
 'ניאו-ליברליזם','מרקסיזם','פוסט-סטרוקטורליזם','דקונסטרוקציה','אינטרטקסטואליות','מטא-נרטיב','היפר-ריאליזם','טרנסצנדנטליזם','אמפיריציזם','רציונליזם',
 'סינכרוניות','דיאכרוניות','הגמוניה','סובלימציה','אינדוקציה','אקסיומה','תיאורמה','היפותזה','פרדיגמה','אפיפנומנון',
-'אמביגואליות','רדוקטיביזם','קונטקסטואליזם','פלורליזם','סקולסטיקה','אגנוסטיציזם','דואליזם','מוניזם','הוליזם',
+'אמביגואליות','רדוקטיביזם','קונטקסטואליזם','אינסטרומנטליזם','פלורליזם','סקולסטיקה','אגנוסטיציזם','דואליזם','מוניזם','הוליזם',
 'טרנספרנטיות','אקאונטביליטי','סקלביליות','רטרוספקציה','פרוגנוזה','סינרגיה','אנומליה','אמביוולנציה','קוגניציה','רפלקסיביות',
 'אפוריזם','אירוניה דרמטית','מטונימיה','סינקדוכה','אוקסימורון','היפרבולה','ליטוטס','אנפורה','אפיפורה','כיאזמוס'
-,'אינסטרומנטליזם']
+]
 };
 
 // ============ EMOJI WORD BANK (for kids mode / cannotRead) ============
@@ -1054,8 +1013,8 @@ const EMOJI_WORDS = [
 
 // ============ FUNNY MESSAGES ============
 const FUNNY_CORRECT = [
-'אלוף!','גאון!','נכון!','וואו!','יופי!','מעולה!','בול פגיעה!','כל הכבוד!',
-'איזה ראש!','לגמרי!','בום!','מלך!','אש!','ניחשת!','מושלם!','חזק!','עוד אחד!','כן כן כן!','שריפה!','יאללה!'
+'אלוף!','גאון!','נכון מאוד!','וואו!','יופי!','מעולה!','בול!','כל הכבוד!',
+'איזה ראש!','לגמרי!','בום!','מלך!','אש!','קלעת!','מושלם!','סגרת!','חזק!','עוד אחד!','על הפנים!','יאללה!'
 ];
 const FUNNY_SKIP = [
 'אוקיי...','הלאה!','הבא!','פספוס...','לא נורא...','יהיה בסדר...','קדימה!','חבל...','נו טוב...','בפעם הבאה...'
@@ -1318,7 +1277,11 @@ function renderPlayerList() {
   const isTeam = gameMode === 'team';
 
   const sub = document.getElementById('setupSubtitle');
-  sub.style.display = 'none';
+  if (isTeam) {
+    sub.innerHTML = 'הוסיפו שחקנים • לחצו על צבע הקבוצה כדי להחליף';
+  } else {
+    sub.innerHTML = 'הוסיפו לפחות 2 שחקנים • שם אופציונלי — דלגו וקבלו כינוי מצחיק!';
+  }
 
   list.innerHTML = players.map((p, i) => {
     const teamBadge = isTeam ? `
@@ -1327,14 +1290,18 @@ function renderPlayerList() {
           ${p.team === 'a' ? '🔵 א׳' : '🔴 ב׳'}
         </span>
       </div>` : '';
-    const teamBtn = isTeam ? `<button onclick="event.stopPropagation();togglePlayerTeam(${i})" style="font-size:3.5vw;padding:1vw 2vw;border-radius:2vw;background:${p.team==='a'?'rgba(68,138,255,.3)':'rgba(255,64,129,.3)'};border:none;color:#fff;cursor:pointer;flex-shrink:0;white-space:nowrap">${p.team==='a'?'🔵 א':'🔴 ב'}</button>` : '';
     return `
-    <div style="display:grid;grid-template-columns:7vw 1fr ${isTeam ? '13vw' : ''} 6vw 6vw;align-items:center;gap:0.8vw;padding:2vw 1vw;min-height:12vw;background:rgba(255,255,255,.06);border-radius:4vw;border:1px solid rgba(255,255,255,.1);width:100%;box-sizing:border-box;direction:rtl;${isTeam ? (p.team === 'a' ? 'border-color:rgba(68,138,255,.3)' : 'border-color:rgba(255,64,129,.3)') : ''}">
-      <span style="font-size:6.5vw;text-align:center">${p.avatar}</span>
-      <span style="font-size:5vw;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right;min-width:0">${p.name}</span>
-      ${teamBtn}
-      <button onclick="event.stopPropagation();toggleCannotRead(${i})" style="font-size:4.5vw;width:6vw;height:6vw;border-radius:1.5vw;flex-shrink:0;background:${p.cannotRead?'rgba(255,204,0,.25)':'rgba(255,255,255,.08)'};border:2px solid ${p.cannotRead?'rgba(255,204,0,.5)':'rgba(255,255,255,.1)'};cursor:pointer;display:flex;align-items:center;justify-content:center">${p.cannotRead?'⭐':'🌟'}</button>
-      <button onclick="removePlayer(${i})" style="font-size:4vw;width:6vw;height:6vw;background:none;border:none;color:#ff4444;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center">✕</button>
+    <div class="player-item" style="${isTeam ? (p.team === 'a' ? 'border-color:rgba(68,138,255,.3)' : 'border-color:rgba(255,64,129,.3)') : ''}">
+      <div class="avatar">${p.avatar}</div>
+      <div style="flex:1">
+        <div class="name">${p.name}</div>
+        ${teamBadge}
+      </div>
+      <button class="kids-btn ${p.cannotRead ? 'active' : ''}" onclick="event.stopPropagation();toggleCannotRead(${i})" title="${p.cannotRead ? 'יראה אמוג\'י במקום מילה' : 'לחצו אם לא יודע לקרוא'}">
+        ⭐<span class="kids-dot"></span>
+        <span style="font-size:2.5vw;font-weight:600;display:block;margin-top:1px;line-height:1;opacity:${p.cannotRead ? '1' : '0.5'}">${p.cannotRead ? 'פעיל' : ''}</span>
+      </button>
+      <button class="remove" onclick="removePlayer(${i})">✕</button>
     </div>`;
   }).join('');
 
@@ -1442,17 +1409,17 @@ function prepareRound() {
   usedWords.clear();
   usedEmojiWords.clear();
 
-  const labels = { kids: 'ילדים', family: 'משפחה', pro: 'פרו' };
+  const labels = { kids: '👶 ילדים', family: '👨‍👩‍👧 משפחה', pro: '🔥 פרו' };
   let readyLabel = `רמה: ${labels[level]}`;
   if (selectedRounds > 1) readyLabel += ` • סיבוב ${currentRound} מתוך ${selectedRounds}`;
-  if (gameMode === 'team') readyLabel += ' • מצב קבוצות';
+  if (gameMode === 'team') readyLabel += ' • ⚔️ מצב קבוצות';
 
   document.getElementById('readyLevelLabel').textContent = readyLabel;
 
   // Update ready subtitle with first player name
   const firstIdx = gameMode === 'team' ? teamTurnOrder[0]?.playerIdx : describerOrder[0];
   const firstName = players[firstIdx]?.name || '';
-  document.getElementById('readySubtitle').textContent = `מוכנים לשחק?`;
+  document.getElementById('readySubtitle').textContent = `העבירו את הטלפון ל${firstName}`;
 
   const grid = document.getElementById('readyPlayers');
   if (gameMode === 'team') {
@@ -1480,7 +1447,7 @@ function prepareRound() {
         <div class="pg-name">${p.name}</div>
       </div>`;
     }).join('');
-    document.getElementById('readyDescriberNote').textContent = `כולם מתארים — ${players.length} × 60 שניות`;
+    document.getElementById('readyDescriberNote').textContent = `כולם מתארימ — ${players.length} x 60 שניות`;
   }
 }
 
@@ -1509,12 +1476,16 @@ function showTurnTransition() {
 
   const screen = document.getElementById('screenPass');
   screen.innerHTML = `
-    <div class="turn-transition ${teamClass}" style="justify-content:center;gap:6vw;padding:10vw">
-      <div style="font-size:8vw;font-weight:900;color:#fff;text-align:center">📱 תעבירו את הטלפון!</div>
+    <div class="turn-transition ${teamClass}">
+      <div class="pass-label">📱 תעבירו את הטלפון!</div>
+      <p class="screen-subtitle" style="color:rgba(255,255,255,.7)">העבירו את הטלפון ל${p.name}</p>
       ${teamInfo}
-      <div style="font-size:28vw;line-height:1">${p.avatar}</div>
-      <div style="font-size:10vw;font-weight:900;color:#fff;text-align:center">${p.name}</div>
-      <button id="passSkipBtn" onclick="startTurn()" style="font-size:7vw;font-weight:900;min-height:18vw;width:80%;border-radius:4vw;background:linear-gradient(135deg,#ffcc00,#ffa000);color:#1a1a00;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent">!יאללה 🚀</button>
+      <div style="font-size:.8rem;color:rgba(255,255,255,.6);margin-bottom:4px">תור ${turnNum} מתוך ${maxTurns}</div>
+      <div class="label">עכשיו התור של</div>
+      <div class="emoji">${p.avatar}</div>
+      <div class="player-name">${p.name}</div>
+      <div class="arrow">👇</div>
+      <button class="btn btn-primary mt-16" id="passSkipBtn" onclick="startTurn()" style="font-size:1.3rem;padding:18px 40px;width:80%;max-width:320px">!יאללה 🚀</button>
     </div>
   `;
   showScreen('screenPass');
@@ -1712,10 +1683,8 @@ function nextWord() {
     wd.style.width = '100%';
     wd.style.whiteSpace = 'nowrap';
     wd.style.overflow = 'visible';
-    // Font size purely by character count — no DOM measurement needed
     const len = currentWord.length;
     let vw;
-    // font_vw = min(20, 133/len) — fits all words incl. spaces, 15% smaller than max
     if      (len <= 5)  vw = 18;
     else if (len === 6) vw = 18;
     else if (len === 7) vw = 16;
@@ -1725,7 +1694,11 @@ function nextWord() {
     else if (len === 11) vw = 10.5;
     else if (len === 12) vw = 9.5;
     else                vw = 8.5;
-    wd.style.fontSize = vw + 'vw';
+    // Use container width for sizing, not viewport width
+    const containerW = wd.parentElement ? wd.parentElement.offsetWidth : window.innerWidth;
+    const refW = Math.min(containerW, 480); // desktop capped at 480px container
+    const pxSize = Math.round((vw / 100) * refW);
+    wd.style.fontSize = pxSize + 'px';
   }
 
   wd.className = 'word-display game-word-area word-pop';
