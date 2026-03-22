@@ -662,6 +662,17 @@ input[type="text"] { height: 16vw !important; font-size: 5.5vw !important; paddi
 #screenSetup .player-list { flex: 1 1 auto !important; min-height: 0 !important; max-height: 30vh !important; overflow-y: auto !important; }
 #screenSetup .setup-continue-btn, #screenSetup #btnToLevel { margin-top: 0 !important; }
 #screenSetup .setup-back-btn, #screenSetup button:last-child { font-size: 4vw !important; min-height: 10vw !important; }
+
+/* Fix player name in setup list - must never be cut */
+#playerList [style*="grid"] span:nth-child(2),
+.player-item .name {
+  font-size: 4vw !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
 </style>
 </head>
 <body>
@@ -1695,38 +1706,40 @@ function nextWord() {
     } while (usedWords.has(currentWord));
     usedWords.add(currentWord);
     wd.innerHTML = currentWord;
-    // Scale font size based on word length — never overflow
-    const len = currentWord.length;
-    if (len <= 3) wd.style.fontSize = '18vw';
-    else if (len <= 5) wd.style.fontSize = '15vw';
-    else if (len <= 7) wd.style.fontSize = '12vw';
-    else if (len <= 9) wd.style.fontSize = '9vw';
-    else if (len <= 11) wd.style.fontSize = '7.5vw';
-    else wd.style.fontSize = '6vw';
+    // Reset styles first
+    wd.style.whiteSpace = 'nowrap';
+    wd.style.overflow = 'visible';
     wd.style.textAlign = 'center';
     wd.style.direction = 'rtl';
     wd.style.width = '100%';
-    wd.style.overflow = 'hidden';
-    // Auto-shrink until it fits
+    wd.style.boxSizing = 'border-box';
+    // Start with font based on length, then auto-fit
+    const len = currentWord.length;
+    let startSize;
+    if (len <= 3) startSize = 22;
+    else if (len <= 5) startSize = 18;
+    else if (len <= 7) startSize = 14;
+    else if (len <= 9) startSize = 11;
+    else if (len <= 13) startSize = 9;
+    else startSize = 7;
+    wd.style.fontSize = startSize + 'vw';
+    // Auto-shrink until it fits — give DOM time to render
     setTimeout(() => {
-      let size = parseFloat(wd.style.fontSize) || 20;
-      wd.style.whiteSpace = 'nowrap';
-      // First try to grow to fill the space
-      const maxSize = 35;
-      while (wd.scrollWidth < wd.offsetWidth * 0.85 && size < maxSize) {
-        size += 1;
-        wd.style.fontSize = size + 'vw';
-      }
-      // Then shrink if overflowing
-      while (wd.scrollWidth > wd.offsetWidth && size > 4) {
+      const container = wd.parentElement;
+      const maxWidth = container ? container.offsetWidth * 0.92 : window.innerWidth * 0.92;
+      let size = parseFloat(wd.style.fontSize) || startSize;
+      // Shrink until text fits in one line
+      while (wd.scrollWidth > maxWidth && size > 4) {
         size -= 0.5;
         wd.style.fontSize = size + 'vw';
       }
-      if (size <= 4) {
+      // If still too big, allow wrapping
+      if (wd.scrollWidth > maxWidth) {
         wd.style.whiteSpace = 'normal';
         wd.style.wordBreak = 'break-word';
+        wd.style.fontSize = '6vw';
       }
-    }, 100);
+    }, 50);
   }
 
   wd.className = 'word-display game-word-area word-pop';
