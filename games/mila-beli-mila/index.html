@@ -645,7 +645,7 @@ input[type="text"] { height: 14vw !important; font-size: 5vw !important; border-
   <div class="level-grid">
     <div class="level-btn" onclick="selectLevel('kids')">
       <div class="icon">🧒</div>
-      <div class="info"><h3>ילדים</h3><p>מילים פשוטות עם תמונות — מגיל 5+</p></div>
+      <div class="info"><h3>ילדים</h3><p>מילים קלות — גיל 5+</p></div>
     </div>
     <div class="level-btn" onclick="selectLevel('family')">
       <div class="icon">👨‍👩‍👧</div>
@@ -1218,7 +1218,7 @@ function renderPlayerList() {
         ${teamBadge}
       </div>
       <button class="kids-btn ${p.cannotRead ? 'active' : ''}" onclick="event.stopPropagation();toggleCannotRead(${i})" title="${p.cannotRead ? 'יראה אמוג\'י במקום מילה' : 'לחצו אם לא יודע לקרוא'}">
-        🍼<span class="kids-dot"></span>
+        ⭐<span class="kids-dot"></span>
         <span style="font-size:.45rem;font-weight:600;display:block;margin-top:2px;line-height:1;opacity:${p.cannotRead ? '1' : '0.5'}">${p.cannotRead ? 'פעיל' : 'לחץ'}</span>
       </button>
       <button class="remove" onclick="removePlayer(${i})">✕</button>
@@ -1367,7 +1367,7 @@ function prepareRound() {
         <div class="pg-name">${p.name}</div>
       </div>`;
     }).join('');
-    document.readyDescriberNote').textContent = '';
+    document.readyDescriberNote').textContent = `כולם מתארימ — ${players.length} x 60 שניות`;
   }
 }
 
