@@ -43,10 +43,10 @@ git remote add origin https://github.com/<USERNAME>/ai-games.git
 # Stage, commit, push
 git add .
 git commit -m "Add/update <game-name>"
-git push -u origin main
+git push -u origin master
 
 # Enable GitHub Pages (first time only):
-# Go to repo Settings > Pages > Source: Deploy from branch > main > / (root)
+# Go to repo Settings > Pages > Source: Deploy from branch > master > / (root)
 # Or use: gh pages enable (if gh CLI available)
 ```
 
@@ -121,7 +121,12 @@ When adding a new game, update `games/index.html` to add a card with:
 
 | # | Folder | Name | Status |
 |---|--------|------|--------|
-| 1 | exodus-arena | Exodus Arena (זירת יציאת מצרים) | Playable |
+| 1 | exodus-arena-v3 | Exodus Arena V3 (זירת יציאת מצרים) | Playable |
+| 2 | exodus-arena-v2 | Exodus Arena v2 | Playable (to archive) |
+| 3 | ea-55b33e6f | Exodus Arena (private URL) | Playable |
+| 4 | passover-breaker | Passover Breaker (שובר) | Playable |
+| 5 | mila-beli-mila | Mila Beli Mila (מילה בלי מילה) | WIP |
+| 6 | redefine-rescue | Redefine Rescue (הצלת הפרות) | Playable |
 
 ## Installed Skills
 
