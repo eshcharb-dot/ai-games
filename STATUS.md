@@ -14,7 +14,8 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [ ] Identify the current canonical Exodus Arena (v3 has the latest mobile UX commit; `ea-55b33e6f` is the private URL) and archive or de-link `exodus-arena-v2` to avoid duplicates.
 - [x] mila-beli-mila v3.3 fixes: DONE/obsolete 2026-11-06 — index.html already has no BOM (first byte 3C), no SW/reload code, inline JS passes node --check; game is now v4 (welcome label still says v3.3, cosmetic). Deleting stale task.txt + public games/mila-beli-mila/test.html ("UX TEST v26") awaits Q-PR004-002.
 - [x] Mobile audit, start screens: DONE 2026-11-06 (rendered 375x667 via headless Chrome: no overflow, no JS errors on all 4).
-- [ ] Mobile audit, in-game screens (play through gameplay/game-over at 375x667; start buttons are 53-60px vs 64px rule, root font 16px on exodus-v3/redefine-rescue vs 18px rule) and fix.
+- [x] Button heights: DONE 2026-11-06 — min-height 64px on redefine-rescue start/replay and exodus-v3 game-over/pause/trivia buttons (CSS only, JS syntax OK).
+- [ ] Mobile audit, in-game screens: play through gameplay/game-over at 375x667 via headless Chrome, check overflow/touch targets (root font 16px on exodus-v3/redefine-rescue vs 18px rule still open).
 - [ ] Decide what to build next after cleanup (needs owner) — see Open Questions.
 
 ## Blockers
@@ -26,6 +27,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [ ] Q-PR004-002 (low): OK to delete stale task.txt (repo root) and games/mila-beli-mila/test.html (publicly served test copy with red "UX TEST" banner)? Both are in git history. Recommendation: yes, delete both.
 
 ## Run Log
+- 2026-11-06 11:05 — Raised button min-heights to 64px in redefine-rescue and exodus-arena-v3 (CSS only, node --check OK, pushed); in-game rendered audit still pending
 - 2026-11-06 10:15 — Rendered 375x667 audit of start screens (headless Chrome): no scroll/overflow/JS errors; minor: start btns 53-60px (<64), root font 16px on 2 games; in-game screens still unchecked
 - 2026-11-06 10:09 — Static mobile audit (grep only): all 4 have no-zoom viewport; passover-breaker OK (18px, 64px btn); exodus-arena-v3 has 1 scroll container, min-heights 40–72px; mila-beli-mila font clamp(16–22px), min-heights 32–56px, 4 scroll containers; redefine-rescue no min-height rules. Rendered 375×667 check still needed
 - 2026-11-06 10:06 — Verified mila-beli-mila v3.3 fixes already in place (v4 now); asked Q-PR004-002 re deleting stale task.txt/test.html
