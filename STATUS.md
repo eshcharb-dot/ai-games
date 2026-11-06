@@ -13,7 +13,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Update README.md + CLAUDE.md Current Games table: DONE 2026-11-06 (6 real folders listed; main→master fixed).
 - [ ] Identify the current canonical Exodus Arena (v3 has the latest mobile UX commit; `ea-55b33e6f` is the private URL) and archive or de-link `exodus-arena-v2` to avoid duplicates.
 - [x] mila-beli-mila v3.3 fixes: DONE/obsolete 2026-11-06 — index.html already has no BOM (first byte 3C), no SW/reload code, inline JS passes node --check; game is now v4 (welcome label still says v3.3, cosmetic). Deleting stale task.txt + public games/mila-beli-mila/test.html ("UX TEST v26") awaits Q-PR004-002.
-- [ ] Run a mobile audit (375×667: no scroll, 64px+ buttons, one-line text) on `exodus-arena-v3`, `passover-breaker`, `mila-beli-mila`, `redefine-rescue` using the `ux-ui-agent` skill; log fixes.
+- [ ] Run a mobile audit (static grep done 2026-11-06, see run log; rendered check still needed) (375×667: no scroll, 64px+ buttons, one-line text) on `exodus-arena-v3`, `passover-breaker`, `mila-beli-mila`, `redefine-rescue` using the `ux-ui-agent` skill; log fixes.
 - [ ] Decide what to build next after cleanup (needs owner) — see Open Questions.
 
 ## Blockers
@@ -25,6 +25,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [ ] Q-PR004-002 (low): OK to delete stale task.txt (repo root) and games/mila-beli-mila/test.html (publicly served test copy with red "UX TEST" banner)? Both are in git history. Recommendation: yes, delete both.
 
 ## Run Log
+- 2026-11-06 10:09 — Static mobile audit (grep only): all 4 have no-zoom viewport; passover-breaker OK (18px, 64px btn); exodus-arena-v3 has 1 scroll container, min-heights 40–72px; mila-beli-mila font clamp(16–22px), min-heights 32–56px, 4 scroll containers; redefine-rescue no min-height rules. Rendered 375×667 check still needed
 - 2026-11-06 10:06 — Verified mila-beli-mila v3.3 fixes already in place (v4 now); asked Q-PR004-002 re deleting stale task.txt/test.html
 - 2026-11-06 09:12 — README.md + CLAUDE.md game tables updated to 6 real folders, main→master
 - 2026-11-06 09:08 — Arcade hub: added v3, passover-breaker, mila-beli-mila cards (pushed)
