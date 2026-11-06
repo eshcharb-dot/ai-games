@@ -16,7 +16,8 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Mobile audit, start screens: DONE 2026-11-06 (rendered 375x667 via headless Chrome: no overflow, no JS errors on all 4).
 - [x] Button heights: DONE 2026-11-06 — min-height 64px on redefine-rescue start/replay and exodus-v3 game-over/pause/trivia buttons (CSS only, JS syntax OK).
 - [x] Mobile audit, in-game screens (redefine-rescue, exodus-arena-v3): DONE 2026-11-06 — rendered 375x667 in iframe: no overflow/clipped text/JS errors in play, pause, game-over, victory; only issue was exodus-v3 play-btn 60px -> fixed to 64px. Root font still 16px on both (18px rule open, low priority).
-- [ ] Mobile audit, in-game screens for passover-breaker and mila-beli-mila (same iframe harness: wrap page in 375x667 iframe, inject script that clicks start and reports overflow/button heights via postMessage).
+- [x] Mobile audit, in-game screens passover-breaker + mila-beli-mila: DONE 2026-11-06 — 375x667 iframe: no horizontal overflow/scroll, no JS errors on all screens. Notes: mila action buttons 120px (32vw, under the 130px/22vh guideline), mila secondary buttons 44-53px, passover sound icon 49px (low priority, unchanged).
+- [ ] Optional polish: mila action buttons to >=130px/22vh; root font 18px on redefine-rescue/exodus-v3 (low priority).
 - [ ] Decide what to build next after cleanup (needs owner) — see Open Questions.
 
 ## Blockers
@@ -28,6 +29,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [ ] Q-PR004-002 (low): OK to delete stale task.txt (repo root) and games/mila-beli-mila/test.html (publicly served test copy with red "UX TEST" banner)? Both are in git history. Recommendation: yes, delete both.
 
 ## Run Log
+- 2026-11-06 11:20 — In-game 375x667 audit of passover-breaker + mila-beli-mila: no overflow/JS errors; minor button-size notes logged
 - 2026-11-06 11:08 — In-game 375x667 audit of redefine-rescue + exodus-arena-v3: clean; exodus play-btn 60->64px (syntax OK); passover/mila in-game audit queued
 - 2026-11-06 11:05 — Raised button min-heights to 64px in redefine-rescue and exodus-arena-v3 (CSS only, node --check OK, pushed); in-game rendered audit still pending
 - 2026-11-06 10:15 — Rendered 375x667 audit of start screens (headless Chrome): no scroll/overflow/JS errors; minor: start btns 53-60px (<64), root font 16px on 2 games; in-game screens still unchecked
