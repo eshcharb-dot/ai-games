@@ -18,7 +18,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Mobile audit, in-game screens (redefine-rescue, exodus-arena-v3): DONE 2026-11-06 — rendered 375x667 in iframe: no overflow/clipped text/JS errors in play, pause, game-over, victory; only issue was exodus-v3 play-btn 60px -> fixed to 64px. Root font still 16px on both (18px rule open, low priority).
 - [x] Mobile audit, in-game screens passover-breaker + mila-beli-mila: DONE 2026-11-06 — 375x667 iframe: no horizontal overflow/scroll, no JS errors on all screens. Notes: mila action buttons 120px (32vw, under the 130px/22vh guideline), mila secondary buttons 44-53px, passover sound icon 49px (low priority, unchanged).
 - [x] mila action buttons: DONE 2026-11-06 — height max(32vw,22vh) (~147px at 375x667); CSS-only, JS syntax OK; not re-rendered (landscape/desktop overrides untouched).
-- [ ] Optional polish: root font 18px on redefine-rescue/exodus-v3 (low priority).
+- [ ] Optional polish: root font 18px — investigated 2026-11-06: redefine-rescue uses px (1 rem, nothing to scale); exodus-v3 has 148 rem uses so a root change rescales ~12% everywhere and needs a rendered 375x667 re-audit first. Skipped; low priority.
 - [ ] Decide what to build next after cleanup (needs owner) — see Open Questions.
 
 ## Blockers
@@ -30,6 +30,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [ ] Q-PR004-002 (low): OK to delete stale task.txt (repo root) and games/mila-beli-mila/test.html (publicly served test copy with red "UX TEST" banner)? Both are in git history. Recommendation: yes, delete both.
 
 ## Run Log
+- 2026-11-06 12:06 — Investigated 18px root-font polish: risky for exodus-v3 (148 rem uses), n/a for redefine-rescue; no code change; remaining items wait on owner (Q-PR004-001/002)
 - 2026-11-06 12:05 — mila action buttons raised to max(32vw,22vh) (~147px on phone); syntax OK; remaining items wait on Q-PR004-001/002
 - 2026-11-06 11:20 — In-game 375x667 audit of passover-breaker + mila-beli-mila: no overflow/JS errors; minor button-size notes logged
 - 2026-11-06 11:08 — In-game 375x667 audit of redefine-rescue + exodus-arena-v3: clean; exodus play-btn 60->64px (syntax OK); passover/mila in-game audit queued
