@@ -30,6 +30,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [ ] Q-PR004-002 (low): OK to delete stale task.txt (repo root) and games/mila-beli-mila/test.html (publicly served test copy with red "UX TEST" banner)? Both are in git history. Recommendation: yes, delete both.
 
 ## Run Log
+- 2026-11-06 16:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002; no code changes
 - 2026-11-06 15:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002 or are skipped polish; no code changes
 - 2026-11-06 14:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002 or are skipped low-risk polish; no changes
 - 2026-11-06 13:05 — No actionable step: DECISIONS.md empty, all remaining items wait on Q-PR004-001/002 (or are skipped low-risk polish); no changes
@@ -39,9 +40,3 @@ _Maintained by the Conductor. Agents update this every cycle._
 - 2026-11-06 11:08 — In-game 375x667 audit of redefine-rescue + exodus-arena-v3: clean; exodus play-btn 60->64px (syntax OK); passover/mila in-game audit queued
 - 2026-11-06 11:05 — Raised button min-heights to 64px in redefine-rescue and exodus-arena-v3 (CSS only, node --check OK, pushed); in-game rendered audit still pending
 - 2026-11-06 10:15 — Rendered 375x667 audit of start screens (headless Chrome): no scroll/overflow/JS errors; minor: start btns 53-60px (<64), root font 16px on 2 games; in-game screens still unchecked
-- 2026-11-06 10:09 — Static mobile audit (grep only): all 4 have no-zoom viewport; passover-breaker OK (18px, 64px btn); exodus-arena-v3 has 1 scroll container, min-heights 40–72px; mila-beli-mila font clamp(16–22px), min-heights 32–56px, 4 scroll containers; redefine-rescue no min-height rules. Rendered 375×667 check still needed
-- 2026-11-06 10:06 — Verified mila-beli-mila v3.3 fixes already in place (v4 now); asked Q-PR004-002 re deleting stale task.txt/test.html
-- 2026-11-06 09:12 — README.md + CLAUDE.md game tables updated to 6 real folders, main→master
-- 2026-11-06 09:08 — Arcade hub: added v3, passover-breaker, mila-beli-mila cards (pushed)
-- 2026-11-06 09:06 — Verified GitHub Pages deploy (master, workflow, all game URLs 200)
-- 2026-11-06 08:25 — STATUS.md created by Conductor init
