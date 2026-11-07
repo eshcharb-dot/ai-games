@@ -10,7 +10,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - Render the arcade hub `games/index.html` at 375x667 (overflow, tap-target sizes, card links all 200) and fix any issues found.
 
 ## Next Steps
-- [ ] (2026-11-07) Write `docs/NEXT-GAMES.md` (3 original concepts + effort) and ask Q-PR004-003 so the owner can pick one.
+- [x] (2026-11-07) Write `docs/NEXT-GAMES.md`: DONE 2026-11-07, Q-PR004-003 asked.
 - [ ] (2026-11-07) mila-beli-mila welcome label v3.3 -> v4; commit + push.
 - [ ] (2026-11-07) 375x667 render audit of the arcade hub `games/index.html`; fix issues.
 - [x] Verify deployment: DONE 2026-11-06 — Pages enabled (workflow build, source master), static.yml deploys on push to `master`, last run success, all 7 game URLs return 200. CLAUDE.md says `main` but repo is `master` (fix in the README/CLAUDE.md step).
@@ -34,7 +34,10 @@ _Maintained by the Conductor. Agents update this every cycle._
 
 - [ ] Q-PR004-002 (low): OK to delete stale task.txt (repo root) and games/mila-beli-mila/test.html (publicly served test copy with red "UX TEST" banner)? Both are in git history. Recommendation: yes, delete both.
 
+- [ ] Q-PR004-003 (normal): Which next game should we build? (A) Tide Pool Tapper ~6 cycles, (B) Lantern Heist ~9, (C) Stack Rally ~5-8 — see docs/NEXT-GAMES.md. Recommendation: A.
+
 ## Run Log
+- 2026-11-07 10:05 — Wrote docs/NEXT-GAMES.md (3 concepts) and asked Q-PR004-003
 - 2026-11-06 19:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002; no code changes
 - 2026-11-06 18:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002; no code changes
 - 2026-11-06 17:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002; no code changes
