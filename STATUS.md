@@ -11,7 +11,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 
 ## Next Steps
 - [x] (2026-11-07) Write `docs/NEXT-GAMES.md`: DONE 2026-11-07, Q-PR004-003 asked.
-- [ ] (2026-11-07) mila-beli-mila welcome label v3.3 -> v4; commit + push.
+- [x] (2026-11-07) mila-beli-mila welcome label v3.3 -> v4: DONE 2026-11-07 10:10.
 - [ ] (2026-11-07) 375x667 render audit of the arcade hub `games/index.html`; fix issues.
 - [x] Verify deployment: DONE 2026-11-06 — Pages enabled (workflow build, source master), static.yml deploys on push to `master`, last run success, all 7 game URLs return 200. CLAUDE.md says `main` but repo is `master` (fix in the README/CLAUDE.md step).
 - [x] Fix the arcade hub: DONE 2026-11-06 — added cards for `exodus-arena-v3`, `passover-breaker`, `mila-beli-mila` (5 cards; `ea-55b33e6f` card kept pending Q-PR004-001).
@@ -37,6 +37,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [ ] Q-PR004-003 (normal): Which next game should we build? (A) Tide Pool Tapper ~6 cycles, (B) Lantern Heist ~9, (C) Stack Rally ~5-8 — see docs/NEXT-GAMES.md. Recommendation: A.
 
 ## Run Log
+- 2026-11-07 10:10 — mila-beli-mila welcome label v3.3 -> v4 (one-line text change, committed + pushed)
 - 2026-11-07 10:05 — Wrote docs/NEXT-GAMES.md (3 concepts) and asked Q-PR004-003
 - 2026-11-06 19:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002; no code changes
 - 2026-11-06 18:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002; no code changes
