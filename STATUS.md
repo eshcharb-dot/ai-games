@@ -37,6 +37,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [ ] Q-PR004-003 (normal): Which next game should we build? (A) Tide Pool Tapper ~6 cycles, (B) Lantern Heist ~9, (C) Stack Rally ~5-8 — see docs/NEXT-GAMES.md. Recommendation: A.
 
 ## Run Log
+- 2026-11-07 14:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002/003; no code changes
 - 2026-11-07 13:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002/003; no code changes
 - 2026-11-07 12:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002/003; no code changes
 - 2026-11-07 11:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002/003; no code changes
@@ -50,4 +51,3 @@ _Maintained by the Conductor. Agents update this every cycle._
 - 2026-11-06 15:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002 or are skipped polish; no code changes
 - 2026-11-06 14:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002 or are skipped low-risk polish; no changes
 - 2026-11-06 13:05 — No actionable step: DECISIONS.md empty, all remaining items wait on Q-PR004-001/002 (or are skipped low-risk polish); no changes
-- 2026-11-06 12:06 — Investigated 18px root-font polish: risky for exodus-v3 (148 rem uses), n/a for redefine-rescue; no code change; remaining items wait on owner (Q-PR004-001/002)
