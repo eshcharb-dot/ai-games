@@ -37,6 +37,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [ ] Q-PR004-003 (normal): Which next game should we build? (A) Tide Pool Tapper ~6 cycles, (B) Lantern Heist ~9, (C) Stack Rally ~5-8 — see docs/NEXT-GAMES.md. Recommendation: A.
 
 ## Run Log
+- 2026-11-07 11:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002/003; no code changes
 - 2026-11-07 10:13 — Hub 375x667 audit: clean, no changes needed; remaining items wait on Q-PR004-001/002/003
 - 2026-11-07 10:10 — mila-beli-mila welcome label v3.3 -> v4 (one-line text change, committed + pushed)
 - 2026-11-07 10:05 — Wrote docs/NEXT-GAMES.md (3 concepts) and asked Q-PR004-003
@@ -48,6 +49,3 @@ _Maintained by the Conductor. Agents update this every cycle._
 - 2026-11-06 14:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002 or are skipped low-risk polish; no changes
 - 2026-11-06 13:05 — No actionable step: DECISIONS.md empty, all remaining items wait on Q-PR004-001/002 (or are skipped low-risk polish); no changes
 - 2026-11-06 12:06 — Investigated 18px root-font polish: risky for exodus-v3 (148 rem uses), n/a for redefine-rescue; no code change; remaining items wait on owner (Q-PR004-001/002)
-- 2026-11-06 12:05 — mila action buttons raised to max(32vw,22vh) (~147px on phone); syntax OK; remaining items wait on Q-PR004-001/002
-- 2026-11-06 11:20 — In-game 375x667 audit of passover-breaker + mila-beli-mila: no overflow/JS errors; minor button-size notes logged
-- 2026-11-06 11:08 — In-game 375x667 audit of redefine-rescue + exodus-arena-v3: clean; exodus play-btn 60->64px (syntax OK); passover/mila in-game audit queued
