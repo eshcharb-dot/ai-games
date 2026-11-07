@@ -5,9 +5,14 @@ _Maintained by the Conductor. Agents update this every cycle._
 **Phase:** Deployed-but-unverified / cleanup — 6 game folders exist, hub and docs are stale   **Tracker status:** In Progress
 
 ## Today's Goals
-- (set by the Conductor each morning)
+- Write `docs/NEXT-GAMES.md`: 3 original next-game concepts (one paragraph each: core loop, mobile controls, effort in cycles) and add Q-PR004-003 asking the owner to pick one — turns the vague "decide what to build next" step into a yes/no.
+- Cosmetic: update the mila-beli-mila welcome label from v3.3 to v4; commit and push.
+- Render the arcade hub `games/index.html` at 375x667 (overflow, tap-target sizes, card links all 200) and fix any issues found.
 
 ## Next Steps
+- [ ] (2026-11-07) Write `docs/NEXT-GAMES.md` (3 original concepts + effort) and ask Q-PR004-003 so the owner can pick one.
+- [ ] (2026-11-07) mila-beli-mila welcome label v3.3 -> v4; commit + push.
+- [ ] (2026-11-07) 375x667 render audit of the arcade hub `games/index.html`; fix issues.
 - [x] Verify deployment: DONE 2026-11-06 — Pages enabled (workflow build, source master), static.yml deploys on push to `master`, last run success, all 7 game URLs return 200. CLAUDE.md says `main` but repo is `master` (fix in the README/CLAUDE.md step).
 - [x] Fix the arcade hub: DONE 2026-11-06 — added cards for `exodus-arena-v3`, `passover-breaker`, `mila-beli-mila` (5 cards; `ea-55b33e6f` card kept pending Q-PR004-001).
 - [x] Update README.md + CLAUDE.md Current Games table: DONE 2026-11-06 (6 real folders listed; main→master fixed).
