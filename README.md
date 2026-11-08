@@ -12,6 +12,7 @@
 | 5 | [Mila Beli Mila](games/mila-beli-mila/) | Hebrew word-guessing party game | WIP (v3.3 fixes pending) |
 | 6 | [Redefine Rescue](games/redefine-rescue/) | Cow-rescue game | Playable |
 | 7 | [Tide Pool Tapper](games/tide-pool-tapper/) | Tap stranded critters, dodge urchins | Playable |
+| 8 | [Stack Rally](games/stack-rally/) | Balance a tower of crates on a winding road | WIP |
 
 ## Deployment
 

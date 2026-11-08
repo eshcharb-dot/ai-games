@@ -127,6 +127,7 @@ When adding a new game, update `games/index.html` to add a card with:
 | 5 | mila-beli-mila | Mila Beli Mila (מילה בלי מילה) | WIP |
 | 6 | redefine-rescue | Redefine Rescue (הצלת הפרות) | Playable |
 | 7 | tide-pool-tapper | Tide Pool Tapper | Playable |
+| 8 | stack-rally | Stack Rally | WIP |
 
 ## Installed Skills
 
