@@ -7,8 +7,7 @@
 | # | Game | Description | Status |
 |---|------|-------------|--------|
 | 1 | [Exodus Arena v3](games/exodus-arena-v3/) | Passover-themed battle arena (latest, mobile UX) — pick a biblical hero, weapon, fight waves with trivia | Playable |
-| 2 | [Exodus Arena v2](games/exodus-arena-v2/) | Previous Exodus Arena version (pending archive, Q-PR004-001) | Playable |
-| 3 | [Exodus Arena (private URL)](games/ea-55b33e6f/) | Exodus Arena copy at a private URL (pending Q-PR004-001) | Playable |
+| 3 | [Exodus Arena (private URL)](games/ea-55b33e6f/) | Exodus Arena copy at a private URL | Playable |
 | 4 | [Passover Breaker](games/passover-breaker/) | Passover-themed brick-breaker | Playable |
 | 5 | [Mila Beli Mila](games/mila-beli-mila/) | Hebrew word-guessing party game | WIP (v3.3 fixes pending) |
 | 6 | [Redefine Rescue](games/redefine-rescue/) | Cow-rescue game | Playable |

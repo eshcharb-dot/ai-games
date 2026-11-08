@@ -16,7 +16,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Verify deployment: DONE 2026-11-06 — Pages enabled (workflow build, source master), static.yml deploys on push to `master`, last run success, all 7 game URLs return 200. CLAUDE.md says `main` but repo is `master` (fix in the README/CLAUDE.md step).
 - [x] Fix the arcade hub: DONE 2026-11-06 — added cards for `exodus-arena-v3`, `passover-breaker`, `mila-beli-mila` (5 cards; `ea-55b33e6f` card kept pending Q-PR004-001).
 - [x] Update README.md + CLAUDE.md Current Games table: DONE 2026-11-06 (6 real folders listed; main→master fixed).
-- [ ] Identify the current canonical Exodus Arena (v3 has the latest mobile UX commit; `ea-55b33e6f` is the private URL) and archive or de-link `exodus-arena-v2` to avoid duplicates.
+- [x] Canonical Exodus Arena: DONE 2026-11-08 — v3 flagship; exodus-arena-v2 folder deleted, ea-55b33e6f card removed from hub (folder kept, private-only), stale task.txt + mila test.html deleted (Q-001/002).
 - [x] mila-beli-mila v3.3 fixes: DONE/obsolete 2026-11-06 — index.html already has no BOM (first byte 3C), no SW/reload code, inline JS passes node --check; game is now v4 (welcome label still says v3.3, cosmetic). Deleting stale task.txt + public games/mila-beli-mila/test.html ("UX TEST v26") awaits Q-PR004-002.
 - [x] Mobile audit, start screens: DONE 2026-11-06 (rendered 375x667 via headless Chrome: no overflow, no JS errors on all 4).
 - [x] Button heights: DONE 2026-11-06 — min-height 64px on redefine-rescue start/replay and exodus-v3 game-over/pause/trivia buttons (CSS only, JS syntax OK).
@@ -24,19 +24,20 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Mobile audit, in-game screens passover-breaker + mila-beli-mila: DONE 2026-11-06 — 375x667 iframe: no horizontal overflow/scroll, no JS errors on all screens. Notes: mila action buttons 120px (32vw, under the 130px/22vh guideline), mila secondary buttons 44-53px, passover sound icon 49px (low priority, unchanged).
 - [x] mila action buttons: DONE 2026-11-06 — height max(32vw,22vh) (~147px at 375x667); CSS-only, JS syntax OK; not re-rendered (landscape/desktop overrides untouched).
 - [ ] Optional polish: root font 18px — investigated 2026-11-06: redefine-rescue uses px (1 rem, nothing to scale); exodus-v3 has 148 rem uses so a root change rescales ~12% everywhere and needs a rendered 375x667 re-audit first. Skipped; low priority.
-- [ ] Decide what to build next after cleanup (needs owner) — see Open Questions.
+- [ ] Build Tide Pool Tapper (owner chose A, see docs/NEXT-GAMES.md): cycle 1 = scaffold games/tide-pool-tapper/index.html with core tap loop, mobile-first, node --check + 375x667 render.
 
 ## Blockers
 - none
 
 ## Open Questions
-- [ ] Q-PR004-001 (normal): Which Exodus Arena version should be the public flagship, and should older ones (`exodus-arena-v2`, and the private-URL `ea-55b33e6f`) stay public? Options: (a) v3 public, v2 removed, `ea-55b33e6f` stays private-only; (b) keep all linked as version history. Recommendation: (a).
+- [x] Q-PR004-001 (normal): Which Exodus Arena version should be the public flagship, and should older ones (`exodus-arena-v2`, and the private-URL `ea-55b33e6f`) stay public? Options: (a) v3 public, v2 removed, `ea-55b33e6f` stays private-only; (b) keep all linked as version history. Recommendation: (a).
 
-- [ ] Q-PR004-002 (low): OK to delete stale task.txt (repo root) and games/mila-beli-mila/test.html (publicly served test copy with red "UX TEST" banner)? Both are in git history. Recommendation: yes, delete both.
+- [x] Q-PR004-002 (low): OK to delete stale task.txt (repo root) and games/mila-beli-mila/test.html (publicly served test copy with red "UX TEST" banner)? Both are in git history. Recommendation: yes, delete both.
 
-- [ ] Q-PR004-003 (normal): Which next game should we build? (A) Tide Pool Tapper ~6 cycles, (B) Lantern Heist ~9, (C) Stack Rally ~5-8 — see docs/NEXT-GAMES.md. Recommendation: A.
+- [x] Q-PR004-003 (normal): Which next game should we build? (A) Tide Pool Tapper ~6 cycles, (B) Lantern Heist ~9, (C) Stack Rally ~5-8 — see docs/NEXT-GAMES.md. Recommendation: A.
 
 ## Run Log
+- 2026-11-08 06:53 — Acted on owner decisions: deleted exodus-arena-v2, task.txt, mila test.html; removed ea-55b33e6f hub card; docs tables updated; next = build Tide Pool Tapper
 - 2026-11-07 19:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002/003; no code changes
 - 2026-11-07 18:39 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002/003; no code changes
 - 2026-11-07 15:05 — No actionable step: DECISIONS.md still empty; remaining items wait on Q-PR004-001/002/003; no code changes

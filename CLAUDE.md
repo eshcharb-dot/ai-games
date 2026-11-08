@@ -122,8 +122,7 @@ When adding a new game, update `games/index.html` to add a card with:
 | # | Folder | Name | Status |
 |---|--------|------|--------|
 | 1 | exodus-arena-v3 | Exodus Arena V3 (זירת יציאת מצרים) | Playable |
-| 2 | exodus-arena-v2 | Exodus Arena v2 | Playable (to archive) |
-| 3 | ea-55b33e6f | Exodus Arena (private URL) | Playable |
+| 3 | ea-55b33e6f | Exodus Arena (private URL, not in hub) | Playable |
 | 4 | passover-breaker | Passover Breaker (שובר) | Playable |
 | 5 | mila-beli-mila | Mila Beli Mila (מילה בלי מילה) | WIP |
 | 6 | redefine-rescue | Redefine Rescue (הצלת הפרות) | Playable |
