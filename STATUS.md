@@ -27,7 +27,9 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Tide Pool Tapper cycle 1: DONE 2026-11-08 — scaffold games/tide-pool-tapper/index.html (tap loop, combo, lives, urchin decoys, golden shield, audio, particles); node --check OK, start screen rendered at 375x667 clean. In-game/game-over screens not yet rendered/played.
 - [x] Tide Pool Tapper cycle 2a: DONE 2026-11-08 — drove real gameplay via Chrome DevTools (node WebSocket): taps score + combo (465 pts, x9), idle drains 3 lives -> game-over shows score/best, Play again resets (64px btn), no JS errors, no overflow at 375x667, screenshots good. Urchin-hit path not exercised live.
 - [x] Tide Pool Tapper cycle 2b: DONE 2026-11-08 — gentler curve (spawn 1.4-0.009t floor .55s, life 3.8-0.015t floor 1.9s), swipe-flick bonus (2x pts on safe critters, urchins ignored; canvas touch-action:none), syntax OK, flick verified with synthetic pointer sweep in headless Chrome (score registered, no errors). Urchin tap live + HUD sliver not re-checked.
-- [ ] Tide Pool Tapper cycle 3: juice/polish (wave drain mechanic tied to gameplay), verify urchin tap live, then add hub card + deploy.
+- [x] Tide Pool Tapper cycle 3: DONE 2026-11-08 — urchin tap verified live (lives 3->2, red flash, combo reset), tide now rises with lost lives + red hit flash, hub card added, CLAUDE.md/README tables updated, pushed.
+- [ ] Verify Tide Pool Tapper live URL returns 200 after Pages deploy; then ask owner for playtest feedback on all games.
+- [ ] Optional polish: root font 18px audit (see above).
 
 ## Blockers
 - none
@@ -40,6 +42,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Q-PR004-003 (normal): Which next game should we build? (A) Tide Pool Tapper ~6 cycles, (B) Lantern Heist ~9, (C) Stack Rally ~5-8 — see docs/NEXT-GAMES.md. Recommendation: A.
 
 ## Run Log
+- 2026-11-08 07:11 — Tide Pool Tapper 3: urchin tap verified, tide-rises-with-lives + hit flash, hub card + docs, pushed
 - 2026-11-08 07:10 — Tide Pool Tapper 2b: difficulty curve eased + swipe-flick 2x bonus (verified headless); next = juice/polish, hub card, deploy
 - 2026-11-08 07:08 — Playtested Tide Pool Tapper live at 375x667 (taps, combo, game-over, replay): no errors; next = difficulty tune + flick bonus
 - 2026-11-08 07:05 — Built Tide Pool Tapper scaffold (games/tide-pool-tapper); syntax OK, start screen verified at 375x667; next = playtest/render in-game

@@ -11,6 +11,7 @@
 | 4 | [Passover Breaker](games/passover-breaker/) | Passover-themed brick-breaker | Playable |
 | 5 | [Mila Beli Mila](games/mila-beli-mila/) | Hebrew word-guessing party game | WIP (v3.3 fixes pending) |
 | 6 | [Redefine Rescue](games/redefine-rescue/) | Cow-rescue game | Playable |
+| 7 | [Tide Pool Tapper](games/tide-pool-tapper/) | Tap stranded critters, dodge urchins | Playable |
 
 ## Deployment
 

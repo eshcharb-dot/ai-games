@@ -58,7 +58,7 @@ window.addEventListener('resize',resize);resize();
 
 var $=function(i){return document.getElementById(i)};
 var KINDS=[{e:'🦀',p:10},{e:'⭐',p:10},{e:'🐌',p:15},{e:'🦔',bad:1},{e:'✨',gold:1,p:50}];
-var st,critters,parts,floats,shake,best=+(localStorage.getItem('tpt_best')||0);
+var st,critters,parts,floats,shake,flash=0,best=+(localStorage.getItem('tpt_best')||0);
 
 // Web Audio blips
 var ac=null;
@@ -80,7 +80,7 @@ function burst(x,y,c){for(var i=0;i<12;i++){var a=Math.random()*6.28,v=60+Math.r
  parts.push({x:x,y:y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-40,l:.6,c:c})}}
 function hit(c,flick){
  if(c.fly)return;
- if(c.k.bad){st.combo=0;if(st.shield){st.shield=0}else{st.lives--}shake=.3;blip(110,.25,'sawtooth');burst(c.x,c.y,'#444');c.fly=-1;
+ if(c.k.bad){st.combo=0;if(st.shield){st.shield=0}else{st.lives--}shake=.3;flash=.3;blip(110,.25,'sawtooth');burst(c.x,c.y,'#444');c.fly=-1;
   floats.push({x:c.x,y:c.y,t:'ouch!',l:.7})}
  else{st.combo++;var m=Math.min(st.combo,10),p=c.k.p*m*(flick?2:1);st.score+=p;if(c.k.gold)st.shield=1;
   c.fly=1;blip(440+st.combo*40,.12,'triangle');burst(c.x,c.y,c.k.gold?'#ffd23f':'#fff');floats.push({x:c.x,y:c.y,t:(flick?'flick! +':'+')+p,l:.7})}
@@ -120,14 +120,14 @@ function frame(ts){
  }
  parts.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=300*dt;p.l-=dt});parts=parts.filter(function(p){return p.l>0});
  floats.forEach(function(f){f.y-=40*dt;f.l-=dt});floats=floats.filter(function(f){return f.l>0});
- shake=Math.max(0,shake-dt);
+ shake=Math.max(0,shake-dt);flash=Math.max(0,flash-dt);
  draw(ts/1000);requestAnimationFrame(frame)}
 
 function draw(t){
  ctx.save();ctx.clearRect(0,0,W,H);
  if(shake>0)ctx.translate((Math.random()-.5)*10*shake*4,(Math.random()-.5)*10*shake*4);
  // sandy ground texture + tide pool at top (water recedes as time passes)
- var tide=st&&st.run?Math.min(H*.2,H*.08+Math.sin(t*.8)*H*.04+H*.04):H*.12;
+ var tide=st&&st.run?Math.min(H*.3,H*.1+(3-st.lives)*H*.05+Math.sin(t*.8)*H*.03):H*.12;
  for(var L=0;L<3;L++){ctx.beginPath();ctx.moveTo(0,0);
   for(var x=0;x<=W;x+=10)ctx.lineTo(x,tide+L*14+Math.sin(x*.03+t*(1.2+L*.4)+L)*10);
   ctx.lineTo(W,0);ctx.closePath();ctx.fillStyle=['rgba(14,90,115,.95)','rgba(40,150,170,.6)','rgba(150,230,240,.35)'][L];ctx.fill()}
@@ -141,6 +141,7 @@ function draw(t){
  parts.forEach(function(p){ctx.globalAlpha=Math.max(p.l/.6,0);ctx.fillStyle=p.c;ctx.fillRect(p.x-3,p.y-3,6,6)});ctx.globalAlpha=1;
  ctx.font='700 28px Fredoka,sans-serif';ctx.fillStyle='#fff';ctx.strokeStyle='#2a1633';ctx.lineWidth=4;
  floats.forEach(function(f){ctx.globalAlpha=Math.min(f.l/.4,1);ctx.strokeText(f.t,f.x,f.y);ctx.fillText(f.t,f.x,f.y)});
+ if(flash>0){ctx.fillStyle='rgba(220,40,40,'+Math.min(flash*1.2,.5)+')';ctx.fillRect(0,0,W,H)}
  ctx.restore()}
 
 function start(){$('start').classList.add('hide');$('over').classList.add('hide');reset();blip(520,.1,'triangle')}
