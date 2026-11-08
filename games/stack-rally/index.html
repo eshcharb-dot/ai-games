@@ -96,7 +96,7 @@ function update(dt){
  S.vx=(S.x-px)/dt;
  S.accel=(S.vx-S.pvx)/Math.max(dt,.001);S.pvx=S.vx;
  // inverted pendulum: moving the cart toward the lean pushes it back upright
- const h=1+S.n*.12;
+ const h=1+Math.min(S.n,14)*.1;
  S.leanV+=(S.lean*1.2*h+S.curve*.35*h-S.vx*.04)*dt;
  S.leanV*=Math.pow(.38,dt);
  S.lean+=S.leanV*dt;
