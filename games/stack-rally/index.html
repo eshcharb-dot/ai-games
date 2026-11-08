@@ -60,7 +60,7 @@ let S;
 let best=+localStorage.getItem('stackrally_best')||0;
 let targetX=0,keys={};
 function reset(){
- S={run:false,t:0,score:0,x:W/2,vx:0,pvx:0,accel:0,n:2,lean:0,leanV:0,items:[],parts:[],dist:0,shake:0,spawn:0,curve:0,over:false};
+ S={run:false,t:0,score:0,x:W/2,vx:0,pvx:0,accel:0,n:2,lean:0,leanV:0,items:[],parts:[],pops:[],combo:0,dist:0,shake:0,spawn:0,curve:0,over:false};
  targetX=W/2;
 }
 reset();
@@ -98,7 +98,7 @@ function update(dt){
  // inverted pendulum: moving the cart toward the lean pushes it back upright
  const h=1+S.n*.12;
  S.leanV+=(S.lean*1.2*h+S.curve*.35*h-S.vx*.04)*dt;
- S.leanV*=Math.pow(.5,dt);
+ S.leanV*=Math.pow(.38,dt);
  S.lean+=S.leanV*dt;
  if(Math.abs(S.lean)>0.75){burst(S.x,H-140,'#c98a4b',24);end();return}
  S.spawn-=dt;
@@ -108,11 +108,12 @@ function update(dt){
  const cy=H-110;
  for(const it of S.items){it.y+=speed*dt;
   if(!it.dead&&Math.abs(it.x-S.x)<44&&Math.abs(it.y-cy)<34){it.dead=true;
-   if(it.bad){S.leanV+=(it.x<S.x?1:-1)*(.6+S.n*.03);S.shake=.6;S.n=Math.max(1,S.n-1);burst(it.x,it.y,'#ff4d3a');beep(150,.2,'sawtooth')}
-   else{S.n++;S.score+=25;burst(it.x,it.y,'#ffc400');beep(660+S.n*20,.08)}}}
+   if(it.bad){S.leanV+=(it.x<S.x?1:-1)*(.6+S.n*.03);S.shake=.6;S.combo=0;S.n=Math.max(1,S.n-1);burst(it.x,it.y,'#ff4d3a');beep(150,.2,'sawtooth')}
+   else{S.n++;S.combo++;const b=25+Math.min(S.combo,10)*5;S.score+=b;burst(it.x,it.y,'#ffc400');beep(660+Math.min(S.combo,12)*30,.08);S.pops.push({x:it.x,y:it.y,t:0,s:'+'+b+(S.combo>1?' x'+S.combo:'')})}}}
  S.items=S.items.filter(i=>!i.dead&&i.y<H+40);
  for(const p of S.parts){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=700*dt;p.l-=dt}
  S.parts=S.parts.filter(p=>p.l>0);
+ for(const o of S.pops)o.t+=dt;S.pops=S.pops.filter(o=>o.t<.8);
 }
 
 function crate(x,y,s,rot,col){ctx.save();ctx.translate(x,y);ctx.rotate(rot);ctx.fillStyle=col;ctx.fillRect(-s/2,-s/2,s,s);
@@ -122,6 +123,8 @@ function draw(){
  ctx.save();
  if(S.shake>0){ctx.translate((Math.random()-.5)*12*S.shake,(Math.random()-.5)*12*S.shake)}
  const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#1d2a3a');g.addColorStop(1,'#2b2f3a');ctx.fillStyle=g;ctx.fillRect(-20,-20,W+40,H+40);
+ ctx.fillStyle='rgba(255,255,255,.07)';for(let i=-1;i<12;i++){const y=((i*110+S.dist*.5)%1210)-60;ctx.fillRect(6,y,6,50);ctx.fillRect(W-12,y,6,50)}
+ ctx.fillStyle='rgba(255,196,0,.12)';for(let i=-1;i<8;i++){const y=((i*170+S.dist*.9)%1360)-90;ctx.fillRect(0,y,18,18);ctx.fillRect(W-18,y,18,18)}
  ctx.strokeStyle='rgba(255,196,0,.7)';ctx.lineWidth=6;ctx.setLineDash([36,36]);ctx.lineDashOffset=-(S.dist%72);
  for(const f of [.25,.5,.75]){ctx.beginPath();for(let y=0;y<=H;y+=20){const bend=S.curve*Math.pow(1-y/H,2)*60;ctx.lineTo(W*f+bend,y)}ctx.stroke()}
  ctx.setLineDash([]);
@@ -138,6 +141,7 @@ function draw(){
   ctx.restore()}
  const mx=W/2,my=H-26;ctx.fillStyle='rgba(255,255,255,.15)';ctx.fillRect(mx-80,my,160,8);
  const m=Math.max(-1,Math.min(1,S.lean/.75));ctx.fillStyle=Math.abs(m)>.7?'#ff4d3a':'#ffc400';ctx.fillRect(mx-4+m*76,my-4,8,16);
+ ctx.font='20px Bungee, sans-serif';for(const o of S.pops){ctx.globalAlpha=1-o.t/.8;ctx.fillStyle='#fff';ctx.fillText(o.s,o.x,o.y-o.t*70)}
  for(const p of S.parts){ctx.globalAlpha=Math.max(0,p.l/.6);ctx.fillStyle=p.c;ctx.fillRect(p.x-3,p.y-3,6,6)}
  ctx.globalAlpha=1;
  ctx.restore();
