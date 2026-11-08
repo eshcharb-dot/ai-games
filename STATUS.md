@@ -32,7 +32,8 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Stack Rally cycle 1 (Q-004 = C): DONE 2026-11-08 — 2D canvas scaffold games/stack-rally (drag steer, inverted-pendulum lean, crates/hazards, audio, game over, hub card); node --check OK; physics tuned via sim (idle falls ~3s, controlled bot survives 90s); start screen rendered. In-game not yet driven in Chrome.
 - [x] Stack Rally cycle 2: DONE 2026-11-08 — drove real touch input via headless Chrome CDP (driver /tmp/drv/run4.js): start→play→crash→game-over→replay all work, no JS errors, no overflow at 375x667, again btn 64px. A PD-control bot (lean + leanV) survives 33s; P-only bot dies in 4-8s (steering needs damping — maybe too twitchy for humans; consider softening). Crate count grows slowly (n=4 after 33s).
 - [x] Stack Rally cycle 3a: DONE 2026-11-08 18:15 — combo streak bonus + floating score popups, roadside parallax, softer lean damping (.5->.38); node --check OK, CDP playtest passes (bot 33s, 10 crates, no errors/overflow).
-- [ ] Stack Rally cycle 3b: difficulty curve check, human-feel steering review, optional daily seed, then mark Playable in hub/docs + verify live URL.
+- [x] Stack Rally cycle 3b: DONE 2026-11-08 18:30 — capped lean height gain (n<=14), CDP playtest clean, marked Playable in hub/README/CLAUDE.md, pushed, live URL 200.
+- [ ] Stack Rally cycle 4 (optional): human-feel tuning after owner playtest (Q-PR004-005); optional daily seed.
 - [ ] Await Tide Pool Tapper feedback from owner (coming later).
 - [ ] Optional polish: root font 18px audit (see above).
 
@@ -48,7 +49,10 @@ _Maintained by the Conductor. Agents update this every cycle._
 
 - [x] Q-PR004-004 (low): Tide Pool Tapper is live at https://eshcharb-dot.github.io/ai-games/games/tide-pool-tapper/ — playtest on your phone; want changes, or start the next concept (B Lantern Heist / C Stack Rally)? Recommend: send feedback, then C (shorter).
 
+- [ ] Q-PR004-005 (low): Stack Rally is live at https://eshcharb-dot.github.io/ai-games/games/stack-rally/ — playtest on phone; steering too twitchy/easy/hard? Or start Lantern Heist (B)? Recommend: send feedback, then B.
+
 ## Run Log
+- 2026-11-08 18:30 — Stack Rally 3b: lean-height cap, marked Playable, pushed, live 200; asked Q-PR004-005
 - 2026-11-08 18:15 — Stack Rally 3a: combo/popups/parallax/softer damping added; CDP playtest clean; next = difficulty + mark Playable
 - 2026-11-08 18:08 — Stack Rally 2: real touch-driven playtest in headless Chrome at 375x667 passes (no errors/overflow); PD bot survives 33s; next = juice + difficulty tune
 - 2026-11-08 18:05 — Built Stack Rally scaffold (2D), physics tuned by sim, hub card + docs added; next = drive in-game in headless Chrome
