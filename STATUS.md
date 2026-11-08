@@ -28,7 +28,8 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Tide Pool Tapper cycle 2a: DONE 2026-11-08 — drove real gameplay via Chrome DevTools (node WebSocket): taps score + combo (465 pts, x9), idle drains 3 lives -> game-over shows score/best, Play again resets (64px btn), no JS errors, no overflow at 375x667, screenshots good. Urchin-hit path not exercised live.
 - [x] Tide Pool Tapper cycle 2b: DONE 2026-11-08 — gentler curve (spawn 1.4-0.009t floor .55s, life 3.8-0.015t floor 1.9s), swipe-flick bonus (2x pts on safe critters, urchins ignored; canvas touch-action:none), syntax OK, flick verified with synthetic pointer sweep in headless Chrome (score registered, no errors). Urchin tap live + HUD sliver not re-checked.
 - [x] Tide Pool Tapper cycle 3: DONE 2026-11-08 — urchin tap verified live (lives 3->2, red flash, combo reset), tide now rises with lost lives + red hit flash, hub card added, CLAUDE.md/README tables updated, pushed.
-- [ ] Verify Tide Pool Tapper live URL returns 200 after Pages deploy; then ask owner for playtest feedback on all games.
+- [x] Verify Tide Pool Tapper live URL: DONE 2026-11-08 — game URL 200, hub shows Tide card.
+- [ ] Await owner playtest feedback / next-game pick (Q-PR004-004).
 - [ ] Optional polish: root font 18px audit (see above).
 
 ## Blockers
@@ -41,7 +42,10 @@ _Maintained by the Conductor. Agents update this every cycle._
 
 - [x] Q-PR004-003 (normal): Which next game should we build? (A) Tide Pool Tapper ~6 cycles, (B) Lantern Heist ~9, (C) Stack Rally ~5-8 — see docs/NEXT-GAMES.md. Recommendation: A.
 
+- [ ] Q-PR004-004 (low): Tide Pool Tapper is live at https://eshcharb-dot.github.io/ai-games/games/tide-pool-tapper/ — playtest on your phone; want changes, or start the next concept (B Lantern Heist / C Stack Rally)? Recommend: send feedback, then C (shorter).
+
 ## Run Log
+- 2026-11-08 07:12 — Verified Tide Pool Tapper live (200) + hub card deployed; asked Q-PR004-004 for playtest feedback
 - 2026-11-08 07:11 — Tide Pool Tapper 3: urchin tap verified, tide-rises-with-lives + hit flash, hub card + docs, pushed
 - 2026-11-08 07:10 — Tide Pool Tapper 2b: difficulty curve eased + swipe-flick 2x bonus (verified headless); next = juice/polish, hub card, deploy
 - 2026-11-08 07:08 — Playtested Tide Pool Tapper live at 375x667 (taps, combo, game-over, replay): no errors; next = difficulty tune + flick bonus
