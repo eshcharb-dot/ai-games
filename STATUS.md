@@ -26,8 +26,8 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [ ] Optional polish: root font 18px — investigated 2026-11-06: redefine-rescue uses px (1 rem, nothing to scale); exodus-v3 has 148 rem uses so a root change rescales ~12% everywhere and needs a rendered 375x667 re-audit first. Skipped; low priority.
 - [x] Tide Pool Tapper cycle 1: DONE 2026-11-08 — scaffold games/tide-pool-tapper/index.html (tap loop, combo, lives, urchin decoys, golden shield, audio, particles); node --check OK, start screen rendered at 375x667 clean. In-game/game-over screens not yet rendered/played.
 - [x] Tide Pool Tapper cycle 2a: DONE 2026-11-08 — drove real gameplay via Chrome DevTools (node WebSocket): taps score + combo (465 pts, x9), idle drains 3 lives -> game-over shows score/best, Play again resets (64px btn), no JS errors, no overflow at 375x667, screenshots good. Urchin-hit path not exercised live.
-- [ ] Tide Pool Tapper cycle 2b: tune difficulty (spawn/life curve), add swipe-flick bonus, verify urchin tap (lives-1/shield) live; minor: red sliver at HUD right edge during screen shake.
-- [ ] Tide Pool Tapper cycle 3: juice/polish (wave drain mechanic tied to gameplay), then add hub card + deploy.
+- [x] Tide Pool Tapper cycle 2b: DONE 2026-11-08 — gentler curve (spawn 1.4-0.009t floor .55s, life 3.8-0.015t floor 1.9s), swipe-flick bonus (2x pts on safe critters, urchins ignored; canvas touch-action:none), syntax OK, flick verified with synthetic pointer sweep in headless Chrome (score registered, no errors). Urchin tap live + HUD sliver not re-checked.
+- [ ] Tide Pool Tapper cycle 3: juice/polish (wave drain mechanic tied to gameplay), verify urchin tap live, then add hub card + deploy.
 
 ## Blockers
 - none
@@ -40,6 +40,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Q-PR004-003 (normal): Which next game should we build? (A) Tide Pool Tapper ~6 cycles, (B) Lantern Heist ~9, (C) Stack Rally ~5-8 — see docs/NEXT-GAMES.md. Recommendation: A.
 
 ## Run Log
+- 2026-11-08 07:10 — Tide Pool Tapper 2b: difficulty curve eased + swipe-flick 2x bonus (verified headless); next = juice/polish, hub card, deploy
 - 2026-11-08 07:08 — Playtested Tide Pool Tapper live at 375x667 (taps, combo, game-over, replay): no errors; next = difficulty tune + flick bonus
 - 2026-11-08 07:05 — Built Tide Pool Tapper scaffold (games/tide-pool-tapper); syntax OK, start screen verified at 375x667; next = playtest/render in-game
 - 2026-11-08 06:53 — Acted on owner decisions: deleted exodus-arena-v2, task.txt, mila test.html; removed ea-55b33e6f hub card; docs tables updated; next = build Tide Pool Tapper
