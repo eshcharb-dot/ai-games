@@ -396,7 +396,10 @@ function moveGuards(){
     var ni;if(G[k].mode==='loop')ni=(g.i+1)%n;
     else{ni=g.i+g.d;if(ni<0||ni>=n){g.d=-g.d;ni=g.i+g.d;}}
     g.fx=sgn(P[ni][0]-P[g.i][0]);g.fy=sgn(P[ni][1]-P[g.i][1]);g.i=ni;}}
-function catchThief(){caught=true;flash=1;shake=10;
+var AC=null;
+function tone(f,d,t,v,f2){try{if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime;o.type=t||'sine';o.frequency.setValueAtTime(f,n);if(f2)o.frequency.exponentialRampToValueAtTime(f2,n+d);g.gain.setValueAtTime(v||.08,n);g.gain.exponentialRampToValueAtTime(.001,n+d);o.connect(g);g.connect(AC.destination);o.start(n);o.stop(n+d);}catch(e){}}
+function sfx(k){if(k==='step')tone(180,.06,'triangle',.05);else if(k==='bump')tone(90,.09,'square',.04);else if(k==='gem'){tone(660,.12,'sine',.08);setTimeout(function(){tone(990,.2,'sine',.08);},90);}else if(k==='caught')tone(300,.45,'sawtooth',.07,60);else if(k==='win'){[523,659,784,1047].forEach(function(f,i){setTimeout(function(){tone(f,.22,'sine',.08);},i*110);});}}
+function catchThief(){sfx('caught');caught=true;flash=1;shake=10;
   document.getElementById('mh').textContent='SPOTTED';document.getElementById('mp').textContent='Undo or restart';
   setTimeout(function(){if(caught)msg.classList.add('on');},450);}
 function updateInfo(){info.textContent='Steps '+state.steps+' / par '+LEVELS[lvl].par+(state.gem?'  ◆':'');}
@@ -404,10 +407,11 @@ function blocked(x,y){return opaque(x,y);}
 function step(dx,dy){
   if(over||caught)return;
   var nx=state.x+dx,ny=state.y+dy;
-  if(!(dx===0&&dy===0)&&blocked(nx,ny)){shake=6;return;}
+  if(!(dx===0&&dy===0)&&blocked(nx,ny)){shake=6;sfx('bump');return;}
   stack.push(snap());state.x=nx;state.y=ny;state.steps++;
   var c=grid[ny][nx];
-  if(c==='G'&&!state.gem){state.gem=true;grid[ny][nx]='.';burst(nx,ny,'#ffd76a');}
+  if(c==='G'&&!state.gem){state.gem=true;sfx('gem');grid[ny][nx]='.';burst(nx,ny,'#ffd76a');}
+  if(!(c==='G'))sfx('step');
   updateInfo();
   if(c==='E'&&state.gem){win();return;}
   moveGuards();
@@ -418,7 +422,7 @@ function undo(){if(over||!stack.length)return;state=stack.pop();caught=false;msg
   if(!state.gem){var L=LEVELS[lvl];for(var y=0;y<ROWS;y++)for(var x=0;x<COLS;x++)if(L.map[y][x]==='G')grid[y][x]='G';}
   updateInfo();}
 function win(){
-  over=true;var L=LEVELS[lvl],s=state.steps<=L.par?3:state.steps<=L.par+3?2:1;
+  over=true;sfx('win');var L=LEVELS[lvl],s=state.steps<=L.par?3:state.steps<=L.par+3?2:1;
   if(!prog[lvl]||prog[lvl].s<s||(prog[lvl].s===s&&state.steps<prog[lvl].b))prog[lvl]={s:s,b:state.steps};saveProg();
   burst(state.x,state.y,'#4fe3c1');
   document.getElementById('mh').textContent='ESCAPED';
