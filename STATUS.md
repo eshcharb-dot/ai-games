@@ -5,11 +5,13 @@ _Maintained by the Conductor. Agents update this every cycle._
 **Phase:** Deployed-but-unverified / cleanup — 6 game folders exist, hub and docs are stale   **Tracker status:** In Progress
 
 ## Today's Goals
-- Write `docs/NEXT-GAMES.md`: 3 original next-game concepts (one paragraph each: core loop, mobile controls, effort in cycles) and add Q-PR004-003 asking the owner to pick one — turns the vague "decide what to build next" step into a yes/no.
-- Cosmetic: update the mila-beli-mila welcome label from v3.3 to v4; commit and push.
-- Render the arcade hub `games/index.html` at 375x667 (overflow, tap-target sizes, card links all 200) and fix any issues found.
+- Write `docs/LANTERN-HEIST-SPEC.md`: core loop, one-thumb controls at 375x667, art and audio approach, and a cycle-by-cycle build plan. Build can then start the moment the owner picks B on Q-PR004-005. No game code yet.
+- Stack Rally: add a localStorage best score plus an optional daily-seed mode. CDP playtest at 375x667, push, check the live URL returns 200.
+- Root-font 18px audit for exodus-arena-v3: render 375x667 at 16px vs 18px and record the overflow/clipping diff. Apply only if clean; otherwise close the step as won't-fix.
 
 ## Next Steps
+- [ ] (2026-11-09) docs/LANTERN-HEIST-SPEC.md (design only, build waits on Q-PR004-005).
+- [ ] (2026-11-09) Stack Rally best score + daily seed; playtest, push, verify live.
 - [x] (2026-11-07) Write `docs/NEXT-GAMES.md`: DONE 2026-11-07, Q-PR004-003 asked.
 - [x] (2026-11-07) mila-beli-mila welcome label v3.3 -> v4: DONE 2026-11-07 10:10.
 - [x] (2026-11-07) 375x667 render audit of arcade hub: DONE 10:20 — no horizontal overflow, 5 cards 328x230-252px (tap targets fine), no title clipping, all 5 card hrefs resolve to existing index.html; hub scrolls vertically (list page, not game flow) — no fix needed.
