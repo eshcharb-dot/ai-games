@@ -56,6 +56,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [ ] Q-PR004-005 (low): Stack Rally is live at https://eshcharb-dot.github.io/ai-games/games/stack-rally/ — playtest on phone; steering too twitchy/easy/hard? Or start Lantern Heist (B)? Recommend: send feedback, then B.
 
 ## Run Log
+- 2026-11-09 07:07 — Re-verified live: root, hub, stack-rally (daily mode deployed), exodus-v3 all 200; no actionable step, waiting on Q-PR004-005
 - 2026-11-09 07:07 — Verified exodus-v3 live: 200 and 18px root deployed; idle until Q-PR004-005 answered
 - 2026-11-09 07:20 — exodus-v3 root font 16->18px applied (16/18 render diff clean), pushed
 - 2026-11-09 07:10 — Stack Rally daily-seed mode added + pushed; next = 18px root-font audit for exodus-v3 (or wait on Q-PR004-005)
