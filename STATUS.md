@@ -42,7 +42,9 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Lantern Heist cycle 4: DONE 2026-11-09 09:50 — levels 3-10 added (pillars, 2-3 guards, loops); tools/lh-solve.js BFS (state=pos,gem,guard phase) confirms all 10 solvable and par = optimal; node --check OK. Not played visually; level-select grid only shows 10 of 30 slots.
 - [x] Lantern Heist cycle 5a: DONE 2026-11-09 09:40 — levels 11-20 generated via new tools/lh-gen.js (seeded random + BFS-validated, par=optimal, 2-3 guards); lh-solve.js now exports solve(); node --check OK. Not played visually.
 - [x] Lantern Heist cycle 5b: DONE 2026-11-09 09:45 — levels 21-30 generated (seed 777, 3 guards, par 22-30, BFS-validated) and appended; 30 levels total; node --check OK. Not played visually.
-- [ ] Lantern Heist cycles 6-9 per spec: visual pass at true 375x667 emulation (level select + LEVELS button), audio, hub card, CDP playtest, push.
+- [x] Lantern Heist cycle 6: DONE 2026-11-09 09:30 — true 375x667 CDP render of play + level select: no overflow, no JS errors, layout clean; Web Audio sfx (step/bump/gem/caught/win) added; hub card added (New); pushed.
+- [ ] Lantern Heist cycle 7: CDP-drive a full level win (BFS route from tools/lh-solve.js) + caught path + level-select unlock render; check live URL 200; then mark Playable in README/CLAUDE.md tables.
+- [ ] Lantern Heist cycle 8: juice pass (lantern glow/flicker, guard cone shading, transitions), eyeball difficulty of levels 11-30.
 - [ ] Await Tide Pool Tapper feedback from owner (coming later).
 - [x] Root font 18px exodus-v3: DONE 2026-11-09 07:20 — 375x667 harness at 16 vs 18px (title, HUD, instructions, pause, level-up, trivia forced visible): identical, no overflow; applied html{font-size:18px}; JS OK. Not live-played after change.
 - [x] Verify exodus-arena-v3 live: DONE 2026-11-09 07:07 (200, 18px root live). Then idle until Q-PR004-005 answered (if B, start Lantern Heist cycle 1 per docs/LANTERN-HEIST-SPEC.md).
@@ -62,6 +64,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Q-PR004-005 (low): Stack Rally is live at https://eshcharb-dot.github.io/ai-games/games/stack-rally/ — playtest on phone; steering too twitchy/easy/hard? Or start Lantern Heist (B)? Recommend: send feedback, then B.
 
 ## Run Log
+- 2026-11-09 09:30 — Lantern Heist cycle 6: 375x667 render clean, audio sfx + hub card added, pushed; next = CDP full-level win + live check
 - 2026-11-09 09:29 — Lantern Heist cycle 5b: levels 21-30 appended (30 total, BFS-validated); next = visual pass 375x667 + audio + hub card
 - 2026-11-09 09:40 — Lantern Heist cycle 5a: levels 11-20 via tools/lh-gen.js (BFS-validated); next = levels 21-30
 - 2026-11-09 09:26 — Lantern Heist cycle 4: levels 3-10 + tools/lh-solve.js BFS (all solvable, par=optimal); next = levels 11-30
