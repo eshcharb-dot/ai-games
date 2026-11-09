@@ -39,8 +39,8 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Lantern Heist cycle 1: DONE 09:10 — games/lantern-heist engine (6x9 grid, swipe/tap/keys, undo, gem+exit, win screen, particles); node --check OK; headless route test: gem, 14 steps, win, undo OK. Not in hub yet.
 - [x] Lantern Heist cycle 2: DONE 09:35 — guards (pingpong/loop patrol), lantern cone w/ Bresenham LOS (walls/pillars block), SPOTTED overlay + undo/restart, level 2 'Night Watch'; node --check OK; headless test: BFS finds 13-step safe win, caught path detected, moves blocked while caught, undo clears. Not rendered visually yet; not in hub.
 - [x] Lantern Heist cycle 3: DONE 2026-11-09 09:35 — stars saved to localStorage (lh_progress, best per level), level select overlay (5x6 grid, sequential unlock, LEVELS header button), NEXT -> select after last level; node --check OK, stubbed-DOM test: win saves 3★/14 steps, grid renders 30. Not rendered visually yet (select screen + header button need 375x667 check).
-- [ ] Lantern Heist cycle 4: levels 1-10 + BFS solver for solvability/par.
-- [ ] Lantern Heist cycles 5-9 per spec (levels 11-30, visual pass, audio, hub card, CDP playtest at true 375x667 emulation — headless --window-size crops, push).
+- [x] Lantern Heist cycle 4: DONE 2026-11-09 09:50 — levels 3-10 added (pillars, 2-3 guards, loops); tools/lh-solve.js BFS (state=pos,gem,guard phase) confirms all 10 solvable and par = optimal; node --check OK. Not played visually; level-select grid only shows 10 of 30 slots.
+- [ ] Lantern Heist cycle 5: levels 11-30 (use tools/lh-solve.js to set par), then cycles 6-9 per spec (visual pass, audio, hub card, CDP playtest at true 375x667 emulation — headless --window-size crops, push).
 - [ ] Await Tide Pool Tapper feedback from owner (coming later).
 - [x] Root font 18px exodus-v3: DONE 2026-11-09 07:20 — 375x667 harness at 16 vs 18px (title, HUD, instructions, pause, level-up, trivia forced visible): identical, no overflow; applied html{font-size:18px}; JS OK. Not live-played after change.
 - [x] Verify exodus-arena-v3 live: DONE 2026-11-09 07:07 (200, 18px root live). Then idle until Q-PR004-005 answered (if B, start Lantern Heist cycle 1 per docs/LANTERN-HEIST-SPEC.md).
@@ -60,6 +60,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Q-PR004-005 (low): Stack Rally is live at https://eshcharb-dot.github.io/ai-games/games/stack-rally/ — playtest on phone; steering too twitchy/easy/hard? Or start Lantern Heist (B)? Recommend: send feedback, then B.
 
 ## Run Log
+- 2026-11-09 09:26 — Lantern Heist cycle 4: levels 3-10 + tools/lh-solve.js BFS (all solvable, par=optimal); next = levels 11-30
 - 2026-11-09 09:35 — Lantern Heist cycle 3: stars+localStorage+level select, tested headless-stub; next = levels 1-10 + BFS solver
 - 2026-11-09 09:21 — Lantern Heist cycle 2: guards + cone LOS + caught/undo + level 2, headless-tested; next = stars/localStorage/level select
 - 2026-11-09 09:10 — Q-005=B: Lantern Heist cycle 1 engine built + route-tested (not yet hubbed); next = guards + cone LOS
