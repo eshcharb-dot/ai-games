@@ -1,9 +1,9 @@
 // BFS solver for Lantern Heist levels. Usage: node tools/lh-solve.js [file-with-LEVELS=index.html]
 const fs=require('fs');
-const f=process.argv[2]||'games/lantern-heist/index.html';
+const f=(require.main===module&&process.argv[2])||'games/lantern-heist/index.html';
 const src=fs.readFileSync(f,'utf8');
 const m=src.match(/var LEVELS=(\[[\s\S]*?\n\]);/);
-const LEVELS=eval(m[1]);
+const LEVELS=require.main===module?eval(m[1]):[];
 const COLS=6,ROWS=9;
 const sgn=v=>v>0?1:v<0?-1:0;
 function solve(L){
@@ -30,4 +30,5 @@ function solve(L){
       const gs=mv(s.gs);if(seen(nx,ny,gs))continue;
       const k=key(nx,ny,gem,gs);if(vis.has(k))continue;vis.add(k);q.push({x:nx,y:ny,gem,gs,n:s.n+1});}}
   return -1;}
+module.exports={solve};
 LEVELS.forEach((L,i)=>{const s=solve(L);console.log((i+1)+' '+L.name+' par='+L.par+' optimal='+s+(s<0?'  UNSOLVABLE':s!==L.par?'  (par mismatch)':'')); });
