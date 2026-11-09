@@ -41,7 +41,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Lantern Heist cycle 3: DONE 2026-11-09 09:35 — stars saved to localStorage (lh_progress, best per level), level select overlay (5x6 grid, sequential unlock, LEVELS header button), NEXT -> select after last level; node --check OK, stubbed-DOM test: win saves 3★/14 steps, grid renders 30. Not rendered visually yet (select screen + header button need 375x667 check).
 - [x] Lantern Heist cycle 4: DONE 2026-11-09 09:50 — levels 3-10 added (pillars, 2-3 guards, loops); tools/lh-solve.js BFS (state=pos,gem,guard phase) confirms all 10 solvable and par = optimal; node --check OK. Not played visually; level-select grid only shows 10 of 30 slots.
 - [x] Lantern Heist cycle 5a: DONE 2026-11-09 09:40 — levels 11-20 generated via new tools/lh-gen.js (seeded random + BFS-validated, par=optimal, 2-3 guards); lh-solve.js now exports solve(); node --check OK. Not played visually.
-- [ ] Lantern Heist cycle 5b: levels 21-30 (node tools/lh-gen.js <seed> <n> <minPar> <maxPar> <guards>, 3 guards, par 22-32; rename), append to LEVELS.
+- [x] Lantern Heist cycle 5b: DONE 2026-11-09 09:45 — levels 21-30 generated (seed 777, 3 guards, par 22-30, BFS-validated) and appended; 30 levels total; node --check OK. Not played visually.
 - [ ] Lantern Heist cycles 6-9 per spec: visual pass at true 375x667 emulation (level select + LEVELS button), audio, hub card, CDP playtest, push.
 - [ ] Await Tide Pool Tapper feedback from owner (coming later).
 - [x] Root font 18px exodus-v3: DONE 2026-11-09 07:20 — 375x667 harness at 16 vs 18px (title, HUD, instructions, pause, level-up, trivia forced visible): identical, no overflow; applied html{font-size:18px}; JS OK. Not live-played after change.
@@ -62,6 +62,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Q-PR004-005 (low): Stack Rally is live at https://eshcharb-dot.github.io/ai-games/games/stack-rally/ — playtest on phone; steering too twitchy/easy/hard? Or start Lantern Heist (B)? Recommend: send feedback, then B.
 
 ## Run Log
+- 2026-11-09 09:29 — Lantern Heist cycle 5b: levels 21-30 appended (30 total, BFS-validated); next = visual pass 375x667 + audio + hub card
 - 2026-11-09 09:40 — Lantern Heist cycle 5a: levels 11-20 via tools/lh-gen.js (BFS-validated); next = levels 21-30
 - 2026-11-09 09:26 — Lantern Heist cycle 4: levels 3-10 + tools/lh-solve.js BFS (all solvable, par=optimal); next = levels 11-30
 - 2026-11-09 09:35 — Lantern Heist cycle 3: stars+localStorage+level select, tested headless-stub; next = levels 1-10 + BFS solver
