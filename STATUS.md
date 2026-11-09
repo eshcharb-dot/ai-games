@@ -36,7 +36,11 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Stack Rally cycle 3a: DONE 2026-11-08 18:15 — combo streak bonus + floating score popups, roadside parallax, softer lean damping (.5->.38); node --check OK, CDP playtest passes (bot 33s, 10 crates, no errors/overflow).
 - [x] Stack Rally cycle 3b: DONE 2026-11-08 18:30 — capped lean height gain (n<=14), CDP playtest clean, marked Playable in hub/README/CLAUDE.md, pushed, live URL 200.
 - [x] Root URL 404 fix: DONE 2026-11-09 — added root index.html redirecting to games/, pushed, live root now 200.
-- [ ] Stack Rally cycle 4 (optional): human-feel tuning after owner playtest (Q-PR004-005); optional daily seed.
+- [x] Lantern Heist cycle 1: DONE 09:10 — games/lantern-heist engine (6x9 grid, swipe/tap/keys, undo, gem+exit, win screen, particles); node --check OK; headless route test: gem, 14 steps, win, undo OK. Not in hub yet.
+- [ ] Lantern Heist cycle 2: guards + lantern cone LOS (walls/pillars block), caught = restart/undo, headless test of caught + clear path.
+- [ ] Lantern Heist cycle 3: stars + localStorage + level select screen.
+- [ ] Lantern Heist cycle 4: levels 1-10 + BFS solver for solvability/par.
+- [ ] Lantern Heist cycles 5-9 per spec (levels 11-30, visual pass, audio, hub card, CDP playtest at true 375x667 emulation — headless --window-size crops, push).
 - [ ] Await Tide Pool Tapper feedback from owner (coming later).
 - [x] Root font 18px exodus-v3: DONE 2026-11-09 07:20 — 375x667 harness at 16 vs 18px (title, HUD, instructions, pause, level-up, trivia forced visible): identical, no overflow; applied html{font-size:18px}; JS OK. Not live-played after change.
 - [x] Verify exodus-arena-v3 live: DONE 2026-11-09 07:07 (200, 18px root live). Then idle until Q-PR004-005 answered (if B, start Lantern Heist cycle 1 per docs/LANTERN-HEIST-SPEC.md).
@@ -56,6 +60,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Q-PR004-005 (low): Stack Rally is live at https://eshcharb-dot.github.io/ai-games/games/stack-rally/ — playtest on phone; steering too twitchy/easy/hard? Or start Lantern Heist (B)? Recommend: send feedback, then B.
 
 ## Run Log
+- 2026-11-09 09:10 — Q-005=B: Lantern Heist cycle 1 engine built + route-tested (not yet hubbed); next = guards + cone LOS
 - 2026-11-09 08:05 — No actionable step: live URLs (root, hub, stack-rally, tide, exodus-v3) all 200; waiting on Q-PR004-005 + Tide feedback; no code changes
 - 2026-11-09 07:07 — Re-verified live: root, hub, stack-rally (daily mode deployed), exodus-v3 all 200; no actionable step, waiting on Q-PR004-005
 - 2026-11-09 07:07 — Verified exodus-v3 live: 200 and 18px root deployed; idle until Q-PR004-005 answered
