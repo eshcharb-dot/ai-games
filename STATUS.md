@@ -10,7 +10,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - Root-font 18px audit for exodus-arena-v3: render 375x667 at 16px vs 18px and record the overflow/clipping diff. Apply only if clean; otherwise close the step as won't-fix.
 
 ## Next Steps
-- [ ] (2026-11-09) docs/LANTERN-HEIST-SPEC.md (design only, build waits on Q-PR004-005).
+- [x] (2026-11-09) docs/LANTERN-HEIST-SPEC.md: DONE 07:08 (design only; build waits on Q-PR004-005 = B).
 - [ ] (2026-11-09) Stack Rally best score + daily seed; playtest, push, verify live.
 - [x] (2026-11-07) Write `docs/NEXT-GAMES.md`: DONE 2026-11-07, Q-PR004-003 asked.
 - [x] (2026-11-07) mila-beli-mila welcome label v3.3 -> v4: DONE 2026-11-07 10:10.
@@ -55,6 +55,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [ ] Q-PR004-005 (low): Stack Rally is live at https://eshcharb-dot.github.io/ai-games/games/stack-rally/ — playtest on phone; steering too twitchy/easy/hard? Or start Lantern Heist (B)? Recommend: send feedback, then B.
 
 ## Run Log
+- 2026-11-09 07:05 — Wrote docs/LANTERN-HEIST-SPEC.md (loop, controls, art/audio, 9-cycle plan); next = Stack Rally best score + daily seed
 - 2026-11-09 06:57 — No actionable step: live URLs (root, hub, stack-rally, tide, exodus-v3) all 200; waiting on Q-PR004-005 + Tide feedback; no code changes
 - 2026-11-09 06:55 — Root URL was 404; added root index.html redirect to games/, pushed, live 200; other URLs 200; still waiting on Q-PR004-005
 - 2026-11-08 19:05 — Re-verified live URLs (hub, stack-rally, tide-pool, exodus-v3 all 200), pushed pending log commit; still waiting on Q-PR004-005 / Tide feedback
