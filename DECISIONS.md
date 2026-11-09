@@ -8,3 +8,5 @@ _Append-only log of the owner's answers (from Telegram). Newest at the bottom. O
 - 2026-11-07 19:08 — Q-PR004-003: A: build Tide Pool Tapper next.
 
 - 2026-11-08 17:51 — Q-PR004-004: C: build Stack Rally next. Tide Pool Tapper feedback will come later.
+
+- 2026-11-09 08:35 — Q-PR004-005: Feels fine on phone. Keep Stack Rally as is; start Lantern Heist (B).

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Lantern Heist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#0a1226;--bg2:#050813;--amber:#ffb84a;--teal:#4fe3c1;--ink:#e8ecff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+html{font-size:18px}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg2);color:var(--ink);font-family:'Cinzel',Georgia,serif;touch-action:none}
+#app{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:space-between;width:100%;
+  background:radial-gradient(ellipse at 50% 30%,var(--bg1),var(--bg2) 75%)}
+@media(min-width:600px){#app{max-width:480px;left:50%;transform:translateX(-50%)}}
+header{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;white-space:nowrap}
+header .t{font-weight:800;font-size:clamp(.9rem,4.5vw,1.2rem);letter-spacing:.08em;color:var(--amber);text-overflow:ellipsis;overflow:hidden}
+header .s{font-size:clamp(.8rem,4vw,1rem)}
+#wrap{flex:1;display:flex;align-items:center;justify-content:center;min-height:0}
+canvas{display:block}
+.bar{display:flex;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+.bar button{flex:1;min-height:64px;border:2px solid #2a3866;border-radius:14px;background:#111a38;color:var(--ink);
+  font:800 1.1rem 'Cinzel',serif;letter-spacing:.06em;transition:transform .08s,background .15s}
+.bar button:active{transform:scale(.95);background:#1c2a5a}
+#msg{position:absolute;inset:0;display:none;flex-direction:column;justify-content:space-between;align-items:center;
+  padding:18vh 20px 20px;background:rgba(5,8,19,.86);text-align:center}
+#msg.on{display:flex}
+#msg h1{margin:0;font-size:clamp(1.6rem,9vw,2.4rem);color:var(--amber);white-space:nowrap}
+#msg p{margin:.4em 0;font-size:clamp(.9rem,4.5vw,1.1rem);white-space:nowrap}
+#msg button{width:100%;min-height:64px;border:0;border-radius:14px;background:var(--amber);color:#1a1205;font:800 1.2rem 'Cinzel',serif}
+</style>
+</head>
+<body>
+<div id="app">
+  <header><span class="t">LANTERN HEIST</span><span class="s" id="info">Steps 0</span></header>
+  <div id="wrap"><canvas id="c"></canvas></div>
+  <div class="bar"><button id="undo">UNDO</button><button id="restart">RESTART</button></div>
+  <div id="msg"><div><h1 id="mh"></h1><p id="mp"></p></div><button id="mb">NEXT</button></div>
+</div>
+<script>
+(function(){
+'use strict';
+var COLS=6,ROWS=9;
+// Level 1 engine demo. # wall, . floor, T thief, G gem, E exit, P pillar
+var LEVELS=[
+ {name:'First Steps',par:14,map:[
+  '######',
+  '#T...#',
+  '#.##.#',
+  '#.#G.#',
+  '#.##.#',
+  '#....#',
+  '#.##.#',
+  '#E...#',
+  '######']}
+];
+var cv=document.getElementById('c'),ctx=cv.getContext('2d');
+var info=document.getElementById('info'),msg=document.getElementById('msg');
+var T,W,H,dpr,lvl=0,grid,state,stack,over=false,shake=0,parts=[];
+
+function load(i){
+  lvl=i;var L=LEVELS[i];grid=[];var t={x:0,y:0},g=null;
+  for(var y=0;y<ROWS;y++){grid.push([]);for(var x=0;x<COLS;x++){
+    var ch=L.map[y][x];if(ch==='T'){t={x:x,y:y};ch='.';}
+    grid[y].push(ch);}}
+  state={x:t.x,y:t.y,gem:false,steps:0};stack=[];over=false;msg.classList.remove('on');updateInfo();
+}
+function snap(){return {x:state.x,y:state.y,gem:state.gem,steps:state.steps};}
+function updateInfo(){info.textContent='Steps '+state.steps+' / par '+LEVELS[lvl].par+(state.gem?'  ◆':'');}
+function blocked(x,y){if(x<0||y<0||x>=COLS||y>=ROWS)return true;var c=grid[y][x];return c==='#';}
+function step(dx,dy){
+  if(over)return;
+  var nx=state.x+dx,ny=state.y+dy;
+  if(!(dx===0&&dy===0)&&blocked(nx,ny)){shake=6;return;}
+  stack.push(snap());state.x=nx;state.y=ny;state.steps++;
+  var c=grid[ny][nx];
+  if(c==='G'&&!state.gem){state.gem=true;grid[ny][nx]='.';burst(nx,ny,'#ffd76a');}
+  updateInfo();
+  if(c==='E'&&state.gem){win();}
+}
+function undo(){if(over||!stack.length)return;state=stack.pop();
+  // restore gem tile if undone past pickup
+  if(!state.gem){var L=LEVELS[lvl];for(var y=0;y<ROWS;y++)for(var x=0;x<COLS;x++)if(L.map[y][x]==='G')grid[y][x]='G';}
+  updateInfo();}
+function win(){
+  over=true;var L=LEVELS[lvl],s=state.steps<=L.par?3:state.steps<=L.par+3?2:1;
+  burst(state.x,state.y,'#4fe3c1');
+  document.getElementById('mh').textContent='ESCAPED';
+  document.getElementById('mp').textContent=state.steps+' steps  '+'★'.repeat(s)+'☆'.repeat(3-s);
+  setTimeout(function(){msg.classList.add('on');},500);
+}
+function burst(gx,gy,col){for(var i=0;i<22;i++){var a=Math.random()*6.28,v=1+Math.random()*3;
+  parts.push({x:(gx+.5)*T,y:(gy+.5)*T,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:1,c:col});}}
+
+function resize(){
+  var wrap=document.getElementById('wrap'),bw=wrap.clientWidth,bh=wrap.clientHeight;
+  T=Math.floor(Math.min(bw/COLS,bh/ROWS));W=T*COLS;H=T*ROWS;dpr=window.devicePixelRatio||1;
+  cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+'px';cv.style.height=H+'px';
+}
+function draw(now){
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  var sx=shake>0?(Math.random()-.5)*shake:0,sy=shake>0?(Math.random()-.5)*shake:0;if(shake>0)shake-=.5;
+  ctx.save();ctx.translate(sx,sy);
+  ctx.clearRect(-10,-10,W+20,H+20);
+  for(var y=0;y<ROWS;y++)for(var x=0;x<COLS;x++){
+    var c=grid[y][x],px=x*T,py=y*T;
+    if(c==='#'){ctx.fillStyle='#1b2650';ctx.fillRect(px,py,T,T);ctx.fillStyle='#26346a';ctx.fillRect(px+2,py+2,T-4,T-8);}
+    else{ctx.fillStyle=(x+y)%2?'#0e1630':'#101a38';ctx.fillRect(px,py,T,T);}
+    if(c==='E'){ctx.strokeStyle=state.gem?'#4fe3c1':'#3a4a80';ctx.lineWidth=3;ctx.strokeRect(px+6,py+6,T-12,T-12);}
+    if(c==='G'){var p=.8+.2*Math.sin(now/200);ctx.fillStyle='#ffd76a';ctx.beginPath();
+      ctx.moveTo(px+T/2,py+T*.2*p);ctx.lineTo(px+T*.8,py+T/2);ctx.lineTo(px+T/2,py+T*.8);ctx.lineTo(px+T*.2,py+T/2);ctx.fill();}
+  }
+  // thief
+  ctx.fillStyle='#4fe3c1';ctx.beginPath();ctx.arc((state.x+.5)*T,(state.y+.5)*T,T*.3,0,6.28);ctx.fill();
+  ctx.fillStyle='#052a22';ctx.fillRect((state.x+.5)*T-T*.14,(state.y+.5)*T-T*.06,T*.28,T*.08);
+  // particles
+  for(var i=parts.length-1;i>=0;i--){var q=parts[i];q.x+=q.vx;q.y+=q.vy;q.l-=.03;
+    if(q.l<=0){parts.splice(i,1);continue;}
+    ctx.globalAlpha=q.l;ctx.fillStyle=q.c;ctx.fillRect(q.x-2,q.y-2,4,4);}
+  ctx.globalAlpha=1;ctx.restore();
+  requestAnimationFrame(draw);
+}
+// input
+var sp=null;
+cv.addEventListener('pointerdown',function(e){sp={x:e.clientX,y:e.clientY};});
+window.addEventListener('pointerup',function(e){
+  if(!sp)return;var dx=e.clientX-sp.x,dy=e.clientY-sp.y,s=sp;sp=null;
+  if(Math.max(Math.abs(dx),Math.abs(dy))>=24){
+    if(Math.abs(dx)>Math.abs(dy))step(dx>0?1:-1,0);else step(0,dy>0?1:-1);
+  }else{
+    var r=cv.getBoundingClientRect(),tx=Math.floor((s.x-r.left)/T),ty=Math.floor((s.y-r.top)/T);
+    var ax=tx-state.x,ay=ty-state.y;
+    if(ax===0&&ay===0)step(0,0);
+    else if(Math.abs(ax)+Math.abs(ay)===1)step(ax,ay);
+  }
+});
+window.addEventListener('keydown',function(e){
+  var k=e.key.toLowerCase();
+  if(k==='arrowleft'||k==='a')step(-1,0);else if(k==='arrowright'||k==='d')step(1,0);
+  else if(k==='arrowup'||k==='w')step(0,-1);else if(k==='arrowdown'||k==='s')step(0,1);
+  else if(k==='z')undo();else if(k==='r')load(lvl);
+});
+document.getElementById('undo').onclick=undo;
+document.getElementById('restart').onclick=function(){load(lvl);};
+document.getElementById('mb').onclick=function(){load((lvl+1)%LEVELS.length);};
+window.addEventListener('resize',resize);
+resize();load(0);requestAnimationFrame(draw);
+window.__lh={step:step,undo:undo,state:function(){return state;},over:function(){return over;}};
+})();
+</script>
+</body>
+</html>

@@ -53,7 +53,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 
 - [x] Q-PR004-004 (low): Tide Pool Tapper is live at https://eshcharb-dot.github.io/ai-games/games/tide-pool-tapper/ — playtest on your phone; want changes, or start the next concept (B Lantern Heist / C Stack Rally)? Recommend: send feedback, then C (shorter).
 
-- [ ] Q-PR004-005 (low): Stack Rally is live at https://eshcharb-dot.github.io/ai-games/games/stack-rally/ — playtest on phone; steering too twitchy/easy/hard? Or start Lantern Heist (B)? Recommend: send feedback, then B.
+- [x] Q-PR004-005 (low): Stack Rally is live at https://eshcharb-dot.github.io/ai-games/games/stack-rally/ — playtest on phone; steering too twitchy/easy/hard? Or start Lantern Heist (B)? Recommend: send feedback, then B.
 
 ## Run Log
 - 2026-11-09 08:05 — No actionable step: live URLs (root, hub, stack-rally, tide, exodus-v3) all 200; waiting on Q-PR004-005 + Tide feedback; no code changes
