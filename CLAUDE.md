@@ -128,6 +128,7 @@ When adding a new game, update `games/index.html` to add a card with:
 | 6 | redefine-rescue | Redefine Rescue (הצלת הפרות) | Playable |
 | 7 | tide-pool-tapper | Tide Pool Tapper | Playable |
 | 8 | stack-rally | Stack Rally | Playable |
+| 9 | lantern-heist | Lantern Heist | Playable |
 
 ## Installed Skills
 

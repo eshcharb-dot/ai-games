@@ -43,7 +43,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Lantern Heist cycle 5a: DONE 2026-11-09 09:40 — levels 11-20 generated via new tools/lh-gen.js (seeded random + BFS-validated, par=optimal, 2-3 guards); lh-solve.js now exports solve(); node --check OK. Not played visually.
 - [x] Lantern Heist cycle 5b: DONE 2026-11-09 09:45 — levels 21-30 generated (seed 777, 3 guards, par 22-30, BFS-validated) and appended; 30 levels total; node --check OK. Not played visually.
 - [x] Lantern Heist cycle 6: DONE 2026-11-09 09:30 — true 375x667 CDP render of play + level select: no overflow, no JS errors, layout clean; Web Audio sfx (step/bump/gem/caught/win) added; hub card added (New); pushed.
-- [ ] Lantern Heist cycle 7: CDP-drive a full level win (BFS route from tools/lh-solve.js) + caught path + level-select unlock render; check live URL 200; then mark Playable in README/CLAUDE.md tables.
+- [x] Lantern Heist cycle 7: DONE 2026-11-09 09:45 — tools/lh-cdp.js (CDP @375x667): BFS route wins L1 (ESCAPED, 14 steps, 3★, saved to localStorage), NEXT loads L2, guard sight triggers SPOTTED, undo clears overlay, level select shows L2 unlocked, no JS errors/overflow; live URL 200; marked Playable in README/CLAUDE.md; lh-solve.js now exposes solve.path.
 - [ ] Lantern Heist cycle 8: juice pass (lantern glow/flicker, guard cone shading, transitions), eyeball difficulty of levels 11-30.
 - [ ] Await Tide Pool Tapper feedback from owner (coming later).
 - [x] Root font 18px exodus-v3: DONE 2026-11-09 07:20 — 375x667 harness at 16 vs 18px (title, HUD, instructions, pause, level-up, trivia forced visible): identical, no overflow; applied html{font-size:18px}; JS OK. Not live-played after change.
@@ -53,6 +53,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - none
 
 ## Open Questions
+- [ ] Q-PR004-006 (low): Lantern Heist (30 levels) is live at https://eshcharb-dot.github.io/ai-games/games/lantern-heist/ — playtest on phone; too hard/easy, or any changes? Recommend: send feedback, then I do a juice pass.
 - [x] Q-PR004-001 (normal): Which Exodus Arena version should be the public flagship, and should older ones (`exodus-arena-v2`, and the private-URL `ea-55b33e6f`) stay public? Options: (a) v3 public, v2 removed, `ea-55b33e6f` stays private-only; (b) keep all linked as version history. Recommendation: (a).
 
 - [x] Q-PR004-002 (low): OK to delete stale task.txt (repo root) and games/mila-beli-mila/test.html (publicly served test copy with red "UX TEST" banner)? Both are in git history. Recommendation: yes, delete both.
@@ -64,6 +65,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Q-PR004-005 (low): Stack Rally is live at https://eshcharb-dot.github.io/ai-games/games/stack-rally/ — playtest on phone; steering too twitchy/easy/hard? Or start Lantern Heist (B)? Recommend: send feedback, then B.
 
 ## Run Log
+- 2026-11-09 09:32 — Lantern Heist cycle 7: CDP win/caught/undo/unlock all pass, live 200, marked Playable; asked Q-PR004-006; next = juice pass
 - 2026-11-09 09:30 — Lantern Heist cycle 6: 375x667 render clean, audio sfx + hub card added, pushed; next = CDP full-level win + live check
 - 2026-11-09 09:29 — Lantern Heist cycle 5b: levels 21-30 appended (30 total, BFS-validated); next = visual pass 375x667 + audio + hub card
 - 2026-11-09 09:40 — Lantern Heist cycle 5a: levels 11-20 via tools/lh-gen.js (BFS-validated); next = levels 21-30

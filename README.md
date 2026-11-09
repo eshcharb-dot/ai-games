@@ -13,6 +13,7 @@
 | 6 | [Redefine Rescue](games/redefine-rescue/) | Cow-rescue game | Playable |
 | 7 | [Tide Pool Tapper](games/tide-pool-tapper/) | Tap stranded critters, dodge urchins | Playable |
 | 8 | [Stack Rally](games/stack-rally/) | Balance a tower of crates on a winding road | Playable |
+| 9 | [Lantern Heist](games/lantern-heist/) | Stealth puzzle: dodge lantern guards, grab the gem, escape (30 levels) | Playable |
 
 ## Deployment
 
