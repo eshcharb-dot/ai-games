@@ -45,7 +45,8 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Lantern Heist cycle 6: DONE 2026-11-09 09:30 — true 375x667 CDP render of play + level select: no overflow, no JS errors, layout clean; Web Audio sfx (step/bump/gem/caught/win) added; hub card added (New); pushed.
 - [x] Lantern Heist cycle 7: DONE 2026-11-09 09:45 — tools/lh-cdp.js (CDP @375x667): BFS route wins L1 (ESCAPED, 14 steps, 3★, saved to localStorage), NEXT loads L2, guard sight triggers SPOTTED, undo clears overlay, level select shows L2 unlocked, no JS errors/overflow; live URL 200; marked Playable in README/CLAUDE.md; lh-solve.js now exposes solve.path.
 - [x] Lantern Heist cycle 8a: DONE 2026-11-09 10:15 — eased thief/guard movement, radial glow on thief + guard lanterns; node --check OK, lh-cdp.js passes (win/caught/undo/unlock, no errors, no overflow at 375x667).
-- [ ] Lantern Heist cycle 8b: eyeball difficulty of levels 11-30 (par vs. guard count), win-screen star animation; then push and check live URL.
+- [x] Lantern Heist cycle 8b: DONE 2026-11-09 10:12 — win-screen staggered star pop + par shown; node --check OK, lh-cdp passes (no errors). Difficulty: pars are BFS-optimal, 21-30 have 3 guards/par 22-30 — left as is pending owner feedback (Q-PR004-006).
+- [ ] Await Q-PR004-006 feedback on Lantern Heist; then tune difficulty / add more levels or pick next game (see docs/NEXT-GAMES.md).
 - [ ] Await Tide Pool Tapper feedback from owner (coming later).
 - [x] Root font 18px exodus-v3: DONE 2026-11-09 07:20 — 375x667 harness at 16 vs 18px (title, HUD, instructions, pause, level-up, trivia forced visible): identical, no overflow; applied html{font-size:18px}; JS OK. Not live-played after change.
 - [x] Verify exodus-arena-v3 live: DONE 2026-11-09 07:07 (200, 18px root live). Then idle until Q-PR004-005 answered (if B, start Lantern Heist cycle 1 per docs/LANTERN-HEIST-SPEC.md).
@@ -66,6 +67,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Q-PR004-005 (low): Stack Rally is live at https://eshcharb-dot.github.io/ai-games/games/stack-rally/ — playtest on phone; steering too twitchy/easy/hard? Or start Lantern Heist (B)? Recommend: send feedback, then B.
 
 ## Run Log
+- 2026-11-09 10:12 — Lantern Heist 8b: win-screen star pop animation + par display, CDP clean, pushed; waiting on Q-PR004-006
 - 2026-11-09 10:05 — Lantern Heist 8a: smooth movement + glow juice, CDP playtest clean; next = difficulty eyeball + star anim
 - 2026-11-09 09:32 — Lantern Heist cycle 7: CDP win/caught/undo/unlock all pass, live 200, marked Playable; asked Q-PR004-006; next = juice pass
 - 2026-11-09 09:30 — Lantern Heist cycle 6: 375x667 render clean, audio sfx + hub card added, pushed; next = CDP full-level win + live check

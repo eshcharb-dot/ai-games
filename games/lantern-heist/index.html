@@ -26,6 +26,8 @@ canvas{display:block}
 #msg{position:absolute;inset:0;display:none;flex-direction:column;justify-content:space-between;align-items:center;
   padding:18vh 20px 20px;background:rgba(5,8,19,.86);text-align:center}
 #msg.on{display:flex}
+.st{display:inline-block;opacity:0;animation:stpop .45s cubic-bezier(.2,1.6,.4,1) forwards}.st.on{color:var(--amber);font-size:1.5em}
+@keyframes stpop{0%{opacity:0;transform:scale(.2) rotate(-40deg)}100%{opacity:1;transform:none}}
 #msg h1{margin:0;font-size:clamp(1.6rem,9vw,2.4rem);color:var(--amber);white-space:nowrap}
 #msg p{margin:.4em 0;font-size:clamp(.9rem,4.5vw,1.1rem);white-space:nowrap}
 #msg button{width:100%;min-height:64px;border:0;border-radius:14px;background:var(--amber);color:#1a1205;font:800 1.2rem 'Cinzel',serif}
@@ -426,7 +428,8 @@ function win(){
   if(!prog[lvl]||prog[lvl].s<s||(prog[lvl].s===s&&state.steps<prog[lvl].b))prog[lvl]={s:s,b:state.steps};saveProg();
   burst(state.x,state.y,'#4fe3c1');
   document.getElementById('mh').textContent='ESCAPED';
-  document.getElementById('mp').textContent=state.steps+' steps  '+'★'.repeat(s)+'☆'.repeat(3-s);
+  var mp=document.getElementById('mp');mp.textContent=state.steps+' steps (par '+L.par+')  ';
+  for(var i=0;i<3;i++){var sp=document.createElement('span');sp.className='st'+(i<s?' on':'');sp.textContent=i<s?'★':'☆';sp.style.animationDelay=(0.5+i*0.18)+'s';mp.appendChild(sp);}
   setTimeout(function(){msg.classList.add('on');},500);
 }
 function burst(gx,gy,col){for(var i=0;i<22;i++){var a=Math.random()*6.28,v=1+Math.random()*3;
