@@ -53,33 +53,73 @@ var LEVELS=[
   '#....#',
   '#.##.#',
   '#E...#',
+  '######']},
+ {name:'Night Watch',par:13,guards:[{path:[[1,4],[2,4],[3,4],[4,4]],mode:'pp'}],map:[
+  '######',
+  '#T...#',
+  '#....#',
+  '#....#',
+  '#....#',
+  '#....#',
+  '#G...#',
+  '#...E#',
   '######']}
 ];
 var cv=document.getElementById('c'),ctx=cv.getContext('2d');
 var info=document.getElementById('info'),msg=document.getElementById('msg');
-var T,W,H,dpr,lvl=0,grid,state,stack,over=false,shake=0,parts=[];
+var T,W,H,dpr,lvl=0,grid,state,stack,over=false,caught=false,flash=0,shake=0,parts=[];
 
 function load(i){
   lvl=i;var L=LEVELS[i];grid=[];var t={x:0,y:0},g=null;
   for(var y=0;y<ROWS;y++){grid.push([]);for(var x=0;x<COLS;x++){
     var ch=L.map[y][x];if(ch==='T'){t={x:x,y:y};ch='.';}
     grid[y].push(ch);}}
-  state={x:t.x,y:t.y,gem:false,steps:0};stack=[];over=false;msg.classList.remove('on');updateInfo();
+  var gs=(L.guards||[]).map(function(g){var n=g.path.length;return {i:0,d:1,fx:n>1?sgn(g.path[1][0]-g.path[0][0]):0,fy:n>1?sgn(g.path[1][1]-g.path[0][1]):1};});
+  state={x:t.x,y:t.y,gem:false,steps:0,gs:gs};stack=[];over=false;caught=false;flash=0;msg.classList.remove('on');updateInfo();
 }
-function snap(){return {x:state.x,y:state.y,gem:state.gem,steps:state.steps};}
+function sgn(v){return v>0?1:v<0?-1:0;}
+function snap(){return {x:state.x,y:state.y,gem:state.gem,steps:state.steps,gs:state.gs.map(function(g){return {i:g.i,d:g.d,fx:g.fx,fy:g.fy};})};}
+function opaque(x,y){if(x<0||y<0||x>=COLS||y>=ROWS)return true;var c=grid[y][x];return c==='#'||c==='P';}
+function gpos(k){var g=state.gs[k],p=LEVELS[lvl].guards[k].path[g.i];return {x:p[0],y:p[1]};}
+function los(x0,y0,x1,y1){
+  var dx=Math.abs(x1-x0),dy=Math.abs(y1-y0),sx=x0<x1?1:-1,sy=y0<y1?1:-1,e=dx-dy,x=x0,y=y0;
+  while(x!==x1||y!==y1){var e2=2*e;if(e2>-dy){e-=dy;x+=sx;}if(e2<dx){e+=dx;y+=sy;}
+    if((x!==x1||y!==y1)&&opaque(x,y))return false;}
+  return true;}
+function cone(k){
+  var g=state.gs[k],p=gpos(k),out=[],px=-g.fy,py=g.fx;
+  for(var d=1;d<=3;d++){var w=d===1?0:1;
+    for(var l=-w;l<=w;l++){var x=p.x+g.fx*d+px*l,y=p.y+g.fy*d+py*l;
+      if(!opaque(x,y)&&los(p.x,p.y,x,y))out.push([x,y]);}}
+  return out;}
+function seen(){
+  for(var k=0;k<state.gs.length;k++){var p=gpos(k);if(p.x===state.x&&p.y===state.y)return true;
+    var c=cone(k);for(var j=0;j<c.length;j++)if(c[j][0]===state.x&&c[j][1]===state.y)return true;}
+  return false;}
+function moveGuards(){
+  var G=LEVELS[lvl].guards||[];
+  for(var k=0;k<G.length;k++){var g=state.gs[k],P=G[k].path,n=P.length;if(n<2)continue;
+    var ni;if(G[k].mode==='loop')ni=(g.i+1)%n;
+    else{ni=g.i+g.d;if(ni<0||ni>=n){g.d=-g.d;ni=g.i+g.d;}}
+    g.fx=sgn(P[ni][0]-P[g.i][0]);g.fy=sgn(P[ni][1]-P[g.i][1]);g.i=ni;}}
+function catchThief(){caught=true;flash=1;shake=10;
+  document.getElementById('mh').textContent='SPOTTED';document.getElementById('mp').textContent='Undo or restart';
+  setTimeout(function(){if(caught)msg.classList.add('on');},450);}
 function updateInfo(){info.textContent='Steps '+state.steps+' / par '+LEVELS[lvl].par+(state.gem?'  ◆':'');}
-function blocked(x,y){if(x<0||y<0||x>=COLS||y>=ROWS)return true;var c=grid[y][x];return c==='#';}
+function blocked(x,y){return opaque(x,y);}
 function step(dx,dy){
-  if(over)return;
+  if(over||caught)return;
   var nx=state.x+dx,ny=state.y+dy;
   if(!(dx===0&&dy===0)&&blocked(nx,ny)){shake=6;return;}
   stack.push(snap());state.x=nx;state.y=ny;state.steps++;
   var c=grid[ny][nx];
   if(c==='G'&&!state.gem){state.gem=true;grid[ny][nx]='.';burst(nx,ny,'#ffd76a');}
   updateInfo();
-  if(c==='E'&&state.gem){win();}
+  if(c==='E'&&state.gem){win();return;}
+  moveGuards();
+  if(seen())catchThief();
 }
-function undo(){if(over||!stack.length)return;state=stack.pop();
+function undo(){if(over||!stack.length)return;state=stack.pop();caught=false;msg.classList.remove('on');
   // restore gem tile if undone past pickup
   if(!state.gem){var L=LEVELS[lvl];for(var y=0;y<ROWS;y++)for(var x=0;x<COLS;x++)if(L.map[y][x]==='G')grid[y][x]='G';}
   updateInfo();}
@@ -111,6 +151,16 @@ function draw(now){
     if(c==='G'){var p=.8+.2*Math.sin(now/200);ctx.fillStyle='#ffd76a';ctx.beginPath();
       ctx.moveTo(px+T/2,py+T*.2*p);ctx.lineTo(px+T*.8,py+T/2);ctx.lineTo(px+T/2,py+T*.8);ctx.lineTo(px+T*.2,py+T/2);ctx.fill();}
   }
+  // guards + lantern cones
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  for(var k=0;k<state.gs.length;k++){var cc=cone(k),fl=.28+.05*Math.sin(now/90+k);
+    ctx.fillStyle='rgba(255,184,74,'+fl+')';
+    for(var j=0;j<cc.length;j++)ctx.fillRect(cc[j][0]*T+1,cc[j][1]*T+1,T-2,T-2);}
+  ctx.restore();
+  for(var k2=0;k2<state.gs.length;k2++){var gp=gpos(k2),g2=state.gs[k2];
+    ctx.fillStyle='#2a1c06';ctx.strokeStyle='#ffb84a';ctx.lineWidth=3;ctx.beginPath();
+    ctx.arc((gp.x+.5)*T,(gp.y+.5)*T,T*.3,0,6.28);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#ffb84a';ctx.beginPath();ctx.arc((gp.x+.5+g2.fx*.22)*T,(gp.y+.5+g2.fy*.22)*T,T*.09,0,6.28);ctx.fill();}
   // thief
   ctx.fillStyle='#4fe3c1';ctx.beginPath();ctx.arc((state.x+.5)*T,(state.y+.5)*T,T*.3,0,6.28);ctx.fill();
   ctx.fillStyle='#052a22';ctx.fillRect((state.x+.5)*T-T*.14,(state.y+.5)*T-T*.06,T*.28,T*.08);
@@ -118,7 +168,9 @@ function draw(now){
   for(var i=parts.length-1;i>=0;i--){var q=parts[i];q.x+=q.vx;q.y+=q.vy;q.l-=.03;
     if(q.l<=0){parts.splice(i,1);continue;}
     ctx.globalAlpha=q.l;ctx.fillStyle=q.c;ctx.fillRect(q.x-2,q.y-2,4,4);}
-  ctx.globalAlpha=1;ctx.restore();
+  ctx.globalAlpha=1;
+  if(flash>0){ctx.fillStyle='rgba(255,40,40,'+(flash*.4)+')';ctx.fillRect(-10,-10,W+20,H+20);flash-=.03;}
+  ctx.restore();
   requestAnimationFrame(draw);
 }
 // input
@@ -143,10 +195,10 @@ window.addEventListener('keydown',function(e){
 });
 document.getElementById('undo').onclick=undo;
 document.getElementById('restart').onclick=function(){load(lvl);};
-document.getElementById('mb').onclick=function(){load((lvl+1)%LEVELS.length);};
+document.getElementById('mb').onclick=function(){if(caught)load(lvl);else load((lvl+1)%LEVELS.length);};
 window.addEventListener('resize',resize);
 resize();load(0);requestAnimationFrame(draw);
-window.__lh={step:step,undo:undo,state:function(){return state;},over:function(){return over;}};
+window.__lh={step:step,undo:undo,load:load,caught:function(){return caught;},seen:seen,state:function(){return state;},over:function(){return over;}};
 })();
 </script>
 </body>
