@@ -20,6 +20,8 @@ await send('Page.navigate',{url:'file:///'+file.split(path.sep).join('/')});awai
   await send('Input.dispatchKeyEvent',{type:'keyDown',key:m[0]==='z'?'z':m[0],windowsVirtualKeyCode:m[1]});await send('Input.dispatchKeyEvent',{type:'keyUp',key:m[0],windowsVirtualKeyCode:m[1]});await sleep(40);};
  const shot=async n=>fs.writeFileSync(path.join(__dirname,n),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));
  const out={};
+ out.hintShown=await ev("document.getElementById('hint').classList.contains('on')");out.hintOverflow=await ev("document.documentElement.scrollWidth>innerWidth||document.documentElement.scrollHeight>innerHeight");await shot('hint.png');
+ await ev("document.getElementById('hintok').click()");out.hintGone=await ev("!document.getElementById('hint').classList.contains('on')&&localStorage.getItem('lh_hint')");
  // win level 1
  await ev("document.getElementById('menu')&&0");
  solve(L[0]);const p=solve.path;out.path=p;

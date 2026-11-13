@@ -41,6 +41,11 @@ canvas{display:block}
 #grid button:active:not(:disabled){transform:scale(.95)}
 #sel>button{min-height:64px;border:0;border-radius:14px;background:var(--amber);color:#1a1205;font:800 1.2rem 'Cinzel',serif}
 header button{background:none;border:2px solid #2a3866;border-radius:10px;color:var(--ink);font:800 .8rem 'Cinzel',serif;min-height:40px;padding:0 10px}
+#hint{position:absolute;inset:0;z-index:20;display:none;flex-direction:column;justify-content:space-between;align-items:center;padding:16vh 20px 20px;background:rgba(5,8,19,.92);text-align:center}
+#hint.on{display:flex}
+#hint h1{margin:0;font-size:clamp(1.6rem,9vw,2.4rem);color:var(--amber);white-space:nowrap}
+#hint p{margin:.7em 0;font-size:clamp(.9rem,4.5vw,1.1rem);white-space:nowrap}
+#hint button{width:100%;min-height:64px;border:0;border-radius:14px;background:var(--amber);color:#1a1205;font:800 1.2rem 'Cinzel',serif}
 </style>
 </head>
 <body>
@@ -49,6 +54,7 @@ header button{background:none;border:2px solid #2a3866;border-radius:10px;color:
   <div id="wrap"><canvas id="c"></canvas></div>
   <div class="bar"><button id="undo">UNDO</button><button id="restart">RESTART</button></div>
   <div id="sel"><h1>LANTERN HEIST</h1><div id="grid"></div><button id="selplay">PLAY</button></div>
+  <div id="hint"><div><h1>HOW TO PLAY</h1><p>Swipe to move</p><p>Stay out of the lantern light</p><p>Grab the gem 💎</p><p>Then reach the exit</p></div><button id="hintok">GOT IT</button></div>
   <div id="msg"><div><h1 id="mh"></h1><p id="mp"></p></div><button id="mb">NEXT</button></div>
 </div>
 <script>
@@ -519,6 +525,12 @@ function showSel(){
 }
 document.getElementById('menu').onclick=showSel;
 document.getElementById('selplay').onclick=function(){var n=0;for(var i=0;i<LEVELS.length;i++){if(unlocked(i)){n=i;if(!prog[i])break;}}sel.classList.remove('on');load(n);};
+var hintEl=document.getElementById('hint'),HK='lh_hint';
+try{if(!localStorage.getItem(HK))hintEl.classList.add('on');}catch(e){}
+function hideHint(){hintEl.classList.remove('on');try{localStorage.setItem(HK,'1');}catch(e){}}
+['pointerdown','pointerup'].forEach(function(n){hintEl.addEventListener(n,function(e){e.stopPropagation();});});
+document.getElementById('hintok').onclick=hideHint;
+window.addEventListener('keydown',function(e){if(hintEl.classList.contains('on')){e.stopImmediatePropagation();hideHint();}},true);
 window.addEventListener('resize',resize);
 resize();load(0);requestAnimationFrame(draw);
 window.__lh={showSel:showSel,prog:function(){return prog;},step:step,undo:undo,load:load,caught:function(){return caught;},seen:seen,state:function(){return state;},over:function(){return over;}};
