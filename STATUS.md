@@ -5,11 +5,14 @@ _Maintained by the Conductor. Agents update this every cycle._
 **Phase:** Deployed-but-unverified / cleanup — 6 game folders exist, hub and docs are stale   **Tracker status:** In Progress
 
 ## Today's Goals
-- Write `docs/LANTERN-HEIST-SPEC.md`: core loop, one-thumb controls at 375x667, art and audio approach, and a cycle-by-cycle build plan. Build can then start the moment the owner picks B on Q-PR004-005. No game code yet.
-- Stack Rally: add a localStorage best score plus an optional daily-seed mode. CDP playtest at 375x667, push, check the live URL returns 200.
-- Root-font 18px audit for exodus-arena-v3: render 375x667 at 16px vs 18px and record the overflow/clipping diff. Apply only if clean; otherwise close the step as won't-fix.
+_Set by the Conductor 2026-11-13 07:00._
+- Lantern Heist first-run hint: a one-time, dismissible overlay on level 1 ('swipe to move, stay out of the lantern light, grab the gem, reach the exit'), stored in localStorage. Run lh-cdp.js at 375x667 (no errors/overflow), push, and check the live URL returns 200.
+- Refresh `docs/NEXT-GAMES.md` with 2 new one-thumb concepts (cycle estimates, why each fits). Reword Q-PR004-006 so one reply covers both the Lantern Heist feedback and the next game to build.
+- Then stop. No URL re-checks beyond the one after the push.
 
 ## Next Steps
+- [x] (2026-11-13) Lantern Heist how-to-play overlay: DONE 11:10 — localStorage lh_hint, lh-cdp passes (shown, no overflow, dismiss persists, no errors), pushed, live 200 + overlay deployed.
+- [x] (2026-11-13) docs/NEXT-GAMES.md: DONE — D Moth Light, E Bubble Barista added; Q-006 reworded.
 - [x] (2026-11-09) docs/LANTERN-HEIST-SPEC.md: DONE 07:08 (design only; build waits on Q-PR004-005 = B).
 - [x] (2026-11-09) Stack Rally daily seed: DONE 07:10 — DAILY RUN button, date-seeded RNG for spawns, per-day best in localStorage (normal best already existed); node --check OK, rng determinism verified, start screen fits vertically. Live-play of daily mode not driven in CDP.
 - [x] (2026-11-07) Write `docs/NEXT-GAMES.md`: DONE 2026-11-07, Q-PR004-003 asked.
@@ -55,7 +58,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - none
 
 ## Open Questions
-- [ ] Q-PR004-006 (low): Lantern Heist (30 levels) is live at https://eshcharb-dot.github.io/ai-games/games/lantern-heist/ — playtest on phone; too hard/easy, or any changes? Recommend: send feedback, then I do a juice pass.
+- [ ] Q-PR004-006 (low): Lantern Heist (30 levels, now with first-run hint) is live at https://eshcharb-dot.github.io/ai-games/games/lantern-heist/ — one reply covers both: (1) feedback (too hard/easy/changes?) and (2) next game: D Moth Light or E Bubble Barista (docs/NEXT-GAMES.md), or more Lantern Heist. Recommend: send feedback, then D.
 - [x] Q-PR004-001 (normal): Which Exodus Arena version should be the public flagship, and should older ones (`exodus-arena-v2`, and the private-URL `ea-55b33e6f`) stay public? Options: (a) v3 public, v2 removed, `ea-55b33e6f` stays private-only; (b) keep all linked as version history. Recommendation: (a).
 
 - [x] Q-PR004-002 (low): OK to delete stale task.txt (repo root) and games/mila-beli-mila/test.html (publicly served test copy with red "UX TEST" banner)? Both are in git history. Recommendation: yes, delete both.
@@ -67,6 +70,7 @@ _Maintained by the Conductor. Agents update this every cycle._
 - [x] Q-PR004-005 (low): Stack Rally is live at https://eshcharb-dot.github.io/ai-games/games/stack-rally/ — playtest on phone; steering too twitchy/easy/hard? Or start Lantern Heist (B)? Recommend: send feedback, then B.
 
 ## Run Log
+- 2026-11-13 11:05 — Lantern Heist first-run hint overlay shipped (CDP clean, live 200); NEXT-GAMES +D/E; Q-006 reworded
 - 2026-11-13 04:05 — No actionable step: live URLs (root, hub, lantern-heist, stack-rally, tide, exodus-v3) all 200; waiting on Q-PR004-006 + Tide feedback; no code changes
 - 2026-11-12 21:33 — No actionable step: live URLs (root, hub, lantern-heist, stack-rally, tide, exodus-v3) all 200; waiting on Q-PR004-006 + Tide feedback; no code changes
 - 2026-11-12 11:09 — No actionable step: live URLs (root, hub, lantern-heist, stack-rally, tide, exodus-v3) all 200; waiting on Q-PR004-006 + Tide feedback; no code changes

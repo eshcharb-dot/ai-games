@@ -1,6 +1,6 @@
 # Next Game Concepts
 
-Three original concepts, all single-file HTML, mobile-first (375x667 portrait), Web Audio SFX, no scrolling. Effort is in ~10-minute work cycles to a playable v1.
+Five original concepts (A-C built; D-E new), all single-file HTML, mobile-first (375x667 portrait), Web Audio SFX, no scrolling. Effort is in ~10-minute work cycles to a playable v1.
 
 ## A. Tide Pool Tapper (one-thumb arcade)
 **Core loop:** Waves roll in from the top of a tide pool; tiny creatures (crabs, starfish, snails) get stranded on the sand. Tap a creature to flick it back into the water before the next wave drains the pool; each rescue builds a combo multiplier, and rare golden creatures give a shield. Waves speed up, decoys (urchins) punish careless taps.
@@ -20,5 +20,15 @@ Three original concepts, all single-file HTML, mobile-first (375x667 portrait), 
 **Look:** Low-poly Three.js (toon material, bloom), or 2D parallax if we want to stay lightweight.
 **Effort:** ~8 cycles in 3D, ~5 in 2D.
 
+## D. Moth Light (one-thumb flyer) — added 2026-11-13
+**Core loop:** You are a moth drifting up a dark chimney. Hold the thumb anywhere to glide toward the nearest lamp; release to drop. Lamps give brief warmth (score + fuel), but burning-hot bulbs and spider threads punish hovering too long. Chain lamps without touching walls for a multiplier.
+**Why it fits:** One-thumb hold/release, zero UI to read, short runs (30-60s), and it reuses the Lantern Heist glow/additive-light look so it feels like a sibling game.
+**Effort:** ~5 cycles (physics+loop 2, hazards/combo 1, art+audio 1, polish/hub 1).
+
+## E. Bubble Barista (one-thumb timing) — added 2026-11-13
+**Core loop:** Orders slide in on a conveyor; each needs a drink poured to an exact line. Hold to pour, release to stop; overshoot spills and costs a heart. Streaks of perfect pours trigger rush hour (faster belt, double points). Daily menu seed like Stack Rally.
+**Why it fits:** Pure press-and-release timing, instantly learnable, very colorful contrast to the dark games in the hub, and highly replayable via streaks.
+**Effort:** ~5 cycles (pour/timing loop 2, orders+rush 1, juice+audio 1, hub/polish 1).
+
 ## Recommendation
-**A (Tide Pool Tapper)** — fastest to a fun v1, easiest touch input, and a good fit for the existing hub. B is the most original if you want a longer-lived game.
+A, B, C are built. Next pick: **D (Moth Light)** — most distinct feel, 5 cycles; E is the lighter, more colorful alternative.
